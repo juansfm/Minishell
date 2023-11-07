@@ -6,7 +6,7 @@
 #    By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/15 18:18:12 by jsaavedr          #+#    #+#              #
-#    Updated: 2023/10/22 13:31:20 by jsaavedr         ###   ########.fr        #
+#    Updated: 2023/11/05 16:35:14 by jsaavedr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,12 +15,12 @@ NAME = Minishell
 SRCS_DIR = srcs/
 OBJS_DIR = objs/
 
-SRCS = minishell.c env.c env_utils.c env_print.c
+SRCS = minishell.c env.c env_utils.c env_print.c builtins.c cd.c env_utils_2.c cmd.c
 OBJS = ${addprefix ${OBJS_DIR}${SRCS_DIR}, ${SRCS:.c=.o}}
 
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
 RM = rm -rf
 
 LIBFT = libft/libft.a
