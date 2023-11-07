@@ -6,27 +6,40 @@
 /*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:44:57 by jsaavedr          #+#    #+#             */
-/*   Updated: 2023/10/22 19:15:56 by jsaavedr         ###   ########.fr       */
+/*   Updated: 2023/11/06 18:07:21 by jsaavedr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	ft_l(void)
+{
+	system("leaks -q Minishell");
+}
+
 int	main(int argc, char **argv, char **envp)
 {
-	t_env	*temp;
-	char	*line;
+	t_general	g_data;
+	t_env		*temp;
+	char		*line;
+	char		**mtx;
 
+	atexit(ft_l);
 	(void)argc;
 	(void)argv;
-	ft_dup_env(envp);
+	ft_dup_env(&g_data, envp);
 	while (1)
 	{
-		line = readline("Minishell////");
+		line = readline("Minishell$");
 		printf("%s\n", line);
-		if (!ft_strncmp(line, "exit", ft_strlen(line)))
-			break ;
+		if (line)
+		{
+			mtx = ft_env_split(line, ' ');
+			ft_builtins(&g_data, mtx[0], mtx[1]);
+		}
+		free(line);
 	}
+	// rl_clear_history();
 	temp = g_data.env;
 	while (temp != NULL)
 	{
@@ -34,15 +47,15 @@ int	main(int argc, char **argv, char **envp)
 		temp = temp->next;
 	}
 	printf("\n");
-	ft_add_mod_env("US=Hola=Adios");
-	ft_add_mod_env("USA");
+	ft_add_mod_env(&g_data, "US=Hola=Adios");
+	ft_add_mod_env(&g_data, "USA");
 	temp = g_data.env;
-	// ft_print_env();
+	// ft_print_env(g_data);
 	printf("\n");
-	ft_print_export();
+	ft_print_export(&g_data);
 	printf("\n");
-	ft_delete_env("US");
-	// ft_print_env();
+	ft_delete_env(&g_data, "US");
+	// ft_print_env(g_data);
 	printf("\n");
-	// ft_print_export();
+	// ft_print_export(g_data);
 }

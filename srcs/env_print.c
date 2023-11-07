@@ -6,17 +6,17 @@
 /*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 18:58:04 by jsaavedr          #+#    #+#             */
-/*   Updated: 2023/10/22 13:17:49 by jsaavedr         ###   ########.fr       */
+/*   Updated: 2023/11/01 13:45:00 by jsaavedr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_print_env(void)
+void	ft_print_env(t_general *g_data)
 {
 	t_env	*temp;
 
-	temp = g_data.env;
+	temp = g_data->env;
 	while (temp != NULL)
 	{
 		if (temp->equal)
@@ -31,11 +31,10 @@ void	ft_print_env(void)
 	}
 }
 
-void	ft_print_export(void)
+void	ft_print_export(t_general *g_data)
 {
 	t_env	*temp;
-
-	temp = g_data.env;
+	temp = g_data->env;
 	while (temp != NULL)
 	{
 		ft_putstr_fd("declare -x ", 1);
@@ -49,4 +48,15 @@ void	ft_print_export(void)
 		ft_putchar_fd('\n', 1);
 		temp = temp->next;
 	}
+	// t_env	*first;
+	// t_env	*second;
+	// t_env	*new;
+	// t_env	*inx;
+
+	// new = g_data->env;
+	// inx = g_data->env->next;
+	// if ()
+	// while (inx != NULL)
+	// // first = g_data->env;
+	// // second = g_data->env->next;
 }

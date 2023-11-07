@@ -6,18 +6,18 @@
 /*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 12:34:16 by jsaavedr          #+#    #+#             */
-/*   Updated: 2023/10/18 18:57:11 by jsaavedr         ###   ########.fr       */
+/*   Updated: 2023/11/01 13:37:08 by jsaavedr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# include "ft_printf.h"
+# include "get_next_line.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include "ft_printf.h"
-# include "get_next_line.h"
 
 typedef struct s_list
 {
@@ -115,7 +115,7 @@ char	*ft_itoa(int n);
 char	*ft_strmapi(const char *s, char (*f)(unsigned int, char));
 
 /*Applies the function f in the directions of the characters of s*/
-void	ft_striteri(char *s, void (*f)(unsigned int, char*));
+void	ft_striteri(char *s, void (*f)(unsigned int, char *));
 
 /*Writes the character c in the file fd*/
 void	ft_putchar_fd(char c, int fd);
@@ -134,6 +134,8 @@ void	ft_free(char **matrix, int j);
 
 /*Returns the length of matrix*/
 int		ft_mtxrow(char **matrix);
+
+int		ft_strcmp(const char *s1, const char *s2);
 
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *new);
