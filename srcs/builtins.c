@@ -6,43 +6,114 @@
 /*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 19:26:26 by jsaavedr          #+#    #+#             */
-/*   Updated: 2023/11/05 18:43:35 by jsaavedr         ###   ########.fr       */
+/*   Updated: 2023/11/12 17:00:47 by jsaavedr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_export(t_general *g_data, char *env_line)
+/**
+ * @brief Find out if it's a flag of echo
+ * 
+ * @param msg string to find out
+ * @return int 
+ */
+static int	ft_echo_flag(char *msg)
+{
+	int	i;
+
+	i = 0;
+	if (!msg)
+		return (0);
+	if (msg[i] == '-')
+		i++;
+	else
+		return (0);
+	while (msg[i] != '\0')
+	{
+		if (msg[i] == 'n')
+			i++;
+		else
+			return (0);
+	}
+	return (1);
+}
+
+/**
+ * @brief built-in export
+ * 
+ * @param g_data general struct
+ * @param env_line NAME=VALUE
+ */
+void	ft_export(t_general *g_data, char **env_line)
 {
 	t_env	*temp;
+	int		i;
 
-	if (env_line[0] == '\0')
+	if (!env_line)
 	{
 		ft_print_export(g_data);
 		return ;
 	}
-	temp = ft_env_new(env_line);
-	if (ft_env_error(temp->name))
+	i = 0;
+	while (env_line[i])
 	{
-		printf("bash: export: '%s': not a valid identifier\n", temp->name);
+		temp = ft_env_new(env_line[i]);
+		if (ft_env_error(temp->name))
+		{
+			printf("bash: export: '%s': not a valid identifier\n", temp->name);
+			ft_free_env(temp);
+			return ;
+		}
 		ft_free_env(temp);
-		return ;
+		ft_add_mod_env(g_data, env_line[i]);
+		i++;
 	}
-	ft_free_env(temp);
-	ft_add_mod_env(g_data, env_line);
 	return ;
 }
 
-void	ft_exit(t_general *g_data)
+/**
+ * @brief built-in exit
+ * 
+ * @param g_data general struct
+ */
+void	ft_exit(t_general *g_data, char **arg)
 {
+	int	i;
+
 	(void)g_data;
-	exit(0);
+	if (!arg)
+		exit(0);
+	if (ft_mtxrow(arg) > 1)
+	{
+		printf("bash: exit: too many arguments\n");
+		return ;
+	}
+	i = -1;
+	while (arg[0][++i])
+	{
+		if ((!ft_isdigit(arg[0][i]) && arg[0][1] != '+' && arg[0][i] != '-')
+			|| ((arg[0][i] == '+' || arg[0][i] == '-') && !ft_isdigit(arg[0][i
+					+ 1])) || ft_atol(arg[0]) > INT_MAX
+			|| ft_atol(arg[0]) < INT_MIN)
+		{
+			printf("Numeric argument required\n");
+			exit(255);
+		}
+	}
+	printf("exit");
+	exit(ft_atou(arg[0]) % 256);
 }
 
-void	ft_echo(t_general *g_data, char *arg)
+/**
+ * @brief built-in echo
+ * 
+ * @param g_data general struct
+ * @param arg msg to print (with flag)
+ */
+void	ft_echo(t_general *g_data, char **arg)
 {
-	char	**msg;
-	int		i;
+	int	i;
 
 	(void)g_data;
 	if (!arg)
@@ -50,53 +121,31 @@ void	ft_echo(t_general *g_data, char *arg)
 		printf("\n");
 		return ;
 	}
-	msg = ft_split(arg, ' ');
 	i = 0;
-	while (!ft_strcmp("-n", msg[i]))
+	while (ft_echo_flag(arg[i]))
 		i++;
-	while (msg[i])
+	while (arg[i])
 	{
-		ft_putstr_fd(msg[i], 1);
-		ft_putchar_fd(' ', 1);
+		ft_putstr_fd(arg[i], 1);
+		if (arg[i + 1] != NULL)
+			ft_putchar_fd(' ', 1);
 		i++;
 	}
-	if (ft_strcmp("-n", msg[0]))
+	if (!ft_echo_flag(arg[0]))
 		printf("\n");
 }
 
+/**
+ * @brief built-in pwd
+ * 
+ * @param g_data general struct
+ */
 void	ft_pwd(t_general *g_data)
 {
-	t_env	*pwd;
+	char	*pwd;
 
-	pwd = g_data->env;
-	while (pwd != NULL)
-	{
-		if (!ft_strcmp("PWD", pwd->name))
-		{
-			printf("%s\n", pwd->valor);
-			return ;
-		}
-		pwd = pwd->next;
-	}
-}
-
-// Los argumentos de esta funcion pueden cambiar segun evoluciona el programa
-void	ft_builtins(t_general *g_data, char *cmd, char *arg)
-{
-	if (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "ECHO"))
-		ft_echo(g_data, arg);
-	else if (!ft_strcmp(cmd, "cd"))
-		ft_cd(g_data, arg);
-	else if (!ft_strcmp(cmd, "pwd") || !ft_strcmp(cmd, "PWD"))
-		ft_pwd(g_data);
-	else if (!ft_strcmp(cmd, "export"))
-		ft_export(g_data, arg);
-	else if (!ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "ENV"))
-		ft_print_env(g_data);
-	else if (!ft_strcmp(cmd, "unset"))
-		ft_delete_env(g_data, arg);
-	else if (!ft_strcmp(cmd, "exit"))
-		ft_exit(g_data);
-	else
-		ft_other_cmd(g_data, cmd, arg);
+	(void)g_data;
+	pwd = getcwd(NULL, 0);
+	ft_putstr_fd(pwd, 1);
+	ft_putchar_fd('\n', 1);
 }

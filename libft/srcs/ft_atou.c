@@ -1,25 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_mtxrow.c                                        :+:      :+:    :+:   */
+/*   ft_atou.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/18 18:54:10 by jsaavedr          #+#    #+#             */
-/*   Updated: 2023/11/11 19:27:23 by jsaavedr         ###   ########.fr       */
+/*   Created: 2023/11/09 19:40:09 by jsaavedr          #+#    #+#             */
+/*   Updated: 2023/11/09 19:58:30 by jsaavedr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-int	ft_mtxrow(char **matrix)
+unsigned int	ft_atou(const char *str)
 {
-	int	i;
+	int				i;
+	int				sign;
+	unsigned int	num;
 
-	if (!matrix)
-		return (0);
 	i = 0;
-	while (matrix[i] != NULL)
+	sign = 1;
+	num = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
 		i++;
-	return (i);
+	if (str[i] == '-')
+	{
+		sign = -1;
+		i++;
+	}
+	else if (str[i] == '+')
+		i++;
+	while (ft_isdigit(str[i]))
+	{
+		num = num * 10;
+		num += str[i] - '0';
+		i++;
+	}
+	return (sign * num);
 }

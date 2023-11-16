@@ -6,7 +6,7 @@
 /*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:57:49 by jsaavedr          #+#    #+#             */
-/*   Updated: 2023/11/05 16:35:50 by jsaavedr         ###   ########.fr       */
+/*   Updated: 2023/11/15 13:32:37 by jsaavedr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,23 @@ t_env				*ft_env_new(char *env_line);
 void				ft_free_env(t_env *env);
 char				**ft_env_split(char *line, char c);
 t_env				*ft_env_search(t_general *g_data, char *name);
+int					ft_env_len(t_general *g_data);
 
 //BUILTINS
-void				ft_export(t_general *g_data, char *env_line);
-void				ft_exit(t_general *g_data);
-void				ft_echo(t_general *g_data, char *arg);
-void				ft_cd(t_general *g_data, char *arg);
+void				ft_export(t_general *g_data, char **env_line);
+void				ft_exit(t_general *g_data, char **arg);
+void				ft_echo(t_general *g_data, char **arg);
+void				ft_cd(t_general *g_data, char **arg);
 void				ft_pwd(t_general *g_data);
-void				ft_builtins(t_general *g_data, char *cmd, char *arg);
+void				ft_builtins(t_general *g_data, char *cmd, char **arg);
 
 //CD AUX
 void				ft_old_pwd(t_general *g_data);
 void				ft_home(t_general *g_data);
 
-void				ft_other_cmd(t_general *g_data, char *cmd, char *arg);
+int					ft_other_cmd(t_general *g_data, char *cmd, char **arg);
+char				**ft_union_cmd_arg(char *cmd, char **arg);
+char				**ft_env_mtx(t_general *g_data);
+char				*ft_path(t_general *g_data, char *cmd);
 
 #endif
