@@ -6,7 +6,7 @@
 /*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 16:33:28 by jsaavedr          #+#    #+#             */
-/*   Updated: 2023/11/16 14:58:06 by jsaavedr         ###   ########.fr       */
+/*   Updated: 2023/11/16 18:02:47 by jsaavedr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ char	**ft_union_cmd_arg(char *cmd, char **arg)
 	int		i;
 
 	i = ft_mtxrow(arg) + 2;
-	printf("i=%i\n", i);
 	mtx = ft_calloc(i, sizeof(char *));
 	mtx[0] = ft_strdup(cmd);
 	if (!arg)
