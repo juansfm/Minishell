@@ -6,7 +6,7 @@
 /*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 19:26:26 by jsaavedr          #+#    #+#             */
-/*   Updated: 2023/11/12 17:00:47 by jsaavedr         ###   ########.fr       */
+/*   Updated: 2023/11/25 14:04:31 by jsaavedr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ void	ft_export(t_general *g_data, char **env_line)
 	t_env	*temp;
 	int		i;
 
-	if (!env_line)
+	if (!env_line[1])
 	{
 		ft_print_export(g_data);
 		return ;
 	}
-	i = 0;
+	i = 1;
 	while (env_line[i])
 	{
 		temp = ft_env_new(env_line[i]);
@@ -82,19 +82,19 @@ void	ft_exit(t_general *g_data, char **arg)
 	int	i;
 
 	(void)g_data;
-	if (!arg)
+	if (!arg[1])
 		exit(0);
-	if (ft_mtxrow(arg) > 1)
+	if (ft_mtxrow(arg) > 2)
 	{
 		printf("bash: exit: too many arguments\n");
 		return ;
 	}
 	i = -1;
-	while (arg[0][++i])
+	while (arg[1][++i])
 	{
-		if ((!ft_isdigit(arg[0][i]) && arg[0][1] != '+' && arg[0][i] != '-')
-			|| ((arg[0][i] == '+' || arg[0][i] == '-') && !ft_isdigit(arg[0][i
-					+ 1])) || ft_atol(arg[0]) > INT_MAX
+		if ((!ft_isdigit(arg[1][i]) && arg[1][i] != '+' && arg[1][i] != '-')
+			|| ((arg[1][i] == '+' || arg[1][i] == '-') && !ft_isdigit(arg[1][i
+					+ 1])) || ft_atol(arg[1]) > INT_MAX
 			|| ft_atol(arg[0]) < INT_MIN)
 		{
 			printf("Numeric argument required\n");
@@ -102,7 +102,7 @@ void	ft_exit(t_general *g_data, char **arg)
 		}
 	}
 	printf("exit");
-	exit(ft_atou(arg[0]) % 256);
+	exit(ft_atou(arg[1]) % 256);
 }
 
 /**
@@ -121,7 +121,7 @@ void	ft_echo(t_general *g_data, char **arg)
 		printf("\n");
 		return ;
 	}
-	i = 0;
+	i = 1;
 	while (ft_echo_flag(arg[i]))
 		i++;
 	while (arg[i])
@@ -131,7 +131,7 @@ void	ft_echo(t_general *g_data, char **arg)
 			ft_putchar_fd(' ', 1);
 		i++;
 	}
-	if (!ft_echo_flag(arg[0]))
+	if (!ft_echo_flag(arg[1]))
 		printf("\n");
 }
 

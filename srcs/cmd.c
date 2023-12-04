@@ -6,7 +6,7 @@
 /*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 16:33:28 by jsaavedr          #+#    #+#             */
-/*   Updated: 2023/11/16 18:02:47 by jsaavedr         ###   ########.fr       */
+/*   Updated: 2023/12/02 19:15:48 by jsaavedr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,56 +20,54 @@
  * @param cmd command
  * @param arg arguments to the command in a string (can change to a matrix)
  */
-void	ft_builtins(t_general *g_data, char *cmd, char **arg)
+int	ft_builtins(t_general *g_data, char **arg)
 {
 	int	i;
 
-	i = -1;
-	if (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "ECHO"))
+	i = 0;
+	if (!ft_strcmp(arg[0], "echo") || !ft_strcmp(arg[0], "ECHO"))
 		ft_echo(g_data, arg);
-	else if (!ft_strcmp(cmd, "cd"))
+	else if (!ft_strcmp(arg[0], "cd"))
 		ft_cd(g_data, arg);
-	else if (!ft_strcmp(cmd, "pwd") || !ft_strcmp(cmd, "PWD"))
+	else if (!ft_strcmp(arg[0], "pwd") || !ft_strcmp(arg[0], "PWD"))
 		ft_pwd(g_data);
-	else if (!ft_strcmp(cmd, "export"))
+	else if (!ft_strcmp(arg[0], "export"))
 		ft_export(g_data, arg);
-	else if (!ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "ENV"))
+	else if (!ft_strcmp(arg[0], "env") || !ft_strcmp(arg[0], "ENV"))
 		ft_print_env(g_data);
-	else if (!ft_strcmp(cmd, "unset"))
+	else if (!ft_strcmp(arg[0], "unset"))
 	{
 		while (arg[++i])
 			ft_delete_env(g_data, arg[i]);
 	}
-	else if (!ft_strcmp(cmd, "exit"))
+	else if (!ft_strcmp(arg[0], "exit"))
 		ft_exit(g_data, arg);
 	else
-		ft_other_cmd(g_data, cmd, arg);
+		return (0);
+	return (1);
 }
 
-int	ft_other_cmd(t_general *g_data, char *cmd, char **arg)
+int	ft_other_cmd(t_general *g_data, char **arg)
 {
-	char	**mtx;
 	char	**env_mtx;
 	int		pid;
 	int		status;
 
-	cmd = ft_path(g_data, cmd);
-	if (!cmd)
+	arg[0] = ft_path(g_data, arg[0]);
+	if (!arg[0])
 	{
 		printf("No such file or directory\n");
 		return (0);
 	}
-	mtx = ft_union_cmd_arg(cmd, arg);
 	env_mtx = ft_env_mtx(g_data);
 	pid = fork();
 	if (pid == 0)
 	{
-		status = execve(mtx[0], mtx, env_mtx);
+		status = execve(arg[0], arg, env_mtx);
 		exit(status);
 	}
 	else
 		waitpid(pid, &status, 0);
-	ft_free(mtx, ft_mtxrow(mtx));
 	ft_free(env_mtx, ft_mtxrow(env_mtx));
 	return (WEXITSTATUS(status));
 }
@@ -140,7 +138,10 @@ char	*ft_path(t_general *g_data, char *cmd)
 		if (access(aux, F_OK) == 0)
 			break ;
 		free(aux);
+		aux = NULL;
 	}
+	if (!aux)
+		aux = ft_strdup(cmd);
 	free(cmd);
 	return (aux);
 }
