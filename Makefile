@@ -6,7 +6,7 @@
 #    By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/15 18:18:12 by jsaavedr          #+#    #+#              #
-#    Updated: 2023/11/16 18:42:46 by jsaavedr         ###   ########.fr        #
+#    Updated: 2023/11/27 17:27:46 by jsaavedr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SRCS_DIR = srcs/
 OBJS_DIR = objs/
 PARSER_DIR = parser/
 
-SRCS = minishell.c env.c env_utils.c env_print.c builtins.c cd.c env_utils_2.c cmd.c
+SRCS = minishell.c env.c env_utils.c env_print.c builtins.c cd.c env_utils_2.c cmd.c cmd_utils.c multiple_cmd.c
 OBJS = ${addprefix ${OBJS_DIR}${SRCS_DIR}, ${SRCS:.c=.o}}
 SRCS_PARSER = tokens.c
 OBJS_PARSER = ${addprefix ${OBJS_DIR}${PARSER_DIR}, ${SRCS_PARSER:.c=.o}}
