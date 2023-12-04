@@ -6,12 +6,18 @@
 /*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 18:28:19 by jsaavedr          #+#    #+#             */
-/*   Updated: 2023/11/03 19:05:34 by jsaavedr         ###   ########.fr       */
+/*   Updated: 2023/11/08 14:07:22 by jsaavedr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Duplicate env variables of the shell
+ * 
+ * @param g_data general struct
+ * @param envp original env variables
+ */
 void	ft_dup_env(t_general *g_data, char **envp)
 {
 	t_env	*node;
@@ -25,6 +31,12 @@ void	ft_dup_env(t_general *g_data, char **envp)
 	}
 }
 
+/**
+ * @brief Add a env variable or modify if it exists
+ * 
+ * @param g_data general struct
+ * @param env_new NAME=VALUE form
+ */
 void	ft_add_mod_env(t_general *g_data, char *env_new)
 {
 	t_env	*temp;
@@ -51,6 +63,12 @@ void	ft_add_mod_env(t_general *g_data, char *env_new)
 	ft_env_add_back(g_data, new);
 }
 
+/**
+ * @brief Delete a env variable
+ * 
+ * @param g_data general struct
+ * @param env_del name of the env variable to delete (w/o $)
+ */
 void	ft_delete_env(t_general *g_data, char *env_del)
 {
 	t_env	*first;
@@ -77,6 +95,12 @@ void	ft_delete_env(t_general *g_data, char *env_del)
 	}
 }
 
+/**
+ * @brief Find out if env variable has a valid name
+ * 
+ * @param env_line name of the env variable
+ * @return int 1 if exists an error and 0 if it's correct
+ */
 int	ft_env_error(char *env_line)
 {
 	int	i;

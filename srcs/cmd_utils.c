@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_mtxrow.c                                        :+:      :+:    :+:   */
+/*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/18 18:54:10 by jsaavedr          #+#    #+#             */
-/*   Updated: 2023/11/11 19:27:23 by jsaavedr         ###   ########.fr       */
+/*   Created: 2023/11/27 15:51:11 by jsaavedr          #+#    #+#             */
+/*   Updated: 2023/11/27 16:47:51 by jsaavedr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "minishell.h"
 
-int	ft_mtxrow(char **matrix)
+int	ft_cmd_len(t_general *g_data)
 {
-	int	i;
+	t_cmd	*temp;
+	int		i;
 
-	if (!matrix)
-		return (0);
+	temp = g_data->cmd;
 	i = 0;
-	while (matrix[i] != NULL)
+	while (temp != NULL)
+	{
 		i++;
+		temp = temp->next;
+	}
 	return (i);
 }
