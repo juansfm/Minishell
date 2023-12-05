@@ -1,41 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atou.c                                          :+:      :+:    :+:   */
+/*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/09 19:40:09 by jsaavedr          #+#    #+#             */
-/*   Updated: 2023/11/09 19:58:30 by jsaavedr         ###   ########.fr       */
+/*   Created: 2023/11/27 15:51:11 by jsaavedr          #+#    #+#             */
+/*   Updated: 2023/11/27 16:47:51 by jsaavedr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "minishell.h"
 
-unsigned int	ft_atou(const char *str)
+int	ft_cmd_len(t_general *g_data)
 {
-	int				i;
-	int				sign;
-	unsigned int	num;
+	t_cmd	*temp;
+	int		i;
 
+	temp = g_data->cmd;
 	i = 0;
-	sign = 1;
-	num = 0;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-')
+	while (temp != NULL)
 	{
-		sign = -1;
 		i++;
+		temp = temp->next;
 	}
-	else if (str[i] == '+')
-		i++;
-	while (ft_isdigit(str[i]))
-	{
-		num = num * 10;
-		num += str[i] - '0';
-		i++;
-	}
-	return (sign * num);
+	return (i);
 }
-
