@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/15 16:57:49 by jsaavedr          #+#    #+#             */
-/*   Updated: 2023/12/03 17:50:35 by jsaavedr         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -26,6 +14,14 @@
 # include <term.h>
 # include <termios.h>
 # include <unistd.h>
+
+# define TOKEN_WORD 0
+# define TOKEN_PIPE 1
+# define TOKEN_REDIR_IN 2
+# define TOKEN_REDIR_OUT 3
+# define TOKEN_DOLLAR 4
+# define TOKEN_HERE_DOC_IN 5
+# define TOKEN_HERE_DOC_OUT 6
 
 typedef struct s_env
 {
@@ -47,7 +43,16 @@ typedef struct s_general
 {
 	struct s_env	*env;
 	struct s_cmd	*cmd;
+	struct s_token	*token;
 }					t_general;
+
+typedef struct s_token
+{
+	int				type_token;
+	int 			len;
+	char			*value;
+	struct s_token	*next;
+}					t_token;
 
 // t_general			g_data;
 
@@ -92,5 +97,36 @@ int					ft_cmd_len(t_general *g_data);
 
 //MULTIPLE_CMD
 void				ft_multiple_cmd(t_general *g_data, t_cmd *cmd);
+
+
+//minishell start
+void ft_minish(char **envp);
+int main(int argc, char **argv, char **envp);
+t_cmd	*ft_cmd_new(char *arg);
+void	ft_cmd_add_back(t_general *g_data, t_cmd *new);
+t_cmd	*ft_cmd_last(t_general *g_data);
+void	ft_free_cmd(t_general *g_data);
+void	ft_cmd_lst(t_general *g_data, char **mtx);
+t_cmd	*ft_cmd_new(char *arg);
+void	ft_cmd_add_back(t_general *g_data, t_cmd *new);
+
+//lexer
+
+int ft_process_quote_content_double(char *line, int len, int pos, t_token **head);
+int ft_process_quote_content_sim(char *line, int len, int pos, t_token **head);
+int ft_process_word(char *line, int len, int pos, t_token **head);
+void	ft_parse_tokens(char *line, int len, t_general **g_data);
+void	ft_parser(t_general *g_data, char *line);
+
+//lexer_utils
+void ft_print_tokens(t_token *head);
+int ft_char_reserved(char c);
+
+//list_tokens
+
+t_token *ft_new_token(int type_token, char *value);
+void ft_add_token_in_general(t_token **head, int type, char *value);
+void ft_free_tokens(t_token *head);
+
 
 #endif

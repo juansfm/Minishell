@@ -1,59 +1,58 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/10/15 18:18:12 by jsaavedr          #+#    #+#              #
-#    Updated: 2023/11/27 17:27:46 by jsaavedr         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = minishell
 
-SRCS_DIR = srcs/
 OBJS_DIR = objs/
-PARSER_DIR = parser/
 
-SRCS = minishell.c env.c env_utils.c env_print.c builtins.c cd.c env_utils_2.c cmd.c cmd_utils.c multiple_cmd.c
-OBJS = ${addprefix ${OBJS_DIR}${SRCS_DIR}, ${SRCS:.c=.o}}
-SRCS_PARSER = tokens.c
-OBJS_PARSER = ${addprefix ${OBJS_DIR}${PARSER_DIR}, ${SRCS_PARSER:.c=.o}}
+SRCS = srcs/minishell.c\
+		srcs/env.c\
+		srcs/env_utils.c\
+		srcs/env_print.c\
+		srcs/builtins.c\
+		srcs/cd.c\
+		srcs/env_utils_2.c\
+		srcs/cmd.c
+
+SRCS_PARSER = parser/lexer.c parser/list_tokens.c parser/utils_parser.c
+
+CFILES = ${SRCS_PARSER} ${SRCS} 
+
+ALL_OBJS = ${addprefix ${OBJS_DIR}, ${CFILES:.c=.o}}
+
+#OBJS = ${addprefix ${OBJS_DIR}, ${SRCS:.c=.o}}
+
+#OBJS_PARSER = ${addprefix ${OBJS_DIR}, ${SRCS_PARSER:.c=.o}}
 
 CC = gcc
+
 CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
+
 RM = rm -rf
 
 LIBFT = libft/libft.a
 
 HDR_DIR = includes/
+
 HDR = minishell.h
+
 HDR_PATH = ${addprefix ${HDR_DIR}, ${HDR}}
+
 HDR_INC = -I ./includes
 
 all: ${NAME}
 
-${NAME}: ${LIBFT} ${OBJS_DIR}${SRCS_DIR} ${OBJS_DIR}${PARSER_DIR} ${OBJS} ${OBJS_PARSER} ${HDR_PATH}
-	${CC} ${CFLAGS} ${OBJS} ${LIBFT} -o ${NAME} -lreadline
+${NAME}: ${LIBFT} ${ALL_OBJS}
+	${CC} ${CFLAGS} ${ALL_OBJS} ${LIBFT} -o ${NAME} -lreadline
 
 ${LIBFT}:
 	@make -C libft
 	
 ${OBJS_DIR}:
-	@mkdir $@
+	@mkdir -p ${OBJS_DIR} 
 
-${OBJS_DIR}${SRCS_DIR}: ${OBJS_DIR}
-	@mkdir $@
-
-${OBJS_DIR}${SRCS_DIR}%.o: ${SRCS_DIR}%.c ${HDR_PATH}
+${OBJS_DIR}%.o: %.c ${HDR_PATH}
+	@mkdir -p $(dir $@)
 	@${CC} ${CFLAGS} ${HDR_INC} -o $@ -c $<
 
-${OBJS_DIR}${PARSER_DIR}: ${OBJS_DIR}
-	@mkdir $@
 
-${OBJS_DIR}${PARSER_DIR}%.o: ${PARSER_DIR}%.c ${HDR_PATH}
-	@${CC} ${CFLAGS} ${HDR_INC} -o $@ -c $<
 clean:
 	${RM} ${OBJS_DIR}
 	${MAKE} -s -C libft/ clean
