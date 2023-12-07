@@ -1,4 +1,5 @@
 #include "minishell.h"
+int g_running = 1;
 /*
 void	ft_l(void)
 {
@@ -65,7 +66,6 @@ void	ft_free_cmd(t_general *g_data)
 	}
 }
 
-int g_running = 1;
 
 void	ft_l(void)
 {
@@ -89,12 +89,10 @@ void ft_minish(char **envp)
 	
 	g_data.token = NULL;
 	//atexit(ft_l);
-
 	ft_dup_env(&g_data, envp);
 	while (g_running)
 	{
-
-		line = readline("Minishell////");
+		line = readline("Minishell$ ");
 		if (!line) 
 		{
 			printf("\nSaliendo minishell(Ctrl+D)");
@@ -132,6 +130,7 @@ int main(int argc, char **argv, char **envp)
 	if (argc == 1)
 	{
 		using_history();
+		
 		ft_minish(envp);
 	}
 	else

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cmd.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/05 16:33:28 by jsaavedr          #+#    #+#             */
-/*   Updated: 2023/12/02 19:15:48 by jsaavedr         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 // Los argumentos de esta funcion pueden cambiar segun evoluciona el programa
