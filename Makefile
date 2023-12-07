@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/10/15 18:18:12 by jsaavedr          #+#    #+#              #
-#    Updated: 2023/11/27 17:27:46 by jsaavedr         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = minishell
 
 SRCS_DIR = srcs/
@@ -18,7 +6,7 @@ PARSER_DIR = parser/
 
 SRCS = minishell.c env.c env_utils.c env_print.c builtins.c cd.c env_utils_2.c cmd.c cmd_utils.c multiple_cmd.c
 OBJS = ${addprefix ${OBJS_DIR}${SRCS_DIR}, ${SRCS:.c=.o}}
-SRCS_PARSER = tokens.c
+SRCS_PARSER = 
 OBJS_PARSER = ${addprefix ${OBJS_DIR}${PARSER_DIR}, ${SRCS_PARSER:.c=.o}}
 
 CC = gcc

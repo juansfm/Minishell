@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/15 16:44:57 by jsaavedr          #+#    #+#             */
-/*   Updated: 2023/12/03 18:55:40 by jsaavedr         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 void	ft_l(void)
@@ -97,6 +85,7 @@ int	main(int argc, char **argv, char **envp)
 			line = ft_strtrim(line, " ");
 			mtx = ft_split(line, '|');
 			ft_cmd_lst(&g_data, mtx);
+			printf("%d\n", ft_cmd_len(&g_data));
 			if (ft_cmd_len(&g_data) == 1)
 			{
 				if (!ft_builtins(&g_data, g_data.cmd->cmd))
