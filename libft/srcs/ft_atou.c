@@ -38,3 +38,4 @@ unsigned int	ft_atou(const char *str)
 	}
 	return (sign * num);
 }
+

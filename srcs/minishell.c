@@ -1,21 +1,11 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/15 16:44:57 by jsaavedr          #+#    #+#             */
-/*   Updated: 2023/12/03 18:55:40 by jsaavedr         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
-
+int g_running = 1;
+/*
 void	ft_l(void)
 {
 	system("leaks -q Minishell");
 }
+*/
 
 t_cmd	*ft_cmd_last(t_general *g_data)
 {
@@ -76,37 +66,74 @@ void	ft_free_cmd(t_general *g_data)
 	}
 }
 
-int	main(int argc, char **argv, char **envp)
+
+void	ft_l(void)
+{
+	system("leaks -q Minishell");
+}
+/*
+void ft_sigintHandler(int signal)
+{
+    printf("\nCtrl+C detectado. Saliendo de Minishell...\n");
+    g_running = 0;
+}
+*/
+
+void ft_minish(char **envp)
 {
 	t_general	g_data;
 	char		*line;
-	char		**mtx;
-
-	// atexit(ft_l);
-	//silencia mensajes como ^C cuando ejecuta una señal
-	// rl_catch_signals = 0;
-	(void)argc;
-	(void)argv;
+	t_env		*temp;
+	//char		**mtx;
+	(void)envp;
+	
+	g_data.token = NULL;
+	//atexit(ft_l);
 	ft_dup_env(&g_data, envp);
-	while (1)
+	while (g_running)
 	{
-		line = readline("Minishell$");
-		// printf("%s\n", line);
+		line = readline("Minishell$ ");
+		if (!line) 
+		{
+			printf("\nSaliendo minishell(Ctrl+D)");
+            break; // Salir si se presiona Ctrl+D o solo se da enter
+    	}
+		printf("%s\n", line);
+		if(!line)
+			break;
 		if (line)
 		{
-			line = ft_strtrim(line, " ");
-			mtx = ft_split(line, '|');
-			ft_cmd_lst(&g_data, mtx);
-			if (ft_cmd_len(&g_data) == 1)
-			{
-				if (!ft_builtins(&g_data, g_data.cmd->cmd))
-					ft_other_cmd(&g_data, g_data.cmd->cmd);
-			}
-			else if (ft_cmd_len(&g_data) >= 2)
-				ft_multiple_cmd(&g_data, g_data.cmd);
-			// free(line2);
-			// ft_free(mtx, ft_mtxrow(mtx));
-			ft_free_cmd(&g_data);
+			free(line); // Liberar la memoria asignada por readline
+			printf("\nsaliendo minishell (exit)");
+			break ;
+
 		}
+		ft_parser(&g_data, line);
+		free(line);
 	}
+	// rl_clear_history();
+	temp = g_data.env;
+	while (temp != NULL)
+	{
+		printf("%s=%s\n", temp->name, temp->valor);
+		temp = temp->next;
+	}
+	printf("\n");
+	temp = g_data.env;
+
+}
+
+int main(int argc, char **argv, char **envp)
+{
+	(void)argv;
+	//signal(SIGINT, ft_sigintHandler);
+	if (argc == 1)
+	{
+		using_history();
+		
+		ft_minish(envp);
+	}
+	else
+		printf("Error: too many arguments\n");
+	return (0);
 }
