@@ -1,5 +1,5 @@
 #include "minishell.h"
-int g_running = 1;
+int		g_running = 1;
 /*
 void	ft_l(void)
 {
@@ -66,71 +66,57 @@ void	ft_free_cmd(t_general *g_data)
 	}
 }
 
-
 void	ft_l(void)
 {
 	system("leaks -q Minishell");
 }
 /*
-void ft_sigintHandler(int signal)
+void	ft_sigintHandler(int signal)
 {
-    printf("\nCtrl+C detectado. Saliendo de Minishell...\n");
-    g_running = 0;
+	printf("\nCtrl+C detectado. Saliendo de Minishell...\n");
+	g_running = 0;
 }
 */
 
-void ft_minish(char **envp)
+void	ft_minish(char **envp)
 {
 	t_general	g_data;
 	char		*line;
-	t_env		*temp;
-	//char		**mtx;
-	(void)envp;
-	
+	char		**mtx;
+
 	g_data.token = NULL;
 	//atexit(ft_l);
 	ft_dup_env(&g_data, envp);
 	while (g_running)
 	{
 		line = readline("Minishell$ ");
-		if (!line) 
+		if (!line)
 		{
 			printf("\nSaliendo minishell(Ctrl+D)");
-            break; // Salir si se presiona Ctrl+D o solo se da enter
-    	}
-		printf("%s\n", line);
-		if(!line)
-			break;
-		if (line)
-		{
-			free(line); // Liberar la memoria asignada por readline
-			printf("\nsaliendo minishell (exit)");
-			break ;
-
+			break ; // Salir si se presiona Ctrl+D o solo se da enter
 		}
-		ft_parser(&g_data, line);
+		printf("%s\n", line);
+		if (!line)
+			break ;
+		line = ft_strtrim(line, " ");
+		mtx = ft_split(line, '|');
+		ft_cmd_lst(&g_data, mtx);
+		if (!ft_builtins(&g_data, g_data.cmd->cmd))
+			ft_other_cmd(&g_data, g_data.cmd->cmd);
+		// ft_parser(&g_data, line);
 		free(line);
+		ft_free_cmd(&g_data);
 	}
 	// rl_clear_history();
-	temp = g_data.env;
-	while (temp != NULL)
-	{
-		printf("%s=%s\n", temp->name, temp->valor);
-		temp = temp->next;
-	}
-	printf("\n");
-	temp = g_data.env;
-
 }
 
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	(void)argv;
 	//signal(SIGINT, ft_sigintHandler);
 	if (argc == 1)
 	{
 		using_history();
-		
 		ft_minish(envp);
 	}
 	else
