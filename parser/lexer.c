@@ -55,8 +55,6 @@ int ft_process_quote_content_sim(char *line, int len, int pos, t_token **head)
         }
         
         value[j] = '\0';
-        printf("el valor es %s\n", value);
-        printf("la pos es %d\n", end);
         ft_add_token_in_general(head, TOKEN_WORD, value);
         free(value);
     }
@@ -85,26 +83,28 @@ int ft_process_word(char *line, int len, int pos, t_token **head)
     return (end - 1);
 }
 
-void	ft_parse_tokens(char *line, int len, t_general **g_data)
+void	ft_parse_tokens(int len, t_general *g_data)//usado para hacer split primero
 {
 	char current_char;
 	int pos;
+    char **split_tokens;
+    int i = 0;
 
 	pos = 0;
 	while(pos < len)
-	{
-		current_char = line[pos];
-		 if (current_char == '\"' || current_char == '\'') 
+	{   
+		current_char = g_data->cpy_line[pos];
+		if (current_char == '\"' || current_char == '\'') 
         {
-            if(current_char == '\"')
-                pos = ft_process_quote_content_double(line, len, pos, &(*g_data)->token);
-            else
-			{
-                pos = ft_process_quote_content_sim(line, len, pos, &(*g_data)->token);
-                printf("la pos es: %d\n", pos);
-            }
+                printf("pos antes comilla es: %d\n", pos);
+                ft_process_quote(g_data, &pos);
+                printf("\nla cadena es: %s\n", g_data->cpy_line);
+                printf("pos despues es: %d\n", pos);
         }
-		else if(current_char == '|')
+
+
+		/*
+        else if(current_char == '|')
 			ft_add_token_in_general(&(*g_data)->token, TOKEN_PIPE, "|");
 		//else if(current_char == '$')
 		//	ft_add_token_in_general(head, TOKEN_DOLLAR, value);
@@ -114,8 +114,15 @@ void	ft_parse_tokens(char *line, int len, t_general **g_data)
 			ft_add_token_in_general(&(*g_data)->token, TOKEN_WORD, "<");
 		else
 			pos = ft_process_word(line, len, pos, &(*g_data)->token);
+        */
 		pos++;
 	}
+    split_tokens = ft_split(g_data->cpy_line, ' ');
+    while(split_tokens[i])
+    {
+        printf("las palabras son: %s\n", split_tokens[i]);
+        i++;
+    }
 }
 
 
@@ -123,9 +130,13 @@ void	ft_parser(t_general *g_data, char *line)
 {
     int len;
 
+
+    g_data->cpy_line = ft_strdup(line);
+    printf("linea copiada ft_parser: %s\n", g_data->cpy_line);
     len = ft_strlen(line);
+    printf("len: %d\n", len);
    // ft_inicializar_tokens(t_token *token);
-    ft_parse_tokens(line, len, &g_data);
+    ft_parse_tokens(len, g_data);
     ft_print_tokens(g_data->token);
     ft_free_tokens(g_data->token);
 }

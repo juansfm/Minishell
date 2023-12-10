@@ -98,26 +98,20 @@ void ft_minish(char **envp)
 			printf("\nSaliendo minishell(Ctrl+D)");
             break; // Salir si se presiona Ctrl+D o solo se da enter
     	}
-		printf("%s\n", line);
 		if(!line)
 			break;
-		if (line)
-		{
-			free(line); // Liberar la memoria asignada por readline
-			printf("\nsaliendo minishell (exit)");
-			break ;
-
-		}
+		add_history(line);
 		ft_parser(&g_data, line);
 		free(line);
 	}
 	// rl_clear_history();
 	temp = g_data.env;
-	while (temp != NULL)
-	{
-		printf("%s=%s\n", temp->name, temp->valor);
-		temp = temp->next;
-	}
+	
+	// while (temp != NULL)
+	// {
+	// 	printf("%s=%s\n", temp->name, temp->valor);
+	// 	temp = temp->next;
+	// }
 	printf("\n");
 	temp = g_data.env;
 
@@ -130,7 +124,6 @@ int main(int argc, char **argv, char **envp)
 	if (argc == 1)
 	{
 		using_history();
-		
 		ft_minish(envp);
 	}
 	else

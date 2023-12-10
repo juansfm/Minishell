@@ -4,13 +4,9 @@ void	ft_env_add_back(t_general *g_data, t_env *new)
 {
 	t_env	*temp;
 	if (g_data->env == NULL)
-	{
 		g_data->env = new;
-		printf("g_data->env->name: %s\n", g_data->env->name);
-	}
 	else
 	{
-		printf("g_data->env->name: %s\n", g_data->env->name);
 		temp = ft_env_last(g_data);
 		temp->next = new;
 	}
@@ -22,7 +18,6 @@ t_env	*ft_env_last(t_general *g_data)
 	temp = g_data->env;
 	while (temp->next != NULL)
 	{
-		printf("hola\n");
 		temp = temp->next;
 	}
 	return (temp);
@@ -36,7 +31,6 @@ t_env	*ft_env_new(char *env_line)
 	env = ft_calloc(1, sizeof(t_env));
 	if (!env)
 		return (NULL);
-	printf("env_line: %s\n", env_line);
 	if (!ft_strchr(env_line, '='))
 	{
 		env->name = ft_strdup(env_line);
@@ -52,7 +46,6 @@ t_env	*ft_env_new(char *env_line)
 		ft_free(matrix, ft_mtxrow(matrix));
 	}
 	env->next = NULL;
-	printf("env->name: %s\n", env->name);
 	return (env);
 }
 
