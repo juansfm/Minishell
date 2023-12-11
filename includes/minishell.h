@@ -125,11 +125,13 @@ void	ft_parser(t_general *g_data, char *line);
 void ft_print_tokens(t_token *head);
 int ft_char_reserved(char c);
 void ft_process_quote(t_general *g_data, int *pos);
-
+void ft_modify_string(char *str);
+int ft_isspace(int c);
 //list_tokens
 
 t_token *ft_new_token(int type_token, char *value);
 void ft_add_token_in_general(t_token **head, int type, char *value);
 void ft_free_tokens(t_token *head);
+
 
 #endif

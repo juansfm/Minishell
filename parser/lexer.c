@@ -87,8 +87,8 @@ void	ft_parse_tokens(int len, t_general *g_data)//usado para hacer split primero
 {
 	char current_char;
 	int pos;
-    char **split_tokens;
-    int i = 0;
+    //char **split_tokens;
+   // int i = 0;
 
 	pos = 0;
 	while(pos < len)
@@ -98,9 +98,14 @@ void	ft_parse_tokens(int len, t_general *g_data)//usado para hacer split primero
         {
                 printf("pos antes comilla es: %d\n", pos);
                 ft_process_quote(g_data, &pos);
-                printf("\nla cadena es: %s\n", g_data->cpy_line);
-                printf("pos despues es: %d\n", pos);
+                printf("\nla cadena tras quote: %s\n", g_data->cpy_line);
+            
+                ft_modify_string(g_data->cpy_line);
+                //printf("\nla cadena tras modify: %s\n", g_data->cpy_line);
+               // printf("pos despues es: %d\n", pos);
+                
         }
+        
 
 
 		/*
@@ -117,12 +122,15 @@ void	ft_parse_tokens(int len, t_general *g_data)//usado para hacer split primero
         */
 		pos++;
 	}
+    printf("\nla cadena tras modify: %s\n", g_data->cpy_line);
+    /*
     split_tokens = ft_split(g_data->cpy_line, ' ');
     while(split_tokens[i])
     {
         printf("las palabras son: %s\n", split_tokens[i]);
         i++;
     }
+    */
 }
 
 
@@ -137,6 +145,6 @@ void	ft_parser(t_general *g_data, char *line)
     printf("len: %d\n", len);
    // ft_inicializar_tokens(t_token *token);
     ft_parse_tokens(len, g_data);
-    ft_print_tokens(g_data->token);
-    ft_free_tokens(g_data->token);
+    //ft_print_tokens(g_data->token);
+   // ft_free_tokens(g_data->token);
 }

@@ -16,6 +16,12 @@ void ft_print_tokens(t_token *head)
     }
 }
 
+int ft_isspace(int c) 
+{
+    return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r');
+}
+
+
 /**
  * Replaces spaces within quotes with a non-printable control character like '\1'.
  * 
@@ -96,3 +102,71 @@ char *ft_process_word(char *line, int len, int *pos)
     return s;
 }
 */
+
+
+void ft_modify_string(char *str)
+{
+    int len = ft_strlen(str);
+    int i = 0;
+
+    while (i < len)
+    {
+        if (str[i] == '|' || str[i] == '<' || str[i] == '>')
+        {
+            if (i > 0 && !ft_isspace(str[i - 1]))
+            {
+                ft_memmove(&str[i + 1], &str[i], len - i);
+                str[i] = ' ';
+                len++;
+                i++;
+            }
+
+            if (i < len - 1 && !ft_isspace(str[i + 1]))
+            {
+                ft_memmove(&str[i + 2], &str[i + 1], len - (i + 1));
+                str[i + 1] = ' ';
+                len++;
+                i++;
+            }
+        }
+        else if (str[i] == '>' && i < len - 1 && str[i + 1] == '>')
+        {
+            if (i > 0 && !ft_isspace(str[i - 1]))
+            {
+                ft_memmove(&str[i + 2], &str[i], len - i);
+                str[i] = ' ';
+                str[i + 1] = ' ';
+                len += 2;
+                i += 2;
+            }
+
+            if (i < len - 2 && !ft_isspace(str[i + 2]))
+            {
+                ft_memmove(&str[i + 3], &str[i + 2], len - (i + 2));
+                str[i + 2] = ' ';
+                len++;
+                i += 2;
+            }
+        }
+        else if (str[i] == '<' && i < len - 1 && str[i + 1] == '<')
+        {
+            if (i > 0 && !ft_isspace(str[i - 1]))
+            {
+                ft_memmove(&str[i + 2], &str[i], len - i);
+                str[i] = ' ';
+                str[i + 1] = ' ';
+                len += 2;
+                i += 2;
+            }
+
+            if (i < len - 2 && !ft_isspace(str[i + 2]))
+            {
+                ft_memmove(&str[i + 3], &str[i + 2], len - (i + 2));
+                str[i + 2] = ' ';
+                len++;
+                i += 2;
+            }
+        }
+        i++;
+    }
+}
