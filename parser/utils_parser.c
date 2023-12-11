@@ -46,6 +46,33 @@ void ft_process_quote(t_general *g_data, int *pos)
         exit(EXIT_FAILURE);
     }
 }
+
+//funcion que va recorriendo un doble puntero de cadenas
+//y comprueba si hay \1 en las cadenas y si es asi, las sustituye por espacios
+void ft_restore_spaces(char **split_tokens)
+{
+    int i;
+    int j;
+
+    i = 0;
+    while(split_tokens[i])
+    {
+        j = 0;
+        while(split_tokens[i][j])
+        {
+            if(split_tokens[i][j] == '\1')
+                split_tokens[i][j] = ' ';
+            j++;
+        }
+        i++;
+    }
+}
+
+//funcion que recorre un doble puntero y comprueba si hay comillas
+//y si es asi, levanta una flag y mira si hay comillas en la siguiente cadena
+//y si entre las comillas hay una variable $, si es asi llama la funcion expandir
+
+
 /*
 char *ft_process_word(char *line, int len, int *pos)
 {

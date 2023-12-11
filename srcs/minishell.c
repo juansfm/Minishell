@@ -82,7 +82,7 @@ void	ft_minish(char **envp)
 {
 	t_general	g_data;
 	char		*line;
-	char		**mtx;
+	//char		**mtx;
 
 	g_data.token = NULL;
 	//atexit(ft_l);
@@ -99,13 +99,12 @@ void	ft_minish(char **envp)
 		if (!line)
 			break ;
 		line = ft_strtrim(line, " ");
-		mtx = ft_split(line, '|');
-		ft_cmd_lst(&g_data, mtx);
-		if (!ft_builtins(&g_data, g_data.cmd->cmd))
+		//mtx = ft_split(line, '|');
+		//ft_cmd_lst(&g_data, mtx);
+		/*if (!ft_builtins(&g_data, g_data.cmd->cmd))
 			ft_other_cmd(&g_data, g_data.cmd->cmd);
 		// ft_parser(&g_data, line);
-            break; // Salir si se presiona Ctrl+D o solo se da enter
-    	}
+            break; // Salir si se presiona Ctrl+D o solo se da enter*/
 		if(!line)
 			break;
 		add_history(line);
@@ -114,7 +113,7 @@ void	ft_minish(char **envp)
 		ft_free_cmd(&g_data);
 	}
 	// rl_clear_history();
-	temp = g_data.env;
+	//temp = g_data.env;
 	
 	// while (temp != NULL)
 	// {
@@ -122,7 +121,7 @@ void	ft_minish(char **envp)
 	// 	temp = temp->next;
 	// }
 	printf("\n");
-	temp = g_data.env;
+	//temp = g_data.env;
 
 }
 
@@ -139,3 +138,5 @@ int	main(int argc, char **argv, char **envp)
 		printf("Error: too many arguments\n");
 	return (0);
 }
+
+//ls "aaa aa"|grep "a a">"asd"
