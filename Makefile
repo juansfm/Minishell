@@ -9,7 +9,9 @@ SRCS = srcs/minishell.c\
 		srcs/builtins.c\
 		srcs/cd.c\
 		srcs/env_utils_2.c\
-		srcs/cmd.c
+		srcs/cmd.c\
+		srcs/multiple_cmd.c\
+		srcs/cmd_utils.c
 
 SRCS_PARSER = parser/lexer.c parser/list_tokens.c parser/utils_parser.c
 

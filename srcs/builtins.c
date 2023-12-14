@@ -106,7 +106,7 @@ void	ft_echo(t_general *g_data, char **arg)
 	(void)g_data;
 	if (!arg)
 	{
-		printf("\n");
+		ft_putstr_fd("\n", 1);
 		return ;
 	}
 	i = 1;
@@ -120,7 +120,7 @@ void	ft_echo(t_general *g_data, char **arg)
 		i++;
 	}
 	if (!ft_echo_flag(arg[1]))
-		printf("\n");
+		ft_putstr_fd("\n", 1);
 }
 
 /**

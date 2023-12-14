@@ -85,25 +85,33 @@ void	ft_minish(char **envp)
 	char		**mtx;
 
 	g_data.token = NULL;
+	g_data.cmd = NULL;
 	//atexit(ft_l);
 	ft_dup_env(&g_data, envp);
-	while (g_running)
+	g_data.og_in = dup(STDIN_FILENO);
+	g_data.og_out = dup(STDOUT_FILENO);
+	while (1)
 	{
 		line = readline("Minishell$ ");
-		if (!line)
-		{
-			printf("\nSaliendo minishell(Ctrl+D)");
-			break ; // Salir si se presiona Ctrl+D o solo se da enter
-		}
-		printf("%s\n", line);
-		if (!line)
-			break ;
+		// printf("HOLA\n");
+		// if (!line)
+		// 	break ;
+		// if (!ft_strcmp(line, "\0"))
+		// 	continue ; // Salir si se presiona Ctrl+D o solo se da enter
+		add_history(line);
 		line = ft_strtrim(line, " ");
 		mtx = ft_split(line, '|');
 		ft_cmd_lst(&g_data, mtx);
-		if (!ft_builtins(&g_data, g_data.cmd->cmd))
-			ft_other_cmd(&g_data, g_data.cmd->cmd);
+		if (ft_cmd_len(&g_data) == 1)
+		{
+			if (!ft_builtins(&g_data, g_data.cmd->cmd))
+				ft_other_cmd(&g_data, g_data.cmd->cmd);
+		}
+		else if (ft_cmd_len(&g_data) >= 2)
+			ft_multiple_cmd(&g_data, g_data.cmd);
 		// ft_parser(&g_data, line);
+		dup2(g_data.og_in, STDIN_FILENO);
+		dup2(g_data.og_out, STDOUT_FILENO);
 		free(line);
 		ft_free_cmd(&g_data);
 	}
