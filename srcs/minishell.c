@@ -98,7 +98,7 @@ void	ft_minish(char **envp)
 		printf("%s\n", line);
 		if (!line)
 			break ;
-		line = ft_strtrim(line, " ");
+		//line = ft_strtrim(line, " ");
 		//mtx = ft_split(line, '|');
 		//ft_cmd_lst(&g_data, mtx);
 		/*if (!ft_builtins(&g_data, g_data.cmd->cmd))

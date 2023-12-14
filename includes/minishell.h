@@ -42,6 +42,7 @@ typedef struct s_cmd
 typedef struct s_general
 {
 	char 			*cpy_line;
+	char			**split_tokens;
 	struct s_env	*env;
 	struct s_cmd	*cmd;
 	struct s_token	*token;
@@ -101,37 +102,52 @@ void				ft_multiple_cmd(t_general *g_data, t_cmd *cmd);
 
 
 //minishell start
-void ft_minish(char **envp);
-int main(int argc, char **argv, char **envp);
-t_cmd	*ft_cmd_new(char *arg);
-void	ft_cmd_add_back(t_general *g_data, t_cmd *new);
-t_cmd	*ft_cmd_last(t_general *g_data);
-void	ft_free_cmd(t_general *g_data);
-void	ft_cmd_lst(t_general *g_data, char **mtx);
-t_cmd	*ft_cmd_new(char *arg);
-void	ft_cmd_add_back(t_general *g_data, t_cmd *new);
+void				ft_minish(char **envp);
+int 				main(int argc, char **argv, char **envp);
+t_cmd				*ft_cmd_new(char *arg);
+void				ft_cmd_add_back(t_general *g_data, t_cmd *new);
+t_cmd				*ft_cmd_last(t_general *g_data);
+void				ft_free_cmd(t_general *g_data);
+void				ft_cmd_lst(t_general *g_data, char **mtx);
+t_cmd				*ft_cmd_new(char *arg);
+void				ft_cmd_add_back(t_general *g_data, t_cmd *new);
 
 //lexer
 
-int ft_process_quote_content_double(char *line, int len, int pos, t_token **head);
-int ft_process_quote_content_sim(char *line, int len, int pos, t_token **head);
-int ft_process_word(char *line, int len, int pos, t_token **head);
+int					ft_process_quote_content_double(char *line, int len, int pos, t_token **head);
+int					ft_process_quote_content_sim(char *line, int len, int pos, t_token **head);
+int					ft_process_word(char *line, int len, int pos, t_token **head);
 
-void	ft_parse_tokens(int len, t_general *g_data);
-void	ft_parser(t_general *g_data, char *line);
+void				ft_parse_tokens(t_general *g_data);
+void				ft_parser(t_general *g_data, char *line);
 //void	ft_process_word(char *line, int len, int pos, t_token **head);
 
-//lexer_utils
-void ft_print_tokens(t_token *head);
-int ft_char_reserved(char c);
-void ft_process_quote(t_general *g_data, int *pos);
-void ft_modify_string(char *str);
-int ft_isspace(int c);
 //list_tokens
 
-t_token *ft_new_token(int type_token, char *value);
-void ft_add_token_in_general(t_token **head, int type, char *value);
-void ft_free_tokens(t_token *head);
+t_token 			*ft_new_token(int type_token, char *value);
+void 				ft_add_token_in_general(t_token **head, int type, char *value);
+void 				ft_free_tokens(t_token *head);
+
+//lexer_utils
+
+void 				ft_print_tokens(t_token *head);
+int 				ft_char_reserved(char c);
+void 				ft_process_quote(t_general *g_data, int *pos);
+void				ft_process_red_in_quote(t_general *g_data, int *pos);//nuevo
+void				ft_process_pipe_in_quote(t_general *g_data, int *pos);//nuevo
+void				ft_restore_quotes(char **split_tokens);
+//void 				ft_modify_string(char *str);
+int 				ft_isspace(int c);
+
+//lexer_utils2
+//tengo que cambiarle los nombres a estas funciones
+//int 				ft_espacio_antes(char *cadena, int pos_caracter);
+//int 				ft_espacio_despues(char *cadena, int *len, int pos_caracter);
+//int 				ft_change_len(int *espacios_ad, int *len);
+//char 				*ft_agregar_espacios(char *cadena, int *len, int pos_caracter, int *espacios_ad);
+//void 				ft_modificar_cadena(t_general *g_data, int *pos_caracter);
+
+//parset_utils2
 
 
 #endif
