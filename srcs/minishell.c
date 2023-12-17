@@ -100,15 +100,15 @@ void	ft_minish(char **envp)
 			break ;
 		//line = ft_strtrim(line, " ");
 		//mtx = ft_split(line, '|');
-		//ft_cmd_lst(&g_data, mtx);
 		/*if (!ft_builtins(&g_data, g_data.cmd->cmd))
 			ft_other_cmd(&g_data, g_data.cmd->cmd);
-		// ft_parser(&g_data, line);
             break; // Salir si se presiona Ctrl+D o solo se da enter*/
 		if(!line)
 			break;
 		add_history(line);
 		ft_parser(&g_data, line);
+		//ft_cmd_lst(&g_data, mtx);
+
 		free(line);
 		ft_free_cmd(&g_data);
 	}

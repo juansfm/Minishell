@@ -11,8 +11,8 @@ SRCS = srcs/minishell.c\
 		srcs/env_utils_2.c\
 		srcs/cmd.c
 
-SRCS_PARSER = parser/lexer.c parser/list_tokens.c parser/utils_parser.c
-# parser/utils_parser2.c
+SRCS_PARSER = parser/lexer.c parser/list_tokens.c parser/utils_parser.c	parser/utils_parser2.c
+#parser/split_modify.c
 
 CFILES = ${SRCS_PARSER} ${SRCS} 
 

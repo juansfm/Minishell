@@ -1,3 +1,5 @@
+#include "minishell.h"
+
 void	ft_signals(void)
 {
 	signal(SIGINT, ctr_c);

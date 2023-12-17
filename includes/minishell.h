@@ -42,7 +42,7 @@ typedef struct s_cmd
 typedef struct s_general
 {
 	char 			*cpy_line;
-	char			**split_tokens;
+	//char			**split_tokens;
 	struct s_env	*env;
 	struct s_cmd	*cmd;
 	struct s_token	*token;
@@ -126,18 +126,24 @@ void				ft_parser(t_general *g_data, char *line);
 
 t_token 			*ft_new_token(int type_token, char *value);
 void 				ft_add_token_in_general(t_token **head, int type, char *value);
-void 				ft_free_tokens(t_token *head);
+//void 				ft_free_tokens(t_token *head);
 
 //lexer_utils
 
 void 				ft_print_tokens(t_token *head);
 int 				ft_char_reserved(char c);
 void 				ft_process_quote(t_general *g_data, int *pos);
-void				ft_process_red_in_quote(t_general *g_data, int *pos);//nuevo
-void				ft_process_pipe_in_quote(t_general *g_data, int *pos);//nuevo
+//void				ft_process_red_in_quote(t_general *g_data, int *pos);nuevo no valido
+//void				ft_process_pipe_in_quote(t_general *g_data, int *pos);nuevo no valido
 void				ft_restore_quotes(char **split_tokens);
-//void 				ft_modify_string(char *str);
+char				*ft_extract_token(char *cpy_line, int start, int end);
+char 				**ft_tokenize(t_general *g_data, int len);
+//void 				ft_free_tokens(char **split_tokens);
 int 				ft_isspace(int c);
+
+
+//split_modify.c
+//char				**ft_split_modify(char *str, char c, char **matrix);
 
 //lexer_utils2
 //tengo que cambiarle los nombres a estas funciones

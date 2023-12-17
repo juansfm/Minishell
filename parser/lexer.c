@@ -87,9 +87,8 @@ void	ft_parse_tokens(t_general *g_data)//usado para hacer split primero
 {
 	char current_char;
 	int pos;
-    char **split_tokens;
-   // int start;
-    // int i = 0;
+    char **split_tokens = NULL;
+    int i = 0;
     int len;
 
     len = ft_strlen(g_data->cpy_line);
@@ -100,9 +99,9 @@ void	ft_parse_tokens(t_general *g_data)//usado para hacer split primero
 		current_char = g_data->cpy_line[pos];
 		if (current_char == '\"' || current_char == '\'') 
         {
-                printf("pos antes comilla es: %d\n", pos);
+                printf("pos antes comilla es: %d\n\n", pos);
                 ft_process_quote(g_data, &pos);
-                printf("\nla cadena tras quote: %s\n", g_data->cpy_line);
+                printf("\nla cadena tras quote: %s\n\n", g_data->cpy_line);
                 //ft_process_pipe_in_quote(g_data, &pos);
                 //printf("\nla cadena tras pipe: %s\n", g_data->cpy_line);
                 //ft_process_red_in_quote(g_data, &pos);
@@ -113,10 +112,22 @@ void	ft_parse_tokens(t_general *g_data)//usado para hacer split primero
         }         
 		pos++;
 	}
+    printf("\033[0;31m");
     printf("la cadena tras quote: %s\n", g_data->cpy_line);
-     split_tokens = ft_split(g_data->cpy_line, ' ');
-     
-     ft_restore_quotes(split_tokens);
+    printf("\033[0m");
+    split_tokens = ft_tokenize(g_data, ft_strlen(g_data->cpy_line));
+    while(split_tokens[i])
+    {
+        printf("\033[0;36m");
+        printf("las palabras son: %s\n", split_tokens[i]);
+        printf("\033[0m");
+        i++;
+    }
+    //split_tokens = ft_split_modify(g_data->cpy_line, '|', split_tokens);
+    printf("\033[0;32m");
+    printf("la cadena tras split: %s\n", g_data->cpy_line);
+    printf("\033[0m");
+    ft_restore_quotes(split_tokens);
 
   /*
     while (pos < len)
@@ -162,10 +173,18 @@ void	ft_parse_tokens(t_general *g_data)//usado para hacer split primero
 void	ft_parser(t_general *g_data, char *line)
 {
     g_data->cpy_line = ft_strdup(line);
+    printf("\033[0;33m");
     printf("linea copiada ft_parser: %s\n", g_data->cpy_line);
+    printf("\033[0m");
     //printf("len: %d\n", len);
    // ft_inicializar_tokens(t_token *token);
     ft_parse_tokens(g_data);
-    //ft_print_tokens(g_data->token);
-   // ft_free_tokens(g_data->token);
+    
+    
+    //hasta aqui tengo tokens con las palabras y los separadores
+    //me falta expandir las variables $
+    //quitar comillas y juntar palabras
+    //juntar si hay mas de una redireccion del miso tipo(al pasarlo a listas)
+
+
 }
