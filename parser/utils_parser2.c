@@ -57,3 +57,33 @@ char **ft_tokenize(t_general *g_data, int len)
     tokens[count] = NULL;
     return tokens;
 }
+
+void    ft_quitar_comillas(char* cadena) //la usare despues de hacer la expansion
+{
+    int i;
+    int j;
+    int dentroComillas;
+    
+    i = 0;
+    j = 0;
+    if (cadena == NULL)
+    {
+        printf("Error: Cadena nula.\n");
+        return;
+    }
+    dentroComillas = 0;
+    while (cadena[i] != '\0')
+    {
+        if (cadena[i] == '\"' || cadena[i] == '\'')
+        {
+            dentroComillas = !dentroComillas; // Cambiar el estado si encontramos una comilla
+        }
+        else if (cadena[i] != ' ' || dentroComillas)
+        {
+            cadena[j] = cadena[i];
+            j++;
+        }
+        i++;
+    }
+    cadena[j] = '\0';
+}

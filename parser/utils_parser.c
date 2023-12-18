@@ -34,11 +34,17 @@ void ft_process_quote(t_general *g_data, int *pos)
     char current_char;
     int count_quotes;
 
-    count_quotes = 1;
+    count_quotes = 0;
     current_char = g_data->cpy_line[*pos];
-    (*pos)++;
-    while(g_data->cpy_line[*pos] && (count_quotes % 2 != 0))
+    printf("\033[0;36m");
+    printf("La comilla (current) es: %c\n",current_char);
+    printf("\033[0m");
+    while(g_data->cpy_line[*pos] && ((count_quotes % 2 != 0) || (count_quotes == 0)))
     {
+        printf("\033[0;35m");
+        printf("num quotes: %d\n", count_quotes);
+        printf("\033[0m");
+
         if(g_data->cpy_line[*pos] == ' ')
             g_data->cpy_line[*pos] = '\1';
         else if(g_data->cpy_line[*pos] == '|')
@@ -50,12 +56,29 @@ void ft_process_quote(t_general *g_data, int *pos)
         else if(g_data->cpy_line[*pos] == current_char)
             count_quotes++; 
         (*pos)++;
+        
+        printf("\033[0;31m");
+        printf("PEEEEPE: %c\n", g_data->cpy_line[*pos]);
+        printf("\033[0m");
     }
+    printf("\033[0;26m");
+    printf("\nvalor de linea[pos]: %c", g_data->cpy_line[*pos]);
+    printf("\033[0m");
+    printf("\ncount fuera bucle: %d", count_quotes);
+    printf("\033[0;31m");
+    printf("\nLa cadena tras quote es: %s", g_data->cpy_line);
+    printf("\033[0m");
     if(!g_data->cpy_line[*pos] && (count_quotes % 2 != 0))
     {
         printf("Error: No se encontró el cierre de las comillas.\n");
         exit(EXIT_FAILURE);
     }
+     if((count_quotes % 2 != 0))
+    {
+        printf("Error222: No se encontró el cierre de las comillas.\n");
+        exit(EXIT_FAILURE);
+    }
+    *(pos) = *(pos) - 1;
 }
 
 //funcion que va recorriendo un doble puntero de cadenas
@@ -82,7 +105,7 @@ void ft_restore_quotes(char **split_tokens)
             j++;
         }
         printf("\033[0;36m");
-        printf("Restaurado split_tokens[%d]: %s\n", i, split_tokens[i]);
+        printf("\nRestaurado split_tokens[%d]: %s\n", i, split_tokens[i]);
         printf("\033[0m");
         i++;
     }

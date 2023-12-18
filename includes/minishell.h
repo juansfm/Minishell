@@ -114,9 +114,9 @@ void				ft_cmd_add_back(t_general *g_data, t_cmd *new);
 
 //lexer
 
-int					ft_process_quote_content_double(char *line, int len, int pos, t_token **head);
-int					ft_process_quote_content_sim(char *line, int len, int pos, t_token **head);
-int					ft_process_word(char *line, int len, int pos, t_token **head);
+//int					ft_process_quote_content_double(char *line, int len, int pos, t_token **head);
+//int					ft_process_quote_content_sim(char *line, int len, int pos, t_token **head);
+//int					ft_process_word(char *line, int len, int pos, t_token **head);
 
 void				ft_parse_tokens(t_general *g_data);
 void				ft_parser(t_general *g_data, char *line);
@@ -136,8 +136,6 @@ void 				ft_process_quote(t_general *g_data, int *pos);
 //void				ft_process_red_in_quote(t_general *g_data, int *pos);nuevo no valido
 //void				ft_process_pipe_in_quote(t_general *g_data, int *pos);nuevo no valido
 void				ft_restore_quotes(char **split_tokens);
-char				*ft_extract_token(char *cpy_line, int start, int end);
-char 				**ft_tokenize(t_general *g_data, int len);
 //void 				ft_free_tokens(char **split_tokens);
 int 				ft_isspace(int c);
 
@@ -154,6 +152,9 @@ int 				ft_isspace(int c);
 //void 				ft_modificar_cadena(t_general *g_data, int *pos_caracter);
 
 //parset_utils2
+char				*ft_extract_token(char *cpy_line, int start, int end);
+char 				**ft_tokenize(t_general *g_data, int len);
+void			    ft_quitar_comillas(char* cadena);
 
 
 #endif
