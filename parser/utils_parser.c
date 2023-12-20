@@ -78,7 +78,7 @@ void ft_process_quote(t_general *g_data, int *pos)
         printf("Error222: No se encontró el cierre de las comillas.\n");
         exit(EXIT_FAILURE);
     }
-    *(pos) = *(pos) - 1;
+    *(pos) = *(pos) - 1; 
 }
 
 //funcion que va recorriendo un doble puntero de cadenas
@@ -111,7 +111,22 @@ void ft_restore_quotes(char **split_tokens)
     }
 }
 
-//funcion que recorre un doble puntero y comprueba si hay comillas
-//y si es asi, levanta una flag y mira si hay comillas en la siguiente cadena
-//y si entre las comillas hay una variable $, si es asi llama la funcion expandir
 
+int count_dolar(char *split_tokens)
+{
+    int i;
+    int count;
+
+    i = 0;
+    count = 0;
+    if (split_tokens[i] == '$' && quote_open == 0)
+        count++;
+    return count;
+}
+//expansion function, take $ and expand it
+void ft_expand(t_general *g_data, int *pos)
+{
+    int i;
+
+    i = 0;
+}

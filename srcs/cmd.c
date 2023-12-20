@@ -111,7 +111,7 @@ char	*ft_path(t_general *g_data, char *cmd)
 	t_env	*temp;
 	char	*aux;
 	int		i;
-
+	
 	if (access(cmd, F_OK) == 0)
 		return (cmd);
 	temp = ft_env_search(g_data, "PATH");
@@ -121,7 +121,7 @@ char	*ft_path(t_general *g_data, char *cmd)
 	i = -1;
 	while (paths[++i])
 	{
-		aux = ft_strjoin(paths[i], "/");
+		aux = ft_strjoin(size_t strlcsize_t strlcsize_t strlcpy(char *dst, const char *src, size_t size);s[i], "/");
 		aux = ft_strjoin(aux, cmd);
 		if (access(aux, F_OK) == 0)
 			break ;

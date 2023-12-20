@@ -70,20 +70,13 @@ void	ft_l(void)
 {
 	system("leaks -q Minishell");
 }
-/*
-void	ft_sigintHandler(int signal)
-{
-	printf("\nCtrl+C detectado. Saliendo de Minishell...\n");
-	g_running = 0;
-}
-*/
 
 void	ft_minish(char **envp)
 {
 	t_general	g_data;
 	char		*line;
 	//char		**mtx;
-
+	
 	g_data.token = NULL;
 	//atexit(ft_l);
 	ft_dup_env(&g_data, envp);
