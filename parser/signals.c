@@ -10,7 +10,7 @@ void	ft_signals(void)
 void	ft_ctr_c(int signal)
 {
 	(void)signal;
-	if (!g_data.line)
+	if (g_data. == 0)
 		ioctl(0, TIOCSTI, "\n");
 	else
 		write(1, "\n", 1);

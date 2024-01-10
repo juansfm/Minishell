@@ -155,6 +155,17 @@ int 				ft_isspace(int c);
 char				*ft_extract_token(char *cpy_line, int start, int end);
 char 				**ft_tokenize(t_general *g_data, int len);
 void			    ft_quitar_comillas(char* cadena);
+//nuevo de parse _utils2
+char 				**ft_eliminar_espacios(char **cadena_de_cadenas);
+//void 				ft_reordenar_palabras(char *cadena);
+//void 				ft_limpiar_espacios(char ***cadena_de_cadenas);
+
+//ft_expansion
+char				*funcion_que_lo_lleva_todo(t_general *g_data, char *split_tokens);//viendo si esta todo
+int 				ft_encontrar_dolar(char *cadena, int inicio);//funciona
+char				*ft_extract_word(char *str, int *pos);
+char 				*ft_cpy_part(char *str, int *pos, int num_chars);
+
 
 
 #endif

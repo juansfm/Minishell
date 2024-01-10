@@ -87,3 +87,181 @@ void    ft_quitar_comillas(char* cadena) //la usare despues de hacer la expansio
     }
     cadena[j] = '\0';
 }
+/*
+void ft_eliminar_espacios(char *cadena)
+{
+    int k;
+    int j;
+    
+    j = 0;
+    k = 0;
+    while (cadena[j] != '\0')
+    {
+        while (cadena[j] == ' ' && cadena[j + 1])
+        {
+            j++;
+        }
+        cadena[k++] = cadena[j++];
+    }
+    cadena[k] = '\0';
+}
+
+*/
+void ft_reordenar_palabras(char *cadena)
+{
+    int idx;
+    int inicio;
+    int len;
+
+    idx = 0;
+    inicio = 0;
+    while (cadena[idx] != '\0')
+    {
+        if (cadena[idx] == ' ')
+        {
+            len = idx - inicio;
+            if (cadena[idx + 1] == '\0')
+            {
+                len++;
+            }
+            if (inicio != idx)
+            {
+                ft_memmove(cadena + inicio, cadena + idx + 1, len);
+                if (cadena[idx + 1] == '\0')
+                {
+                    idx--;
+                }
+                else
+                {
+                    idx -= 2;
+                }
+            }
+            inicio = idx + 1;
+        }
+        idx++;
+    }
+}
+/*
+void ft_limpiar_espacios(char ***cadena_de_cadenas)
+{
+    int i;
+    
+    i = 0;
+    while ((*cadena_de_cadenas)[i] != NULL)
+    {
+        ft_eliminar_espacios((*cadena_de_cadenas)[i]);
+        ft_reordenar_palabras((*cadena_de_cadenas)[i]);
+        i++;
+    }
+}
+*/
+/*
+void eliminar_espacios(char **cadena_de_cadenas) {
+    int i;
+    int cantidad_cadenas;
+    int j;
+    // Contar la cantidad de cadenas válidas
+    i = 0;
+    cantidad_cadenas = 0;
+    while (cadena_de_cadenas[i] != NULL)
+    {
+        if (ft_strcmp(cadena_de_cadenas[i], " ") != 0)
+        {
+            cantidad_cadenas++;
+        }
+        i++;
+    }
+
+    // Eliminar cadenas que contienen solo espacios
+    i = 0;
+    j = 0;
+    while (cadena_de_cadenas[i] != NULL)
+    {
+        if (ft_strcmp(cadena_de_cadenas[i], " ") != 0)
+        {
+            cadena_de_cadenas[j] = cadena_de_cadenas[i];
+            j++;
+        }
+        i++;
+    }
+    cadena_de_cadenas[cantidad_cadenas] = NULL; // Establecer el nuevo final del arreglo
+}
+
+char **ft_quita_quita(char **split_token)
+{
+    int i;
+    int j;
+    int num_word;
+    int len_word;
+    char **split_s_spacio;
+
+    i = 0;
+    j = 0;
+    len_word = 0;
+    num_word = 0;
+    split_s_spacio = NULL;
+    while (split_token[num_word] != NULL)
+    {
+        num_word++;
+    }
+    split_s_spacio = malloc(sizeof(char *) * (num_word + 1));
+    if (!split_s_spacio)
+        exit(EXIT_FAILURE);
+    while(split_token[i])
+    {
+        len_word = ft_strlen(split_token[i]);
+        if(split_token[i] && split_token[i + 1])
+            i++;
+        else
+        {
+            
+            sp
+
+            i++;
+        }
+    }
+}
+*/
+
+char **ft_eliminar_espacios(char **cadena_de_cadenas)
+{
+    int i;
+    int cantidad_cadenas;
+    char **resultado;
+    int j;
+
+	cantidad_cadenas = 0;
+    i = 0;
+	resultado = NULL;
+    // Contar la cantidad de cadenas válidas
+    while (cadena_de_cadenas[i] != NULL)
+    {
+        if (ft_strcmp(cadena_de_cadenas[i], " ") != 0)
+        {
+            cantidad_cadenas++;
+        }
+        i++;
+    }
+
+    resultado = malloc((cantidad_cadenas + 1) * sizeof(char *)); // Reservar memoria para el resultado
+    if (!resultado)
+    {
+        return NULL; // Manejar error de asignación de memoria
+    }
+
+    // Eliminar cadenas que contienen solo espacios
+    i = 0;
+    j = 0;
+    while (cadena_de_cadenas[i] != NULL)
+    {
+        if (ft_strcmp(cadena_de_cadenas[i], " ") != 0)
+        {
+            resultado[j] = cadena_de_cadenas[i];
+            j++;
+        }
+        i++;
+    }
+    resultado[cantidad_cadenas] = NULL; // Establecer el nuevo final del arreglo
+
+    return resultado;
+}

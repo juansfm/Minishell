@@ -31,8 +31,8 @@ void	ft_parse_tokens(t_general *g_data)//usado para hacer split primero
 		pos++;
 	}
     //printf("\033[0;31m");
-   // printf("la cadena tras quote: %s\n", g_data->cpy_line);
-   //printf("\033[0m");
+    //printf("la cadena tras quote: %s\n", g_data->cpy_line);
+    //printf("\033[0m");
     split_tokens = ft_tokenize(g_data, ft_strlen(g_data->cpy_line));
     while(split_tokens[i])
     {
@@ -45,7 +45,28 @@ void	ft_parse_tokens(t_general *g_data)//usado para hacer split primero
     printf("\033[0;32m");
     printf("\nla cadena tras split: %s", g_data->cpy_line);
     printf("\033[0m");
+    split_tokens = ft_eliminar_espacios(split_tokens);
+    //ft_limpiar_espacios(&split_tokens);
+    i = 0;
+    while(split_tokens[i])
+    {
+        ft_quitar_comillas(split_tokens[i]);
+        printf("\033[0;30m");
+        printf("\nla cadena tras limpiar espacios: %s", g_data->cpy_line);
+        printf("\033[0m");
+        i++;
+    }
+    //aqui llamo a la funcion que me expande las variables, ya que aun lo tengo en
+    // cadenas mas pequeñas
+    i = 0;
+    while(split_tokens[i])
+    {
+        split_tokens[i] = funcion_que_lo_lleva_todo(g_data, split_tokens[i]);
+        printf("\nesto es mirando si hay dolar: %s", split_tokens[i]);
+        i++;
+    }
     ft_restore_quotes(split_tokens);
+    //funcion_expandir(t_general g_data, char **split_tokens);
 }
 
 

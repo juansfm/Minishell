@@ -41,10 +41,6 @@ void ft_process_quote(t_general *g_data, int *pos)
     printf("\033[0m");
     while(g_data->cpy_line[*pos] && ((count_quotes % 2 != 0) || (count_quotes == 0)))
     {
-        printf("\033[0;35m");
-        printf("num quotes: %d\n", count_quotes);
-        printf("\033[0m");
-
         if(g_data->cpy_line[*pos] == ' ')
             g_data->cpy_line[*pos] = '\1';
         else if(g_data->cpy_line[*pos] == '|')
@@ -55,12 +51,13 @@ void ft_process_quote(t_general *g_data, int *pos)
             g_data->cpy_line[*pos] = '\4';
         else if(g_data->cpy_line[*pos] == current_char)
             count_quotes++; 
-        (*pos)++;
         
         printf("\033[0;31m");
         printf("PEEEEPE: %c\n", g_data->cpy_line[*pos]);
         printf("\033[0m");
+        (*pos)++;
     }
+    /*
     printf("\033[0;26m");
     printf("\nvalor de linea[pos]: %c", g_data->cpy_line[*pos]);
     printf("\033[0m");
@@ -68,6 +65,7 @@ void ft_process_quote(t_general *g_data, int *pos)
     printf("\033[0;31m");
     printf("\nLa cadena tras quote es: %s", g_data->cpy_line);
     printf("\033[0m");
+    */
     if(!g_data->cpy_line[*pos] && (count_quotes % 2 != 0))
     {
         printf("Error: No se encontró el cierre de las comillas.\n");
@@ -111,7 +109,7 @@ void ft_restore_quotes(char **split_tokens)
     }
 }
 
-
+/*
 int count_dolar(char *split_tokens)
 {
     int i;
@@ -130,3 +128,5 @@ void ft_expand(t_general *g_data, int *pos)
 
     i = 0;
 }
+
+*/
