@@ -163,9 +163,10 @@ char 				**ft_eliminar_espacios(char **cadena_de_cadenas);
 //ft_expansion
 char				*funcion_que_lo_lleva_todo(t_general *g_data, char *split_tokens);//viendo si esta todo
 int 				ft_encontrar_dolar(char *cadena, int inicio);//funciona
-char				*ft_extract_word(char *str, int *pos);
+char				*ft_extract_word(char *str, int pos_dolar, int *pos);
 char 				*ft_cpy_part(char *str, int *pos, int num_chars);
-
+char *ft_remodelar_cadena(char *split_tokens, char *palabra_dolar, char *word_exchange, int pos_dolar);
+char *funcion_que_lo_lleva_todo(t_general *g_data, char *split_tokens);
 
 
 #endif

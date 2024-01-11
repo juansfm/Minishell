@@ -118,3 +118,45 @@ int ft_process_word(char *line, int len, int pos, t_token **head)
         i++;
     }
   */
+
+char *funcion_que_lo_lleva_todo(t_general *g_data, char *split_tokens)//esta funcion la llamare mas veces por si hay mas dolar
+{
+    int pos = 0;
+    int pos_dolar = 0;
+    char *palabra_dolar = NULL;
+    char *word_exchange = NULL;
+    char *cadena_ya_reestructurada = NULL;
+    g_data = NULL;
+
+    while(pos < ft_strlen(split_tokens))
+    {
+        pos_dolar = ft_encontrar_dolar(split_tokens, pos);//guarda la posicion del dolar
+        if(pos_dolar < 0)
+            return (split_tokens);
+        palabra_dolar = ft_extract_word(split_tokens, pos_dolar, &pos);
+        //pos actulizada al final de la palabra +1 si esk existe continuacion
+        //llamo a la funcion que busca en el execve
+        word_exchange = "sustituto";
+        cadena_ya_reestructurada = ft_remodelar_cadena(split_tokens, palabra_dolar, word_exchange);
+        pos++;
+    }
+    //aqui mando la palabra al execve
+    
+    //tres separar a cachos la cadena
+    
+}
+char *ft_remodelar_cadena(char *split_tokens, char *palabra_dolar, char *word_exchange, int pos_dolar)
+{
+    char *cadena_a_trozos = NULL;
+    char *palabra_a_cambiar = NULL;
+    char *cadena_parte_final = NULL;
+    int pos = 0;
+    int num_chars = 0;
+
+    cadena_a_trozos = ft_cpy_part(split_tokens, &pos, pos_dolar);
+    palabra_a_cambiar = ft_cpy_part(split_tokens, &pos, ft_strlen(palabra_dolar));
+    cadena_parte_final = ft_cpy_part(split_tokens, &pos, ft_strlen(split_tokens) - pos);
+    cadena_a_trozos = ft_strjoin(cadena_a_trozos, word_exchange);
+    cadena_a_trozos = ft_strjoin(cadena_a_trozos, cadena_parte_final);
+    return (cadena_a_trozos);
+}

@@ -37,7 +37,7 @@ void ft_process_quote(t_general *g_data, int *pos)
     count_quotes = 0;
     current_char = g_data->cpy_line[*pos];
     printf("\033[0;36m");
-    printf("La comilla (current) es: %c\n",current_char);
+    printf("La comilla abierta(current) es: %c\n",current_char);
     printf("\033[0m");
     while(g_data->cpy_line[*pos] && ((count_quotes % 2 != 0) || (count_quotes == 0)))
     {
@@ -51,16 +51,12 @@ void ft_process_quote(t_general *g_data, int *pos)
             g_data->cpy_line[*pos] = '\4';
         else if(g_data->cpy_line[*pos] == current_char)
             count_quotes++; 
-        
-        printf("\033[0;31m");
-        printf("PEEEEPE: %c\n", g_data->cpy_line[*pos]);
-        printf("\033[0m");
         (*pos)++;
     }
-    /*
-    printf("\033[0;26m");
-    printf("\nvalor de linea[pos]: %c", g_data->cpy_line[*pos]);
+    printf("\033[0;31m");
+    printf("\nvalor de linea tras transfor[pos]: %s", g_data->cpy_line);
     printf("\033[0m");
+    /*
     printf("\ncount fuera bucle: %d", count_quotes);
     printf("\033[0;31m");
     printf("\nLa cadena tras quote es: %s", g_data->cpy_line);
