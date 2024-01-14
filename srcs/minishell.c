@@ -1,11 +1,5 @@
 #include "minishell.h"
 int		g_running = 1;
-/*
-void	ft_l(void)
-{
-	system("leaks -q Minishell");
-}
-*/
 
 t_cmd	*ft_cmd_last(t_general *g_data)
 {
@@ -31,11 +25,59 @@ void	ft_cmd_add_back(t_general *g_data, t_cmd *new)
 t_cmd	*ft_cmd_new(char *arg)
 {
 	t_cmd	*cmd;
+	char	**mtx;
+	int		i;
+	int		j;
+	int		len;
 
 	cmd = ft_calloc(1, sizeof(t_cmd));
-	cmd->cmd = ft_split(arg, ' ');
-	cmd->infile = 0;
-	cmd->outfile = 1;
+	cmd->infile = -1;
+	cmd->outfile = -1;
+	mtx = ft_split(arg, ' ');
+	i = -1;
+	len = 0;
+	while (mtx[++i] != NULL)
+	{
+		if (!ft_strcmp(mtx[i], "<") && mtx[i + 1] != NULL)
+		{
+			i++;
+			cmd->infile_name = ft_strdup(mtx[i]);
+			if (cmd->infile != -1)
+				close(cmd->infile);
+			cmd->infile = open(cmd->infile_name, O_RDONLY);
+		}
+		else if (!ft_strcmp(mtx[i], ">") && mtx[i + 1] != NULL)
+		{
+			i++;
+			cmd->outfile_name = ft_strdup(mtx[i]);
+			if (cmd->outfile != -1)
+				close(cmd->outfile);
+			cmd->outfile = open(cmd->outfile_name, O_WRONLY | O_CREAT | O_TRUNC);
+		}
+		else if (!ft_strcmp(mtx[i], ">>") && mtx[i + 1] != NULL)
+		{
+			i++;
+			cmd->outfile_name = ft_strdup(mtx[i]);
+			cmd->outfile = open(cmd->outfile_name, O_WRONLY | O_CREAT | O_APPEND);
+		}
+		else
+			len++;
+	}
+	cmd->cmd = ft_calloc(len + 1, sizeof(char *));
+	i = -1;
+	j = 0;
+	while (mtx[++i] != NULL)
+	{
+		if ((!ft_strcmp(mtx[i], "<") || !ft_strcmp(mtx[i], ">")
+				|| !ft_strcmp(mtx[i], ">>")) && mtx[i + 1] != NULL)
+			i++;
+		else
+		{
+			cmd->cmd[j] = ft_strdup(mtx[i]);
+			j++;
+		}
+	}
+	// cmd->cmd = ft_split(arg, ' ');
 	cmd->next = NULL;
 	return (cmd);
 }
@@ -62,13 +104,15 @@ void	ft_free_cmd(t_general *g_data)
 		temp = g_data->cmd;
 		g_data->cmd = g_data->cmd->next;
 		ft_free(temp->cmd, ft_mtxrow(temp->cmd));
+		free(temp->infile_name);
+		free(temp->outfile_name);
 		free(temp);
 	}
 }
 
 void	ft_l(void)
 {
-	system("leaks -q Minishell");
+	system("leaks -q minishell");
 }
 /*
 void	ft_sigintHandler(int signal)
@@ -86,7 +130,7 @@ void	ft_minish(char **envp)
 
 	g_data.token = NULL;
 	g_data.cmd = NULL;
-	//atexit(ft_l);
+	// atexit(ft_l);
 	ft_dup_env(&g_data, envp);
 	g_data.og_in = dup(STDIN_FILENO);
 	g_data.og_out = dup(STDOUT_FILENO);
@@ -104,6 +148,16 @@ void	ft_minish(char **envp)
 		ft_cmd_lst(&g_data, mtx);
 		if (ft_cmd_len(&g_data) == 1)
 		{
+			if (g_data.cmd->infile != -1)
+			{
+				dup2(g_data.cmd->infile, STDIN_FILENO);
+				close(g_data.cmd->infile);
+			}
+			if (g_data.cmd->outfile != -1)
+			{
+				dup2(g_data.cmd->outfile, STDOUT_FILENO);
+				close(g_data.cmd->outfile);
+			}
 			if (!ft_builtins(&g_data, g_data.cmd->cmd))
 				ft_other_cmd(&g_data, g_data.cmd->cmd);
 		}

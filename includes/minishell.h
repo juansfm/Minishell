@@ -5,6 +5,7 @@
 # include <dirent.h>
 # include <fcntl.h>
 # include <readline/readline.h>
+# include <readline/history.h>
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -36,6 +37,8 @@ typedef struct s_cmd
 	char			**cmd;
 	int				infile;
 	int				outfile;
+	char			*infile_name;
+	char			*outfile_name;
 	struct s_cmd	*next;
 }					t_cmd;
 
