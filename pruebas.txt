@@ -1,0 +1,34 @@
+>>>que 
+bash: syntax error near unexpected token `>'
+||
+bash: syntax error near unexpected token `||'
+|
+bash: syntax error near unexpected token `|'
+<
+bash: syntax error near unexpected token `newline'
+>>
+bash: syntax error near unexpected token `newline'
+<<
+bash: syntax error near unexpected token `newline'
+a|
+abre quote esperando respuesta
+si no encuentra el comando 
+bash: el comando; command not found
+a|
+> a
+bash: a: command not found
+| a
+bash: syntax error near unexpected token `|'
+|| a
+bash: syntax error near unexpected token `||'puedo decir aqui esto y/o que no hay que implementarlo
+
+//pruebas correccion
+/bin/ls 
+/bin/ls -laf
+foo
+bash: foo: command not found
+/bin/ls -l -a -F
+exit
+echo "its works"
+echo its works
+

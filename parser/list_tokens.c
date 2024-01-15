@@ -1,12 +1,77 @@
 #include "minishell.h"
 
+void ft_print_tokens(t_token *head) 
+{
+    while (head != NULL) 
+    {
+        printf("Token Type: %d, Value: %s\n", head->type_token, head->value);
+        head = head->next;
+    }
+}
+
+
+int ft_get_token_type(char *value)
+{
+    if (ft_strcmp(value, "|") == 0)
+        return TOKEN_PIPE;
+    else if (ft_strcmp(value, "<") == 0)
+        return TOKEN__IN;
+    else if (ft_strcmp(value, ">") == 0)
+        return TOKEN__OUT;
+    else if (ft_strcmp(value, "<<") == 0)
+        return TOKEN_HERE_DOC_IN;
+    else if (ft_strcmp(value, ">>") == 0)
+        return TOKEN_HERE_DOC_OUT;
+    else if (ft_strchr(value, '=') != NULL)
+        return TOKEN__ARG;
+    else
+        return TOKEN_CMD;
+}
+
+t_token *ft_new_token(char *value)
+{
+    t_token *token = malloc(sizeof(t_token));
+    if (!token)
+        return NULL;
+    token->value = ft_strdup(value);
+    token->len = ft_strlen(value);
+    token->type_token = ft_get_token_type(value);
+    token->next = NULL;
+    return token;
+}
+
+t_token *ft_convert_to_tokens(char **str)
+{
+    t_token *head = NULL;
+    t_token *current = NULL;
+    char *token;
+	int i = 0;
+    while (str[i] != NULL)
+    {
+        token = str[i];
+        if (head == NULL)
+        {
+            head = ft_new_token(token);
+            current = head;
+        }
+        else
+        {
+            current->next = ft_new_token(token);
+            current = current->next;
+        }
+		i++;
+    }
+
+    return head;
+}
+/*
 t_token *ft_new_token(int type_token, char *value)
 {
     int len;
     t_token *new_node;
 
 	len = ft_strlen(value);
-    new_node = (t_token *)malloc(sizeof(t_token));
+    new_node = ft_calloc(1, sizeof(t_token));
     if (new_node == NULL)
     {
         printf("Error: No se pudo asignar memoria para el nuevo nodo.\n");
@@ -58,3 +123,4 @@ void ft_free_tokens(t_token *head)
         free(temp);
     }
 }
+*/

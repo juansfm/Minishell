@@ -7,15 +7,6 @@ int ft_char_reserved(char c)
     return 0;
 }
 
-void ft_print_tokens(t_token *head) 
-{
-    while (head != NULL) 
-    {
-        printf("Token Type: %d, Value: %s\n", head->type_token, head->value);
-        head = head->next;
-    }
-}
-
 int ft_isspace(int c) 
 {
     return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r');
@@ -103,6 +94,33 @@ void ft_restore_quotes(char **split_tokens)
         printf("\033[0m");
         i++;
     }
+}
+
+void *ft_realloc(void *ptr, size_t size, size_t new_size)
+{
+    void *new_ptr;
+    size_t i;
+	
+    if (new_size == 0)
+	{
+        free(ptr);
+        return NULL;
+    }
+
+    if (ptr == NULL)
+        return malloc(new_size);
+    new_ptr = malloc(new_size);
+    if (new_ptr)
+	{
+		i = 0;
+        while (i < size && i < new_size)
+		{
+            ((char *)new_ptr)[i] = ((char *)ptr)[i];
+			i++;
+        }
+        free(ptr);
+    }
+    return new_ptr;
 }
 
 /*

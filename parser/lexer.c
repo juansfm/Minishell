@@ -4,10 +4,8 @@ void	ft_parse_tokens(t_general *g_data)//usado para hacer split primero
 {
 	char current_char;
 	int pos;
-    char **split_tokens = NULL;
     int i = 0;
     int len;
-
     len = ft_strlen(g_data->cpy_line);
 	pos = 0;
    // start = pos;
@@ -22,45 +20,40 @@ void	ft_parse_tokens(t_general *g_data)//usado para hacer split primero
         }         
 		pos++;
 	}
-    split_tokens = ft_tokenize(g_data, ft_strlen(g_data->cpy_line));
-    while(split_tokens[i])
-    {
-        i++;
-    }
-    //split_tokens = ft_split_modify(g_data->cpy_line, '|', split_tokens);
-
-    split_tokens = ft_eliminar_espacios(split_tokens);
-    //ft_limpiar_espacios(&split_tokens);
+    g_data->split_tokens = ft_tokenize(g_data, ft_strlen(g_data->cpy_line));
+    g_data->split_tokens = ft_eliminar_espacios(g_data->split_tokens);
+    g_data->split_tokens = ft_concatenate_until_pipe(g_data->split_tokens);
+    //ft_limpiar_espacios(&g_data->split_tokens);
     i = 0;
-    while(split_tokens[i])
+    while(g_data->split_tokens[i])
     {
-        //ft_quitar_comillas(split_tokens[i]);
+        //ft_quitar_comillas(g_data->split_tokens[i]);
         printf("\033[0;32m");
-        printf("\nla cadena tras limpiar espacios: %s", split_tokens[i]);
+        printf("\nla cadena tras limpiar espacios: %s", g_data->split_tokens[i]);
         printf("\033[0m");
         i++;
     }
-    ft_restore_quotes(split_tokens);
+    ft_restore_quotes(g_data->split_tokens);
     //aqui llamo a la funcion que me expande las variables, ya que aun lo tengo en
     // cadenas mas pequeñas
     i = 0;
     pos = 0;
-    while(split_tokens[i])
+    while(g_data->split_tokens[i])
     {
-        while(ft_encontrar_dolar(*split_tokens, pos) > 0)
-            split_tokens[i] = funcion_que_lo_lleva_todo(g_data, split_tokens[i]);
-        printf("\nPost funcion que lo lleva todo: %s\n", split_tokens[i]);
+        while(ft_encontrar_dolar(*g_data->split_tokens, pos) > 0)
+            g_data->split_tokens[i] = funcion_que_lo_lleva_todo(g_data, g_data->split_tokens[i]);
+        printf("\nPost funcion que lo lleva todo: %s\n", g_data->split_tokens[i]);
         i++;
     }
     i = 0;
-    while(split_tokens[i])
+    while(g_data->split_tokens[i])
     {
         printf("\033[0;31m");
-        printf("\nComprobacion final[%d] %s\n", i, split_tokens[i]);
+        printf("\nComprobacion final[%d] %s\n", i, g_data->split_tokens[i]);
         printf("\033[0m");
         i++;
     }
-    //funcion_expandir(t_general g_data, char **split_tokens);
+    //funcion_expandir(t_general g_data, char **g_data->split_tokens);
 }
 
 

@@ -15,7 +15,7 @@ int ft_process_quote_content_double(char *line, int len, int pos, t_token **head
     }
     else 
     {
-        value = malloc((end - start)+ 1);
+        value = ft_calloc((end - start)+ 1);
         while (j < (end - start)) 
         {
             value[j] = line[start + j];
@@ -159,4 +159,146 @@ char *ft_remodelar_cadena(char *split_tokens, char *palabra_dolar, char *word_ex
     cadena_a_trozos = ft_strjoin(cadena_a_trozos, word_exchange);
     cadena_a_trozos = ft_strjoin(cadena_a_trozos, cadena_parte_final);
     return (cadena_a_trozos);
+}
+//funciones para crear cmd
+
+t_cmd *ft_create_new_cmd() {
+    t_cmd *new_cmd = (t_cmd *)malloc(sizeof(t_cmd));
+    new_cmd->cmd = (char **)calloc(1, sizeof(char *));
+    new_cmd->next = NULL;
+    return new_cmd;
+}
+
+void ft_add_token_to_cmd(t_cmd *current_cmd, char *value, int *i)
+{
+	 size_t old_size;
+	 size_t new_size;
+    current_cmd->cmd[*i] = ft_strdup(value);
+    (*i)++;
+    // Reasignar memoria si es necesario
+    if (*i % 10 == 0)
+    {
+        old_size = *i * sizeof(char *);
+        new_size = (*i + 10) * sizeof(char *);
+        current_cmd->cmd = ft_realloc(current_cmd->cmd, old_size, new_size);
+    }
+}
+void ft_convert_tokens_to_cmds(t_general *g_data) 
+{
+	int i;
+
+	i = 0;
+    t_token *current_token;
+    t_cmd *current_cmd;
+    g_data->cmd;
+
+	current_token = g_data->token;
+	current_cmd = ft_create_new_cmd();
+	cmd = current_cmd;
+    while (current_token)
+	{
+        if (current_token->type_token == TOKEN_PIPE)
+		{
+            // Agregar NULL al final del comando actual
+            current_cmd->cmd[i] = NULL;
+
+            // Crear un nuevo t_cmd y agregarlo a la lista
+            t_cmd *new_cmd = ft_create_new_cmd();
+            current_cmd->next = new_cmd;
+
+            // Pasar al siguiente comando y reiniciar el índice
+            current_cmd = new_cmd;
+            i = 0;
+        }
+		else
+		{
+            // Agregar el valor del token al comando actual
+            ft_add_token_to_cmd(current_cmd, current_token->value, &i);
+        }
+        current_token = current_token->next;
+    }
+    // Agregar NULL al final del último comando
+    current_cmd->cmd[i] = NULL;
+}
+
+t_cmd *ft_split_commands_by_pipe(char **tokens)
+{
+    int i = 0;
+    t_cmd *head;
+    t_cmd *current;
+    t_temp temp;
+
+	head = NULL;
+	temp.data = ft_calloc(sizeof(char *), 1);
+	temp.size = 0;
+	temp.mem_size = sizeof(char *);
+	current = head;
+	head = ft_create_new_cmd();
+    while (tokens[i])
+	{
+        if (ft_strcmp(tokens[i], "|") == 0)
+        {
+            current->cmd = temp.data;
+            current->next = ft_create_new_cmd();
+            current = current->next;
+            temp.data = ft_calloc(sizeof(char *), 1);
+            temp.size = 0;
+            temp.mem_size = sizeof(char *);
+        }
+		else
+            ft_add_token_to_cmd(current, tokens[i], &temp);
+        i++;
+    }
+    current->cmd = temp.data;
+
+    return head;
+}
+void ft_print_commands(t_cmd *cmd)
+{
+    t_cmd *current = cmd;
+    int i = 0;
+
+    while (current != NULL) {
+        printf("Command %d:\n", i);
+        char **temp = current->cmd;
+        while (*temp) {
+            printf("%s\n", *temp);
+            temp++;
+        }
+        current = current->next;
+        i++;
+    }
+}
+
+void ft_generate_cmds_from_tokens(t_general *g_data)
+{
+    t_token *current_token;
+    t_cmd *current_cmd;
+    t_temp temp;
+
+	current_cmd = NULL;
+	temp.data = ft_calloc(sizeof(char *), 1);
+	temp.size = 0;
+	temp.mem_size = sizeof(char *);
+    g_data->cmd = current_cmd;
+	current_token = g_data->token;
+    current_cmd = ft_create_new_cmd();
+	while (current_token)
+	{
+        if (current_token->type_token == TOKEN_PIPE)
+		{
+            current_cmd->cmd = temp.data;
+            current_cmd->next = ft_create_new_cmd();
+            current_cmd = current_cmd->next;
+            temp.data = ft_calloc(sizeof(char *), 1);
+            temp.size = 0;
+            temp.mem_size = sizeof(char *);
+        }
+		else
+		{
+            ft_add_token_to_cmd(current_cmd, current_token->value, &temp);
+        }
+        current_token = current_token->next;
+    }
+    current_cmd->cmd = temp.data;
 }

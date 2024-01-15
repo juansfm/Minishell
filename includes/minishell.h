@@ -15,14 +15,16 @@
 # include <termios.h>
 # include <unistd.h>
 
-# define TOKEN_WORD 0
-# define TOKEN_PIPE 1
-# define TOKEN_REDIR_IN 2
-# define TOKEN_REDIR_OUT 3
-# define TOKEN_DOLLAR 4
+# define TOKEN_CMD 0
+# define TOKEN__ARG 1
+# define TOKEN__IN 2
+# define TOKEN__OUT 3
+# define TOKEN_PIPE 4
 # define TOKEN_HERE_DOC_IN 5
 # define TOKEN_HERE_DOC_OUT 6
 
+
+int		g_running;
 typedef struct s_env
 {
 	char			*name;
@@ -31,21 +33,36 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
+
+typedef struct s_temp 
+{
+    char **data;
+    int size;
+    size_t mem_size;
+} t_temp;
+
 typedef struct s_cmd
 {
 	char			**cmd;
+	//char **fd_in;
+	//char **fd_in2;
+	//char **fd_out;
+	//char **fd_out2;
 	int				infile;
 	int				outfile;
+	int 			fd_in;
+	int 			fd_out;
 	struct s_cmd	*next;
 }					t_cmd;
 
 typedef struct s_general
 {
 	char 			*cpy_line;
-	//char			**split_tokens;
+	char			**split_tokens;
 	struct s_env	*env;
 	struct s_cmd	*cmd;
 	struct s_token	*token;
+	char 			**array_tokens;
 }					t_general;
 
 typedef struct s_token
@@ -108,9 +125,17 @@ t_cmd				*ft_cmd_new(char *arg);
 void				ft_cmd_add_back(t_general *g_data, t_cmd *new);
 t_cmd				*ft_cmd_last(t_general *g_data);
 void				ft_free_cmd(t_general *g_data);
-void				ft_cmd_lst(t_general *g_data, char **mtx);
+void 				ft_cmd_lst(t_general *g_data);
+//void				ft_cmd_lst(t_general *g_data, char **mtx);este es el de juan
 t_cmd				*ft_cmd_new(char *arg);
 void				ft_cmd_add_back(t_general *g_data, t_cmd *new);
+
+//utils_minishell.c
+void ft_print_commands(t_cmd *cmd);
+t_cmd *ft_create_new_cmd(void);
+void ft_add_token_to_cmd(t_cmd *current_cmd, char *token, t_temp *temp);
+t_cmd *ft_split_commands_by_pipe(char **tokens);
+void ft_generate_cmds_from_tokens(t_general *g_data);
 
 //lexer
 
@@ -123,21 +148,27 @@ void				ft_parser(t_general *g_data, char *line);
 //void	ft_process_word(char *line, int len, int pos, t_token **head);
 
 //list_tokens
+//void 				ft_print_tokens(t_token *head);
+void ft_print_tokens(t_token *head);
+int ft_get_token_type(char *value);
+t_token *ft_new_token(char *value);
+t_token *ft_convert_to_tokens(char **str);
 
-t_token 			*ft_new_token(int type_token, char *value);
-void 				ft_add_token_in_general(t_token **head, int type, char *value);
+
+//t_token 			*ft_new_token(int type_token, char *value);
+//void 				ft_add_token_in_general(t_token **head, int type, char *value);
 //void 				ft_free_tokens(t_token *head);
 
-//lexer_utils
+//utils_parser
 
-void 				ft_print_tokens(t_token *head);
 int 				ft_char_reserved(char c);
+int 				ft_isspace(int c);
 void 				ft_process_quote(t_general *g_data, int *pos);
+void				ft_restore_quotes(char **split_tokens);
+void				*ft_realloc(void *ptr, size_t size, size_t new_size);
 //void				ft_process_red_in_quote(t_general *g_data, int *pos);nuevo no valido
 //void				ft_process_pipe_in_quote(t_general *g_data, int *pos);nuevo no valido
-void				ft_restore_quotes(char **split_tokens);
 //void 				ft_free_tokens(char **split_tokens);
-int 				ft_isspace(int c);
 
 
 //split_modify.c
@@ -168,5 +199,9 @@ char 				*ft_cpy_part(char *str, int *pos, int num_chars);
 char *ft_remodelar_cadena(char *split_tokens, char *palabra_dolar, char *word_exchange, int pos_dolar);
 char *funcion_que_lo_lleva_todo(t_general *g_data, char *split_tokens);
 
+//UTILS_PARSER_CMD
+int ft_count_pipes(char **input);
+char *concatenate_strings(char *temp, char *input);
+char **ft_concatenate_until_pipe(char **input);
 
 #endif
