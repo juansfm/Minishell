@@ -24,15 +24,33 @@ void	ft_cmd_add_back(t_general *g_data, t_cmd *new)
 t_cmd	*ft_cmd_new(char *arg)
 {
 	t_cmd	*cmd;
-
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	cmd->cmd = ft_split(arg, ' ');
 	cmd->infile = 0;
 	cmd->outfile = 1;
+	cmd->fd_in = 0;
+	cmd->fd_out = 0;
 	cmd->next = NULL;
 	return (cmd);
 }
 
+void ft_print_commands(t_cmd *cmd)
+{
+    t_cmd *current = cmd;
+    int i = 0;
+
+    while (current != NULL) {
+        printf("Command %d:\n", i);
+        char **temp = current->cmd;
+        while (*temp) {
+            printf("(%s)\n", *temp);
+            temp++;
+        }
+        current = current->next;
+        i++;
+    }
+}
+/* nuevo creo que desecho
 void ft_cmd_lst(t_general *g_data)
 {
     t_cmd *cmd;
@@ -53,25 +71,8 @@ void ft_cmd_lst(t_general *g_data)
         g_data->token = current_token->next;
     }
 }
-
-void ft_print_commands(t_cmd *cmd)
-{
-    t_cmd *current = cmd;
-    int i = 0;
-
-    while (current != NULL) {
-        printf("Command %d:\n", i);
-        char **temp = current->cmd;
-        while (*temp) {
-            printf("(%s)\n", *temp);
-            temp++;
-        }
-        current = current->next;
-        i++;
-    }
-}
-/*
-antiguo(de juan)
+*/
+//antiguo(de juan)
 void	ft_cmd_lst(t_general *g_data, char **mtx)
 {
 	t_cmd	*cmd;
@@ -86,7 +87,6 @@ void	ft_cmd_lst(t_general *g_data, char **mtx)
 		ft_cmd_add_back(g_data, cmd);
 	}
 }
-*/
 
 void	ft_free_cmd(t_general *g_data)
 {
@@ -114,6 +114,7 @@ void	ft_minish(char **envp)
 	//char		**mtx;
 	g_running = 1;
 	g_data.token = NULL;
+	g_data.cmd = NULL;
 	//atexit(ft_l);
 	ft_dup_env(&g_data, envp);
 	while (g_running)
@@ -128,31 +129,33 @@ void	ft_minish(char **envp)
 		//|ft_syntaxis(&g_data, line);
 		//line = ft_strtrim(line, " ");
 		//mtx = ft_split(line, '|');
-		/*if (!ft_builtins(&g_data, g_data.cmd->cmd))
-			ft_other_cmd(&g_data, g_data.cmd->cmd);
-            break; // Salir si se presiona Ctrl+D o solo se da enter*/
 		if(line && *line)
 			add_history(line);
 			
 		ft_parser(&g_data, line);
-		
-		g_data.token = ft_convert_to_tokens(g_data.split_tokens);
+		//ft_print_tokens(g_data.token);
+
+		ft_cmd_lst(&g_data, g_data.split_tokens);
+		ft_restore_quotes(g_data.cmd->cmd);
+		if (!ft_builtins(&g_data, g_data.cmd->cmd))
+			ft_other_cmd(&g_data, g_data.cmd->cmd);
+            //break; // Salir si se presiona Ctrl+D o solo se da enter*/
+		//g_data.token = ft_convert_to_tokens(g_data.split_tokens);
 		//ft_cmd_lst(&g_data);
 		
-		ft_print_tokens(g_data.token);
 
 		//ft_print_commands(g_data.cmd);
-		int i = 0;
-		while(g_data.split_tokens[i])
+		//int i = 0;
+		/*while(g_data.split_tokens[i])
 		{
 			printf("\033[0;33m");
 			printf("\ng_data-split_tokenes: %s\n", g_data.split_tokens[i]);
 			printf("\033[0m");
 			i++;
-		}
+		}*/
 
 		free(line);
-		//ft_free_cmd(&g_data);
+		ft_free_cmd(&g_data);
 	}
 	// rl_clear_history();
 	//temp = g_data.env;

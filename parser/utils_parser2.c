@@ -17,7 +17,6 @@ char *ft_extract_token(char *cpy_line, int start, int end)
     while (start < end)
     {
         token[i++] = cpy_line[start++];
-        printf("\nPROBANDO token[%d]: %c\n", i - 1, token[i - 1]);
     }
     token[i] = '\0';
     

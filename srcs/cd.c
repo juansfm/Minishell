@@ -11,17 +11,17 @@ void	ft_cd(t_general *g_data, char **arg)
 	char	*dir;
 
 	dir = ft_strjoin("OLDPWD=", getcwd(NULL, 0));
-	if (!arg || !ft_strcmp(arg[0], "~"))
+	if (!arg || !ft_strcmp(arg[1], "~"))
 		ft_home(g_data);
-	else if (!ft_strcmp(arg[0], "-"))
+	else if (!ft_strcmp(arg[1], "-"))
 		ft_old_pwd(g_data);
 	else
 	{
 		ft_add_mod_env(g_data, dir);
 		free(dir);
-		if (chdir(arg[0]) == -1)
+		if (chdir(arg[1]) == -1)
 		{
-			printf("%s: Not a directory\n", arg[0]);
+			printf("%s: Not a directory\n", arg[1]);
 			return ;
 		}
 		dir = ft_strjoin("PWD=", getcwd(NULL, 0));

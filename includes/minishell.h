@@ -125,8 +125,8 @@ t_cmd				*ft_cmd_new(char *arg);
 void				ft_cmd_add_back(t_general *g_data, t_cmd *new);
 t_cmd				*ft_cmd_last(t_general *g_data);
 void				ft_free_cmd(t_general *g_data);
-void 				ft_cmd_lst(t_general *g_data);
-//void				ft_cmd_lst(t_general *g_data, char **mtx);este es el de juan
+//void 				ft_cmd_lst(t_general *g_data);
+void				ft_cmd_lst(t_general *g_data, char **mtx);//este es el de juan
 t_cmd				*ft_cmd_new(char *arg);
 void				ft_cmd_add_back(t_general *g_data, t_cmd *new);
 

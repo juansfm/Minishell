@@ -60,3 +60,4 @@ int ft_count_pipes(char **input)
 
     return count;
 }
+
