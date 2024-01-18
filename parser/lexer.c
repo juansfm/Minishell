@@ -23,7 +23,7 @@ void	ft_parse_tokens(t_general *g_data)//usado para hacer split primero
     g_data->split_tokens = ft_tokenize(g_data, ft_strlen(g_data->cpy_line));
     g_data->split_tokens = ft_eliminar_espacios(g_data->split_tokens);
     g_data->split_tokens = ft_concatenate_until_pipe(g_data->split_tokens);
-    //ft_limpiar_espacios(&g_data->split_tokens);
+    
     /*
     i = 0;
     while(g_data->split_tokens[i])

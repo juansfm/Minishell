@@ -36,7 +36,7 @@ char *ft_extract_word(char *str, int pos_dolar, int *pos)//pos es donde esta el 
     return (word);//esta palabra es la que va a ir al execve sin dolar
 }
 
-//la funcion devuelve la posicion donde esta el dolar o menos 1 si no lo encuentra(dolar valido)
+//la funcion devuelve la posicion donde esta el primer dolar o menos 1 si no lo encuentra(dolar valido)
 //ahora esta modificada para que se le pase la posicion desde donde comienza a buscar
 int ft_encontrar_dolar(char *cadena, int inicio)
 {
@@ -57,9 +57,7 @@ int ft_encontrar_dolar(char *cadena, int inicio)
                 comilla_simple = (comilla_simple + 1) % 2;
         }
         else if (cadena[i] == '$' && comilla_simple == 0)
-        {
             return (i);
-        }
         i++;
     }
     return (-1);
@@ -73,12 +71,13 @@ int ft_encontrar_dolar(char *cadena, int inicio)
 char *ft_cpy_part(char *str, int *pos, int num_chars)
 {
     int start;
-    int i;
     char *dest;
 
-    i = 0;
-	start = *pos;
-    dest = ft_substr(str, start, num_chars);
+    start = *pos;
+    if (num_chars > 0)
+        dest = ft_substr(str, start, num_chars);
+    else
+        dest = ft_strdup(""); // return an empty string instead of NULL
     printf("\033[0;34m");
     printf("\nAqui copiamos: %s\n", dest);
     printf("\033[0m");
@@ -87,6 +86,68 @@ char *ft_cpy_part(char *str, int *pos, int num_chars)
     // como para reservar la palabra que hay despues de la extraccion del $
 }
 
+char *ft_remodelar_cadena(char *split_tokens, char *palabra_dolar, char *word_exchange, int pos_dolar)
+{
+    char *cadena_a_trozos = NULL;
+    char *palabra_a_cambiar = NULL;
+    char *cadena_parte_final = NULL;
+    int pos = 0;
+
+    printf("\ncacahuete verde: %s\n", palabra_dolar);
+    cadena_a_trozos = ft_cpy_part(split_tokens, &pos, pos_dolar);
+    palabra_a_cambiar = ft_cpy_part(split_tokens, &pos, ft_strlen(palabra_dolar) + 1);
+    printf("La palabra a cambiar: %s\n", palabra_a_cambiar);
+    cadena_parte_final = ft_cpy_part(split_tokens, &pos, ft_strlen(split_tokens) - pos);
+    printf("La cadena parte final: %s\n", cadena_parte_final);
+    if(cadena_a_trozos != NULL)
+        cadena_a_trozos = ft_strjoin(cadena_a_trozos, word_exchange);
+    else
+        cadena_a_trozos = ft_strdup(word_exchange);
+    printf("\033[0;35m");
+    printf("\nunion principio con palabra modificada: %s\n",cadena_a_trozos);
+    printf("\033[0m");
+    cadena_a_trozos = ft_strjoin(cadena_a_trozos, cadena_parte_final);
+    return (cadena_a_trozos);
+}
+
+char *ft_funcion_que_lo_lleva_todo(t_general *g_data, char *cmd)//esta funcion la llamare mas veces por si hay mas dolar
+{
+    int pos = 0;
+    int pos_dolar = 0;
+    char *palabra_dolar = NULL;
+    char *word_exchange = NULL;
+    char *cadena_ya_reestructurada = cmd;
+    t_env *env = NULL; 
+
+    while ((pos_dolar = ft_encontrar_dolar(cadena_ya_reestructurada, pos)) >= 0)
+    {
+        palabra_dolar = ft_extract_word(cadena_ya_reestructurada, pos_dolar, &pos);
+        printf("\033[0;31m");
+        printf("\nesta es la palabra que tiene el dolar: %s\n", palabra_dolar);
+        printf("\033[0m");
+        //llamo a la funcion que busca en el execve
+        if(ft_env_search(g_data, palabra_dolar))
+        {
+            env = ft_env_search(g_data, palabra_dolar);
+            ft_strdup(env->valor);
+            word_exchange = ft_strdup(env->valor);
+        }
+        else
+            word_exchange = "";
+        cadena_ya_reestructurada = ft_remodelar_cadena(cadena_ya_reestructurada, palabra_dolar, word_exchange, pos_dolar);
+        printf("\033[0;35m");
+        printf("\nla cadena ya reestructurada: %s\n", cadena_ya_reestructurada);
+        printf("\033[0m");
+        pos = 0;
+        //aqui mando la palabra al execve
+        //word = funcion que llama al execve(palabra_dolar))
+        //tres separar a cachos la cadena
+    }
+    return (cadena_ya_reestructurada);
+}
+
+
+/*copia de que lo lleva todo sin modificar
 char *funcion_que_lo_lleva_todo(t_general *g_data, char *split_tokens)//esta funcion la llamare mas veces por si hay mas dolar
 {
     int pos = 0;
@@ -113,27 +174,7 @@ char *funcion_que_lo_lleva_todo(t_general *g_data, char *split_tokens)//esta fun
     //tres separar a cachos la cadena
     return (cadena_ya_reestructurada);
 }
-
-char *ft_remodelar_cadena(char *split_tokens, char *palabra_dolar, char *word_exchange, int pos_dolar)
-{
-    char *cadena_a_trozos = NULL;
-    char *palabra_a_cambiar = NULL;
-    char *cadena_parte_final = NULL;
-    int pos = 0;
-
-    printf("\ncacahuete verde: %s\n", palabra_dolar);
-    cadena_a_trozos = ft_cpy_part(split_tokens, &pos, pos_dolar);
-    palabra_a_cambiar = ft_cpy_part(split_tokens, &pos, ft_strlen(palabra_dolar) + 1);
-    printf("La palabra a cambiar: %s\n", palabra_a_cambiar);
-    cadena_parte_final = ft_cpy_part(split_tokens, &pos, ft_strlen(split_tokens) - pos);
-    printf("La cadena parte final: %s\n", cadena_parte_final);
-    cadena_a_trozos = ft_strjoin(cadena_a_trozos, word_exchange);
-    printf("\033[0;35m");
-    printf("\nunion principio con palabra modificada: %s\n",cadena_a_trozos);
-    printf("\033[0m");
-    cadena_a_trozos = ft_strjoin(cadena_a_trozos, cadena_parte_final);
-    return (cadena_a_trozos);
-}
+*/
 //de esta funcion hay que modificar que cuando haya algo detras de la funcion dolar 
 /*char *funcion_que_lo_lleva_todo(t_general *g_data, char *split_tokens)
 {

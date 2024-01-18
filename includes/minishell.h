@@ -64,7 +64,8 @@ typedef struct s_general
 	struct s_token	*token;
 	char 			**array_tokens;
 }					t_general;
-
+/*No lo uso por ahora
+*/
 typedef struct s_token
 {
 	int				type_token;
@@ -130,6 +131,8 @@ void				ft_cmd_lst(t_general *g_data, char **mtx);//este es el de juan
 t_cmd				*ft_cmd_new(char *arg);
 void				ft_cmd_add_back(t_general *g_data, t_cmd *new);
 
+void ft_vamos_a_expandir(t_general *g_data); //nueva funcion 16/01/2024
+
 //utils_minishell.c
 void ft_print_commands(t_cmd *cmd);
 t_cmd *ft_create_new_cmd(void);
@@ -170,6 +173,18 @@ void				*ft_realloc(void *ptr, size_t size, size_t new_size);
 //void				ft_process_pipe_in_quote(t_general *g_data, int *pos);nuevo no valido
 //void 				ft_free_tokens(char **split_tokens);
 
+//ft_expansion
+//char				*funcion_que_lo_lleva_todo(t_general *g_data);//viendo si esta todo
+int 				ft_encontrar_dolar(char *cadena, int inicio);//funciona
+char				*ft_extract_word(char *str, int pos_dolar, int *pos);
+char 				*ft_cpy_part(char *str, int *pos, int num_chars);
+char 				*ft_remodelar_cadena(char *split_tokens, char *palabra_dolar, char *word_exchange, int pos_dolar);
+char 				*ft_funcion_que_lo_lleva_todo(t_general *g_data, char *cmd);
+
+//UTILS_PARSER_CMD
+int ft_count_pipes(char **input);
+char *concatenate_strings(char *temp, char *input);
+char **ft_concatenate_until_pipe(char **input);
 
 //split_modify.c
 //char				**ft_split_modify(char *str, char c, char **matrix);
@@ -182,26 +197,15 @@ void				*ft_realloc(void *ptr, size_t size, size_t new_size);
 //char 				*ft_agregar_espacios(char *cadena, int *len, int pos_caracter, int *espacios_ad);
 //void 				ft_modificar_cadena(t_general *g_data, int *pos_caracter);
 
-//parset_utils2
+//parset_utils2  aqui es todo usado y valido
 char				*ft_extract_token(char *cpy_line, int start, int end);
 char 				**ft_tokenize(t_general *g_data, int len);
-void			    ft_quitar_comillas(char* cadena);
-//nuevo de parse _utils2
+int					ft_contar_cadenas_validas(char **cadena_de_cadenas);
 char 				**ft_eliminar_espacios(char **cadena_de_cadenas);
+//void			    ft_quitar_comillas(char* cadena);
+//nuevo de parse _utils2
 //void 				ft_reordenar_palabras(char *cadena);
 //void 				ft_limpiar_espacios(char ***cadena_de_cadenas);
 
-//ft_expansion
-char				*funcion_que_lo_lleva_todo(t_general *g_data, char *split_tokens);//viendo si esta todo
-int 				ft_encontrar_dolar(char *cadena, int inicio);//funciona
-char				*ft_extract_word(char *str, int pos_dolar, int *pos);
-char 				*ft_cpy_part(char *str, int *pos, int num_chars);
-char *ft_remodelar_cadena(char *split_tokens, char *palabra_dolar, char *word_exchange, int pos_dolar);
-char *funcion_que_lo_lleva_todo(t_general *g_data, char *split_tokens);
-
-//UTILS_PARSER_CMD
-int ft_count_pipes(char **input);
-char *concatenate_strings(char *temp, char *input);
-char **ft_concatenate_until_pipe(char **input);
 
 #endif

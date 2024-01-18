@@ -5,8 +5,6 @@ t_cmd *ft_create_new_cmd(void)
     t_cmd *new_cmd = ft_calloc(sizeof(t_cmd), 1);
     new_cmd->infile = 0;
     new_cmd->outfile = 0;
-    new_cmd->fd_in = 0;
-    new_cmd->fd_out = 0;
     new_cmd->next = NULL;
     return new_cmd;
 }

@@ -302,3 +302,32 @@ void ft_generate_cmds_from_tokens(t_general *g_data)
     }
     current_cmd->cmd = temp.data;
 }
+char *ft_extract_word(char *str, int pos_dolar, int *pos)//pos es donde esta el dolar 
+{
+    int start;
+    int end;
+    char *word;
+    int fin;
+
+    word = NULL;
+    fin = 0;
+    start = pos_dolar;
+    end = start + 1;
+    if(str[end] && ft_isdigit(str[end]))
+    {
+       // word = //lamar al execve con el dolar y el numero solamente
+       fin = 1;
+    }
+    while (str[end] && (fin == 0))
+    {
+        if(!ft_isalnum(str[end]))
+        {
+            end--;
+            break;
+        }
+        end++;
+    }
+    word = ft_substr(str, start + 1, end - start);
+    *pos = end;
+    return (word);//esta palabra es la que va a ir al execve sin dolar
+}

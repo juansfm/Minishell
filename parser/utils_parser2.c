@@ -9,17 +9,11 @@ char *ft_extract_token(char *cpy_line, int start, int end)
     token_length = end - start;
     token = ft_calloc((token_length + 1), sizeof(char));
     if (!token)
-    {
-        fprintf(stderr, "Error de asignación de memoria.\n");
-        exit(EXIT_FAILURE);
-    }
+        return NULL;
     i = 0;
     while (start < end)
-    {
         token[i++] = cpy_line[start++];
-    }
-    token[i] = '\0';
-    
+    token[i] = '\0';   
     return token;
 }
 
@@ -58,6 +52,51 @@ char **ft_tokenize(t_general *g_data, int len)
     return tokens;
 }
 
+
+int ft_contar_cadenas_validas(char **cadena_de_cadenas)
+{
+    int i;
+    int cantidad_cadenas;
+
+    cantidad_cadenas = 0;
+    i = 0;
+    while (cadena_de_cadenas[i] != NULL)
+    {
+        if (ft_strcmp(cadena_de_cadenas[i], " ") != 0)
+            cantidad_cadenas++;
+        i++;
+    }
+
+    return cantidad_cadenas;
+}
+
+char **ft_eliminar_espacios(char **cadena_de_cadenas)
+{
+    int cantidad_cadenas;
+    char **resultado;
+    int i;
+    int j;
+
+    cantidad_cadenas = ft_contar_cadenas_validas(cadena_de_cadenas);
+    resultado = ft_calloc((cantidad_cadenas + 1), sizeof(char *));
+    if (!resultado)
+        return NULL;
+    i = 0;
+    j = 0;
+    while (cadena_de_cadenas[i] != NULL)
+    {
+        if (ft_strcmp(cadena_de_cadenas[i], " ") != 0)
+        {
+            resultado[j] = cadena_de_cadenas[i];
+            j++;
+        }
+        i++;
+    }
+    resultado[cantidad_cadenas] = NULL;
+    return resultado;
+}
+
+/*quitar comillas no esta implementado
 void ft_quitar_comillas(char* cadena)
 {
     int i = 0;
@@ -125,7 +164,8 @@ void ft_reordenar_palabras(char *cadena)//no se usa
         idx++;
     }
 }
-
+*/
+/*funcion que divido en 2
 char **ft_eliminar_espacios(char **cadena_de_cadenas)
 {
     int i;
@@ -140,18 +180,12 @@ char **ft_eliminar_espacios(char **cadena_de_cadenas)
     while (cadena_de_cadenas[i] != NULL)
     {
         if (ft_strcmp(cadena_de_cadenas[i], " ") != 0)
-        {
             cantidad_cadenas++;
-        }
         i++;
     }
-
     resultado = ft_calloc((cantidad_cadenas + 1), sizeof(char *)); // Reservar memoria para el resultado
     if (!resultado)
-    {
         return NULL; // Manejar error de asignación de memoria
-    }
-
     // Eliminar cadenas que contienen solo espacios
     i = 0;
     j = 0;
@@ -165,6 +199,6 @@ char **ft_eliminar_espacios(char **cadena_de_cadenas)
         i++;
     }
     resultado[cantidad_cadenas] = NULL; // Establecer el nuevo final del arreglo
-
     return resultado;
 }
+*/

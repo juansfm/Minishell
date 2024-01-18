@@ -39,10 +39,12 @@ void ft_print_commands(t_cmd *cmd)
     t_cmd *current = cmd;
     int i = 0;
 
-    while (current != NULL) {
-        printf("Command %d:\n", i);
+    while (current != NULL)
+	{
+        printf("Command group %d:\n", i);
         char **temp = current->cmd;
-        while (*temp) {
+        while (*temp)
+		{
             printf("(%s)\n", *temp);
             temp++;
         }
@@ -119,41 +121,24 @@ void	ft_minish(char **envp)
 	ft_dup_env(&g_data, envp);
 	while (g_running)
 	{
-		line = readline("Minishell$ ");
-		if (!line)
+		line = readline("\033[0;32mMinishell$ \033[0m");
+		if (!line || line[0] == '\0')
 		{
-			printf("\nSaliendo minishell(Ctrl+D)");
-			break ; // Salir si se presiona Ctrl+D o solo se da enter
+			printf("\nSe ha ejecutado solo un enter\n");
+			continue; // Salir si se presiona Ctrl+D o solo se da enter
 		}
-		//comprobar frase
-		//|ft_syntaxis(&g_data, line);
-		//line = ft_strtrim(line, " ");
-		//mtx = ft_split(line, '|');
 		if(line && *line)
 			add_history(line);
 			
 		ft_parser(&g_data, line);
 		//ft_print_tokens(g_data.token);
-
 		ft_cmd_lst(&g_data, g_data.split_tokens);
-		ft_restore_quotes(g_data.cmd->cmd);
+		//ft_print_commands(g_data.cmd);
+		ft_vamos_a_expandir(&g_data);
+		
+		//ft_restore_quotes(g_data.cmd->cmd);
 		if (!ft_builtins(&g_data, g_data.cmd->cmd))
 			ft_other_cmd(&g_data, g_data.cmd->cmd);
-            //break; // Salir si se presiona Ctrl+D o solo se da enter*/
-		//g_data.token = ft_convert_to_tokens(g_data.split_tokens);
-		//ft_cmd_lst(&g_data);
-		
-
-		//ft_print_commands(g_data.cmd);
-		//int i = 0;
-		/*while(g_data.split_tokens[i])
-		{
-			printf("\033[0;33m");
-			printf("\ng_data-split_tokenes: %s\n", g_data.split_tokens[i]);
-			printf("\033[0m");
-			i++;
-		}*/
-
 		free(line);
 		ft_free_cmd(&g_data);
 	}
@@ -184,6 +169,179 @@ int	main(int argc, char **argv, char **envp)
 	return (0);
 }
 
+void ft_vamos_a_expandir(t_general *g_data)
+{
+	int i = 0;
+	int pos = 0;
+	int *todas_pos_dolar;
+	int j;
+//	int len = 0;
+
+	j = 0;
+	todas_pos_dolar = NULL;
+	while(g_data->cmd->cmd[i])
+	{
+		if((ft_encontrar_dolar(g_data->cmd->cmd[i], pos) > -1))
+		{
+			g_data->cmd->cmd[i] = ft_funcion_que_lo_lleva_todo(g_data, g_data->cmd->cmd[i]);
+		}
+		i++;
+        	// while(ft_encontrar_dolar(g_data->cmd->cmd[i], pos) > 0)
+			// {
+
+			// }
+			// 	printf("\nPre funcion que lo lleva todo: %s\n", g_data->cmd->cmd[i]);
+            // 	g_data->cmd->cmd[i] = ft_funcion_que_lo_lleva_todo(g_data, g_data->cmd->cmd[i]);
+	}			
+   	printf("\nPost funcion que lo lleva todo: %s\n", g_data->cmd->cmd[i]);
+}
+
+/*
+		printf("\nLa cadena que tiene el dolar es: %s\n", g_data->cmd->cmd[i]);
+				todas_pos_dolar = ft_realloc(todas_pos_dolar, (sizeof (int)) * j, (sizeof (int)) * (j + 1));
+		
+				todas_pos_dolar[j] = ft_encontrar_dolar(g_data->cmd->cmd[i], pos);
+				pos = todas_pos_dolar[j] + 1;
+				j++;
+			}
+			ft_la_funcion_que_lo_lleva_todo(g_data, g_data->cmd->cmd[i]);
+		}
+		printf("\n HOLA CARACOLA\n");
+		len = ft_strlen(g_data->cmd->cmd[i]);
+			printf("\nLa cadena que tiene el dolar es: %s\n", g_data->cmd->cmd[i]);
+	
+			todas_pos_dolar[j] = ft_encontrar_dolar(g_data->cmd->cmd[i], pos);
+			pos = todas_pos_dolar[j] + 1;
+			j++;
+		j = 0;
+		while(todas_pos_dolar[j])
+		{
+			printf("\nLa pos de dolar rd: %d\n", todas_pos_dolar[j]);
+			j++;
+		}
+		break;
+		i++;
+	while (todas_pos_dolar[j] != 0)
+	 {
+	 	ft_extract_word(g_data->cmd->cmd[i], todas_pos_dolar[j], todas_pos_dolar[j + 1]);
+			
+		g_data->cmd->cmd[i] = ft_funcion_que_lo_lleva_todo(g_data, g_data->cmd->cmd[i], todas_pos_dolar, &j);
+	}
+	 free(todas_pos_dolar);
+    /i++;
+ft_expand_correct(t_general *g_data)
+{
+	char **temp;
+	int i;
+	int j;
+	int pos_dolar;
+	char *palabra_dolar;
+
+	temp = g_data->cmd->cmd;
+	i = 0;
+	j = 0;
+	while(temp[i])
+	{
+		if(ft_encontrar_dolar(temp[i], j) > -1)
+		{
+			while(1)
+			{
+				pos_dolar = ft_encontrar_dolar(temp[i], j);
+				palabra_dolar = ft_extract_word(temp[i], pos_dolar, &j);
+				if (temp[j] == '\0')
+					break;
+				
+				
+			}
+				//dar posicion del dolar
+				//extraer palabra del dolar
+				//enviar palabra el excuve
+				//recibir el puntero y convertirlo a la palabra
+				//reemplazar la palabra por la palabra si existe, si no existe modificar la cadena para que desaparzca $ y la palabra que hemos enviamos al excuve
+				//
+				//ft_expandir(g_data, temp->cmd[i]);
+		}
+	}
+
+}
+*/
+/*
+void ft_vamos_a_expandir(t_general *g_data)
+{
+	int i = 0;
+	int pos = 0;
+	int *todas_pos_dolar;
+	int j;
+	int len = 0;
+
+	j = 0;
+	todas_pos_dolar = NULL;
+	while(g_data->cmd->cmd[i])
+    {
+		printf("\n HOLA CARACOLA\n");
+		len = ft_strlen(g_data->cmd->cmd[i]);
+		while(pos < len && (ft_encontrar_dolar(g_data->cmd->cmd[i], pos) > -1))
+		{
+			printf("\nLa cadena que tiene el dolar es: %s\n", g_data->cmd->cmd[i]);
+			todas_pos_dolar = ft_realloc(todas_pos_dolar, (sizeof (int)) * j, (sizeof (int)) * (j + 1));
+	
+			todas_pos_dolar[j] = ft_encontrar_dolar(g_data->cmd->cmd[i], pos);
+			pos = todas_pos_dolar[j] + 1;
+			j++;
+		}
+		j = 0;
+		while(todas_pos_dolar[j])
+		{
+			printf("\nLa pos de dolar rd: %d\n", todas_pos_dolar[j]);
+			j++;
+		}
+		break;
+		i++;
+		//while (todas_pos_dolar[j] != 0)
+		// {
+		// 	ft_extract_word(g_data->cmd->cmd[i], todas_pos_dolar[j], todas_pos_dolar[j + 1]);
+			
+		// 	//g_data->cmd->cmd[i] = ft_funcion_que_lo_lleva_todo(g_data, g_data->cmd->cmd[i], todas_pos_dolar, &j);
+		// }
+		// free(todas_pos_dolar);
+    	// i++;
+    }	
+        	// while(ft_encontrar_dolar(g_data->cmd->cmd[i], pos) > 0)
+			// {
+
+			// }
+			// 	printf("\nPre funcion que lo lleva todo: %s\n", g_data->cmd->cmd[i]);
+            // 	g_data->cmd->cmd[i] = ft_funcion_que_lo_lleva_todo(g_data, g_data->cmd->cmd[i]);
+				
+        	printf("\nPost funcion que lo lleva todo: %s\n", g_data->cmd->cmd[i]);
+}
+*/
+/*
+void ft_vamos_a_expandir(t_general *g_data)
+{
+    int i = 0;
+    int pos = 0;
+    int pos_dolar = 0;
+    char *palabra_dolar = NULL;
+    char *word_exchange = NULL;
+
+    while(g_data->cmd->cmd[i])
+    {
+        pos = 0;
+        while (1) {
+            pos_dolar = ft_encontrar_dolar(g_data->cmd->cmd[i], pos);
+            if(pos_dolar < 0)
+                break;
+            palabra_dolar = ft_extract_word(g_data->cmd->cmd[i], pos_dolar, &pos);
+			printf("\nLa palabra que tiene el dolar es: %s\n", palabra_dolar);
+            // Aquí debes obtener el valor de la variable de entorno palabra_dolar
+            // word_exchange = obtener_valor_variable_entorno(palabra_dolar);
+            g_data->cmd->cmd[i] = ft_remodelar_cadena(g_data->cmd->cmd[i], palabra_dolar, word_exchange, pos_dolar);
+        }
+        i++;
+    }
+}
+*/
 
 /*
 //ls "aaa aa"|grep "a a">"asd"
