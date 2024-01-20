@@ -12,7 +12,6 @@ int ft_isspace(int c)
     return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r');
 }
 
-
 /**
  * Replaces spaces within quotes with a non-printable control character like '\1'.
  * 
@@ -89,9 +88,9 @@ void ft_restore_quotes(char **split_tokens)
                 split_tokens[i][j] = '<';
             j++;
         }
-        printf("\033[0;36m");
-        printf("\nRestaurado split_tokens[%d]: %s\n", i, split_tokens[i]);
-        printf("\033[0m");
+        // printf("\033[0;36m");
+        // printf("\nRestaurado split_tokens[%d]: %s\n", i, split_tokens[i]);
+        // printf("\033[0m");
         i++;
     }
 }
@@ -122,25 +121,3 @@ void *ft_realloc(void *ptr, size_t size, size_t new_size)
     }
     return new_ptr;
 }
-
-/*
-int count_dolar(char *split_tokens)
-{
-    int i;
-    int count;
-
-    i = 0;
-    count = 0;
-    if (split_tokens[i] == '$' && quote_open == 0)
-        count++;
-    return count;
-}
-//expansion function, take $ and expand it
-void ft_expand(t_general *g_data, int *pos)
-{
-    int i;
-
-    i = 0;
-}
-
-*/

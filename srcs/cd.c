@@ -11,7 +11,7 @@ void	ft_cd(t_general *g_data, char **arg)
 	char	*dir;
 
 	dir = ft_strjoin("OLDPWD=", getcwd(NULL, 0));
-	if (!arg || !ft_strcmp(arg[1], "~"))
+	if (!arg[1] || !ft_strcmp(arg[1], "~"))
 		ft_home(g_data);
 	else if (!ft_strcmp(arg[1], "-"))
 		ft_old_pwd(g_data);

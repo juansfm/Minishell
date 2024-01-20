@@ -52,6 +52,7 @@ int	ft_other_cmd(t_general *g_data, char **arg)
 	if (pid == 0)
 	{
 		status = execve(arg[0], arg, env_mtx);
+		printf("%s: command not found\n", arg[0]);
 		exit(status);
 	}
 	else

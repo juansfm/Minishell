@@ -32,3 +32,5 @@ exit
 echo "its works"
 echo its works
 
+export a = caca
+bash: export: `=': not a valid identifier

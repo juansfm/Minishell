@@ -23,6 +23,24 @@
 # define TOKEN_HERE_DOC_IN 5
 # define TOKEN_HERE_DOC_OUT 6
 
+/*  DISPLAY FORMATS:  */
+# define RESET          "\e[0m"
+# define RED            "\e[31m"
+# define GREEN          "\e[32m"
+# define YELLOW         "\e[33m"
+# define BLUE           "\e[34m"
+# define VIOLET         "\e[35m"
+# define BACK_RED       "\e[41m"
+# define BACK_GREEN     "\e[42m"
+# define BACK_YELLOW    "\e[43m"
+# define BACK_BLUE      "\e[44m"
+# define BACK_VIOLET    "\e[45m"
+# define BOLD           "\e[1m"
+# define UNDERLINE      "\e[4m"
+# define BLINK          "\e[5m"
+# define INVERT         "\e[7m"
+# define HIDE           "\e[8m"
+# define STRIKE         "\e[9m"
 
 int		g_running;
 typedef struct s_env
@@ -34,24 +52,13 @@ typedef struct s_env
 }					t_env;
 
 
-typedef struct s_temp 
-{
-    char **data;
-    int size;
-    size_t mem_size;
-} t_temp;
-
 typedef struct s_cmd
 {
 	char			**cmd;
-	//char **fd_in;
-	//char **fd_in2;
-	//char **fd_out;
-	//char **fd_out2;
 	int				infile;
 	int				outfile;
-	int 			fd_in;
-	int 			fd_out;
+	char			*infile_name;
+	char			*outfile_name;
 	struct s_cmd	*next;
 }					t_cmd;
 
@@ -61,11 +68,12 @@ typedef struct s_general
 	char			**split_tokens;
 	struct s_env	*env;
 	struct s_cmd	*cmd;
-	struct s_token	*token;
+	//struct s_token	*token;
+	int				og_in;
+	int				og_out;
 	char 			**array_tokens;
 }					t_general;
 /*No lo uso por ahora
-*/
 typedef struct s_token
 {
 	int				type_token;
@@ -74,7 +82,8 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
-// t_general			g_data;
+*/
+
 
 //ENV
 void				ft_dup_env(t_general *g_data, char **envp);
@@ -119,93 +128,75 @@ int					ft_cmd_len(t_general *g_data);
 void				ft_multiple_cmd(t_general *g_data, t_cmd *cmd);
 
 
-//minishell start
+//************************minishell.c********************************
 void				ft_minish(char **envp);
 int 				main(int argc, char **argv, char **envp);
-t_cmd				*ft_cmd_new(char *arg);
-void				ft_cmd_add_back(t_general *g_data, t_cmd *new);
-t_cmd				*ft_cmd_last(t_general *g_data);
-void				ft_free_cmd(t_general *g_data);
-//void 				ft_cmd_lst(t_general *g_data);
-void				ft_cmd_lst(t_general *g_data, char **mtx);//este es el de juan
-t_cmd				*ft_cmd_new(char *arg);
-void				ft_cmd_add_back(t_general *g_data, t_cmd *new);
+void 				ft_print_commands(t_cmd *cmd);
 
-void ft_vamos_a_expandir(t_general *g_data); //nueva funcion 16/01/2024
+//***********************ft_expansion_utils.c***********************
+char				*ft_extract_word(char *str, int pos_dolar, int *pos);
+int 				ft_encontrar_dolar(char *cadena, int inicio);//funciona
+char 				*ft_cpy_part(char *str, int *pos, int num_chars);
+char 				*ft_remodelar_cadena(char *split_tokens, char *palabra_dolar, char *word_exchange, int pos_dolar);
 
-//utils_minishell.c
-void ft_print_commands(t_cmd *cmd);
-t_cmd *ft_create_new_cmd(void);
-void ft_add_token_to_cmd(t_cmd *current_cmd, char *token, t_temp *temp);
-t_cmd *ft_split_commands_by_pipe(char **tokens);
-void ft_generate_cmds_from_tokens(t_general *g_data);
+//**************************expansion.c********************************
+void 				ft_vamos_a_expandir(t_general *g_data); //nueva funcion 16/01/2024
+char 				*ft_funcion_que_lo_lleva_todo(t_general *g_data, char *cmd);
 
-//lexer
+//**********************************lexer_utils.c**********************************
+int 				ft_count_pipes(char **input);
+char				*ft_concatenate_strings(char *temp, char *input);
+char 				**ft_concatenate_until_pipe(char **input);
 
-//int					ft_process_quote_content_double(char *line, int len, int pos, t_token **head);
-//int					ft_process_quote_content_sim(char *line, int len, int pos, t_token **head);
-//int					ft_process_word(char *line, int len, int pos, t_token **head);
-
+//**********************lexer.c********************************
 void				ft_parse_tokens(t_general *g_data);
+void 				ft_funcion_junta_redirecciones(t_general *g_data);
 void				ft_parser(t_general *g_data, char *line);
-//void	ft_process_word(char *line, int len, int pos, t_token **head);
 
-//list_tokens
-//void 				ft_print_tokens(t_token *head);
-void ft_print_tokens(t_token *head);
-int ft_get_token_type(char *value);
-t_token *ft_new_token(char *value);
-t_token *ft_convert_to_tokens(char **str);
+//**********************list_cmd.c********************************
+t_cmd				*ft_cmd_last(t_general *g_data);
+void				ft_cmd_add_back(t_general *g_data, t_cmd *new);
+t_cmd				*ft_init_cmd(void);
+t_cmd				*ft_cmd_new(char *arg);
+void				ft_cmd_lst(t_general *g_data, char **mtx);//este es el de juan
 
+//*************************prompt.c********************************
+void				ft_prompt(void);
 
-//t_token 			*ft_new_token(int type_token, char *value);
-//void 				ft_add_token_in_general(t_token **head, int type, char *value);
-//void 				ft_free_tokens(t_token *head);
+//**************************utils_minishell.c**************************
+t_cmd 				*ft_create_new_cmd(void);
+void 				ft_generate_cmds_from_tokens(t_general *g_data);
 
-//utils_parser
+//**************************utils_parsers_cmd.c**************************
+void 				ft_process_args(t_cmd *cmd, char **mtx);
+void 				ft_fill_cmd(t_cmd *cmd, char **mtx);
+void 				ft_process_input(t_cmd *cmd, char **mtx, int *i);
+void 				ft_process_output(t_cmd *cmd, char **mtx, int *i, int append);
+void				ft_free_cmd(t_general *g_data);
 
+//*************************utils_parser.c********************************
 int 				ft_char_reserved(char c);
 int 				ft_isspace(int c);
 void 				ft_process_quote(t_general *g_data, int *pos);
 void				ft_restore_quotes(char **split_tokens);
 void				*ft_realloc(void *ptr, size_t size, size_t new_size);
-//void				ft_process_red_in_quote(t_general *g_data, int *pos);nuevo no valido
-//void				ft_process_pipe_in_quote(t_general *g_data, int *pos);nuevo no valido
-//void 				ft_free_tokens(char **split_tokens);
 
-//ft_expansion
-//char				*funcion_que_lo_lleva_todo(t_general *g_data);//viendo si esta todo
-int 				ft_encontrar_dolar(char *cadena, int inicio);//funciona
-char				*ft_extract_word(char *str, int pos_dolar, int *pos);
-char 				*ft_cpy_part(char *str, int *pos, int num_chars);
-char 				*ft_remodelar_cadena(char *split_tokens, char *palabra_dolar, char *word_exchange, int pos_dolar);
-char 				*ft_funcion_que_lo_lleva_todo(t_general *g_data, char *cmd);
-
-//UTILS_PARSER_CMD
-int ft_count_pipes(char **input);
-char *concatenate_strings(char *temp, char *input);
-char **ft_concatenate_until_pipe(char **input);
-
-//split_modify.c
-//char				**ft_split_modify(char *str, char c, char **matrix);
-
-//lexer_utils2
-//tengo que cambiarle los nombres a estas funciones
-//int 				ft_espacio_antes(char *cadena, int pos_caracter);
-//int 				ft_espacio_despues(char *cadena, int *len, int pos_caracter);
-//int 				ft_change_len(int *espacios_ad, int *len);
-//char 				*ft_agregar_espacios(char *cadena, int *len, int pos_caracter, int *espacios_ad);
-//void 				ft_modificar_cadena(t_general *g_data, int *pos_caracter);
-
-//parset_utils2  aqui es todo usado y valido
+//*************************utils_parser2.c********************************
 char				*ft_extract_token(char *cpy_line, int start, int end);
 char 				**ft_tokenize(t_general *g_data, int len);
 int					ft_contar_cadenas_validas(char **cadena_de_cadenas);
 char 				**ft_eliminar_espacios(char **cadena_de_cadenas);
-//void			    ft_quitar_comillas(char* cadena);
-//nuevo de parse _utils2
-//void 				ft_reordenar_palabras(char *cadena);
-//void 				ft_limpiar_espacios(char ***cadena_de_cadenas);
+
+
+//cosas.c//no se usa
+t_cmd *ft_split_commands_by_pipe(char **tokens);
+//void ft_add_token_to_cmd(t_cmd *current_cmd, char *token, t_temp *temp);
+//void ft_print_tokens(t_token *head);
+int ft_get_token_type(char *value);
+//t_token *ft_new_token(char *value);
+//t_token *ft_convert_to_tokens(char **str);
+
+
 
 
 #endif

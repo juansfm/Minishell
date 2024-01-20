@@ -4,7 +4,7 @@ void	ft_parse_tokens(t_general *g_data)//usado para hacer split primero
 {
 	char current_char;
 	int pos;
-    //int i = 0;
+    int i = 0;
     int len;
     len = ft_strlen(g_data->cpy_line);
 	pos = 0;
@@ -21,41 +21,52 @@ void	ft_parse_tokens(t_general *g_data)//usado para hacer split primero
 		pos++;
 	}
     g_data->split_tokens = ft_tokenize(g_data, ft_strlen(g_data->cpy_line));
+    i = 0;
+    while(g_data->split_tokens[i])
+    {
+        printf("\033[0;32m");
+        printf("\nla cadena tras separar en tokens: %s", g_data->split_tokens[i]);
+        printf("\033[0m");
+        i++;
+    }
+    ft_funcion_junta_redirecciones(g_data);
     g_data->split_tokens = ft_eliminar_espacios(g_data->split_tokens);
     g_data->split_tokens = ft_concatenate_until_pipe(g_data->split_tokens);
     
-    /*
     i = 0;
     while(g_data->split_tokens[i])
     {
         //ft_quitar_comillas(g_data->split_tokens[i]);
         printf("\033[0;32m");
-        printf("\nla cadena tras limpiar espacios: %s", g_data->split_tokens[i]);
+        printf("\nla cadena tras separar en comandos: %s", g_data->split_tokens[i]);
         printf("\033[0m");
         i++;
     }
-    ft_restore_quotes(g_data->split_tokens);
-    //aqui llamo a la funcion que me expande las variables, ya que aun lo tengo en
-    // cadenas mas pequeñas
-    i = 0;
-    pos = 0;
-    while(g_data->split_tokens[i])
+}
+
+void ft_funcion_junta_redirecciones(t_general *g_data)
+{
+    int i = 0;
+    while (g_data->split_tokens[i] != NULL)
     {
-        while(ft_encontrar_dolar(*g_data->split_tokens, pos) > 0)
-            g_data->split_tokens[i] = funcion_que_lo_lleva_todo(g_data, g_data->split_tokens[i]);
-        printf("\nPost funcion que lo lleva todo: %s\n", g_data->split_tokens[i]);
+        if ((ft_strcmp(g_data->split_tokens[i], "<") == 0 || ft_strcmp(g_data->split_tokens[i], ">") == 0) && g_data->split_tokens[i + 1] != NULL)
+        {
+            if (ft_strcmp(g_data->split_tokens[i], g_data->split_tokens[i + 1]) == 0)
+            {
+                // Combina las dos redirecciones en una
+                g_data->split_tokens[i] = ft_strjoin(g_data->split_tokens[i], g_data->split_tokens[i + 1]);
+
+                // Mueve el resto de las cadenas hacia abajo para eliminar la redirección duplicada
+                int j = i + 1;
+                while (g_data->split_tokens[j] != NULL)
+                {
+                    g_data->split_tokens[j] = g_data->split_tokens[j + 1];
+                    j++;
+                }
+            }
+        }
         i++;
     }
-    i = 0;
-    while(g_data->split_tokens[i])
-    {
-        printf("\033[0;31m");
-        printf("\nComprobacion final[%d] %s\n", i, g_data->split_tokens[i]);
-        printf("\033[0m");
-        i++;
-    }
-    */
-    //funcion_expandir(t_general g_data, char **g_data->split_tokens);
 }
 
 
@@ -68,12 +79,4 @@ void	ft_parser(t_general *g_data, char *line)
     //printf("len: %d\n", len);*/
    // ft_inicializar_tokens(t_token *token);
     ft_parse_tokens(g_data);
-    
-    
-    //hasta aqui tengo tokens con las palabras y los separadores
-    //me falta expandir las variables $
-    //quitar comillas y juntar palabras
-    //juntar si hay mas de una redireccion del miso tipojuntar(al pasarlo a listas)
-
-
 }
