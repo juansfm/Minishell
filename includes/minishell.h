@@ -59,6 +59,7 @@ typedef struct s_cmd
 	int				outfile;
 	char			*infile_name;
 	char			*outfile_name;
+	char 			**heredoc; //probando varios heredoc en un solo comando
 	struct s_cmd	*next;
 }					t_cmd;
 
@@ -138,6 +139,10 @@ int					ft_other_cmd(t_general *g_data, char **arg);
 char				**ft_union_cmd_arg(char *cmd, char **arg);
 char				**ft_env_mtx(t_general *g_data);
 char				*ft_path(t_general *g_data, char *cmd);
+
+//HEREDOC
+void				ft_heredoc(t_general *g_data, char *delimiter);
+void				ft_redir(t_general *g_data, t_cmd *cmd);
 
 //CMD_UTILS
 int					ft_cmd_len(t_general *g_data);

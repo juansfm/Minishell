@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void		ft_no_last_cmd(int *fd, t_general *g_data, t_cmd *cmd)
+static void	ft_no_last_cmd(int *fd, t_general *g_data, t_cmd *cmd)
 {
 	char	**env_mtx;
 	int		status;
@@ -9,16 +9,10 @@ static void		ft_no_last_cmd(int *fd, t_general *g_data, t_cmd *cmd)
 	close(fd[0]);
 	dup2(fd[1], STDOUT_FILENO);
 	close(fd[1]);
-	if (cmd->outfile != -1)
-	{
-		dup2(cmd->outfile, STDOUT_FILENO);
-		close(cmd->outfile);
-	}
-	if (cmd->infile != -1)
-	{
-		dup2(cmd->infile, STDIN_FILENO);
-		close(cmd->infile);
-	}
+	ft_redir(g_data, cmd);
+	ft_vamos_a_expandir(g_data);
+	ft_restore_quotes(g_data->cmd->cmd);
+	ft_quita_comillas(g_data);
 	if (!ft_builtins(g_data, cmd->cmd))
 	{
 		cmd->cmd[0] = ft_path(g_data, cmd->cmd[0]);
@@ -44,21 +38,16 @@ void	ft_multiple_cmd(t_general *g_data, t_cmd *cmd)
 		close(fd[1]);
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
+		waitpid(pid, NULL, 0);
 		temp = cmd->next;
 		if (temp->next != NULL)
 			ft_multiple_cmd(g_data, temp);
 		else
 		{
-			if (temp->outfile != -1)
-			{
-				dup2(temp->outfile, STDOUT_FILENO);
-				close(temp->outfile);
-			}
-			if (temp->infile != -1)
-			{
-				dup2(temp->infile, STDIN_FILENO);
-				close(temp->infile);
-			}
+			ft_redir(g_data, temp);
+			ft_vamos_a_expandir(g_data);
+			ft_restore_quotes(g_data->cmd->cmd);
+			ft_quita_comillas(g_data);
 			if (!ft_builtins(g_data, temp->cmd))
 				ft_other_cmd(g_data, temp->cmd);
 		}

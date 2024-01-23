@@ -125,6 +125,7 @@ void	ft_minish(char **envp)
 		ft_cmd_lst(&g_data, g_data.split_tokens);
 		if (ft_cmd_len(&g_data) == 1)
 		{
+			/*
 			if (g_data.cmd->infile != -1)
 			{
 				dup2(g_data.cmd->infile, STDIN_FILENO);
@@ -135,6 +136,8 @@ void	ft_minish(char **envp)
 				dup2(g_data.cmd->outfile, STDOUT_FILENO);
 				close(g_data.cmd->outfile);
 			}
+			*/
+			ft_redir(&g_data, g_data.cmd);
 			ft_vamos_a_expandir(&g_data);
 			ft_restore_quotes(g_data.cmd->cmd);
 			ft_quita_comillas(&g_data);

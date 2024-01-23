@@ -48,7 +48,9 @@ t_cmd	*ft_cmd_new(char *arg)
 	char	**mtx;
 	int		i;
 	int		j;
+	int		k;
 	int		len;
+	int		lenh;
 
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	cmd->infile = -1;
@@ -56,6 +58,7 @@ t_cmd	*ft_cmd_new(char *arg)
 	mtx = ft_split(arg, ' ');
 	i = -1;
 	len = 0;
+	lenh = 0;
 	while (mtx[++i] != NULL)
 	{
 		if (!ft_strcmp(mtx[i], "<") && mtx[i + 1] != NULL)
@@ -64,7 +67,7 @@ t_cmd	*ft_cmd_new(char *arg)
 			cmd->infile_name = ft_strdup(mtx[i]);
 			if (cmd->infile != -1)
 				close(cmd->infile);
-			cmd->infile = open(cmd->infile_name, O_RDONLY);
+			cmd->infile = open(cmd->infile_name, O_RDONLY, 0777);
 		}
 		else if (!ft_strcmp(mtx[i], ">") && mtx[i + 1] != NULL)
 		{
@@ -80,25 +83,36 @@ t_cmd	*ft_cmd_new(char *arg)
 			cmd->outfile_name = ft_strdup(mtx[i]);
 			cmd->outfile = open(cmd->outfile_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		}
-		
+		else if (!ft_strcmp(mtx[i], "<<") && mtx[i + 1] != NULL)
+		{
+			i++;
+			lenh++;
+		}
 		else
 			len++;
 	}
 	cmd->cmd = ft_calloc(len + 1, sizeof(char *));
+	if (lenh > 0)
+		cmd->heredoc = ft_calloc(lenh + 1, sizeof(char *));
 	i = -1;
 	j = 0;
+	k = 0;
 	while (mtx[++i] != NULL)
 	{
-		if ((!ft_strcmp(mtx[i], "<") || !ft_strcmp(mtx[i], ">")
-				|| !ft_strcmp(mtx[i], ">>")) && mtx[i + 1] != NULL)
+		if ((!ft_strcmp(mtx[i], "<") || !ft_strcmp(mtx[i], ">") || !ft_strcmp(mtx[i], ">>")) && mtx[i + 1] != NULL)
 			i++;
+		else if (!ft_strcmp(mtx[i], "<<"))
+		{
+			i++;
+			cmd->heredoc[k] = ft_strdup(mtx[i]);
+			k++;
+		}
 		else
 		{
 			cmd->cmd[j] = ft_strdup(mtx[i]);
 			j++;
 		}
 	}
-	// cmd->cmd = ft_split(arg, ' ');
 	cmd->next = NULL;
 	return (cmd);
 }
