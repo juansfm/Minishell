@@ -1,144 +1,83 @@
 #include "minishell.h"
 
-int	ft_process_quote_content_double(char *line, int len, int pos,
-		t_token **head)
+void	ft_parse_tokens(t_general *g_data)//usado para hacer split primero
 {
-	char	quote;
-	int		start;
-	int		end;
-	int		j;
-	char	*value;
-
-	quote = line[pos];
-	start = pos + 1;
-	end = start;
-	j = 0;
-	value = NULL;
-	while (end < len && line[end] != quote)
-		end++;
-	if (end >= len)
-	{
-		printf("Error: No se encontró el cierre de las comillas.\n");
-		exit(EXIT_FAILURE);
-	}
-	else
-	{
-		value = malloc((end - start) + 1);
-		while (j < (end - start))
-		{
-			value[j] = line[start + j];
-			j++;
-		}
-		value[end] = '\0';
-		ft_add_token_in_general(head, TOKEN_WORD, value);
-		free(value);
-	}
-	return (pos);
-}
-
-int	ft_process_quote_content_sim(char *line, int len, int pos, t_token **head)
-{
-	int		end;
-	int		j;
-	char	*value;
-
-	int start = pos + 1; //despues de quitar la comilla
-	end = start;
-	j = 0;
-	char quote = line[pos]; //compruebo que es igual a la comilla llamada
-	value = NULL;
-	while ((end < len) && (line[end] != quote))
-		end++;
-	if (end > len)
-	{
-		printf("Error: No se encontró el cierre de las comillas.\n");
-		exit(EXIT_FAILURE);
-	}
-	else
-	{
-		value = malloc((end - start) + 1);
-		while (j < (end - start))
-		{
-			value[j] = line[start + j];
-			j++;
-		}
-		value[j] = '\0';
-		printf("el valor es %s\n", value);
-		printf("la pos es %d\n", end);
-		ft_add_token_in_general(head, TOKEN_WORD, value);
-		free(value);
-	}
-	pos = end;
-	return (pos); // Actualizar la posición
-}
-
-int	ft_process_word(char *line, int len, int pos, t_token **head)
-{
-	int		start;
-	int		end;
-	int		j;
-	char	*value;
-
-	start = pos;
-	end = start;
-	j = 0;
-	value = NULL;
-	while (end < len && !ft_char_reserved(line[end]))
-		end++;
-	value = malloc(sizeof(char) * ((end - start) + 1));
-	while (j < (end - start))
-	{
-		value[j] = line[start + j];
-		j++;
-	}
-	value[j] = '\0';
-	ft_add_token_in_general(head, TOKEN_WORD, value);
-	free(value);
-	return (end - 1);
-}
-
-void	ft_parse_tokens(char *line, int len, t_general **g_data)
-{
-	char	current_char;
-	int		pos;
-
+	char current_char;
+	int pos;
+    int i = 0;
+    int len;
+    len = ft_strlen(g_data->cpy_line);
 	pos = 0;
-	while (pos < len)
-	{
-		current_char = line[pos];
-		if (current_char == '\"' || current_char == '\'')
-		{
-			if (current_char == '\"')
-				pos = ft_process_quote_content_double(line, len, pos,
-						&(*g_data)->token);
-			else
-			{
-				pos = ft_process_quote_content_sim(line, len, pos,
-						&(*g_data)->token);
-				printf("la pos es: %d\n", pos);
-			}
-		}
-		else if (current_char == '|')
-			ft_add_token_in_general(&(*g_data)->token, TOKEN_PIPE, "|");
-		//else if(current_char == '$')
-		//	ft_add_token_in_general(head, TOKEN_DOLLAR, value);
-		else if (current_char == '>')
-			ft_add_token_in_general(&(*g_data)->token, TOKEN_WORD, ">");
-		else if (current_char == '<')
-			ft_add_token_in_general(&(*g_data)->token, TOKEN_WORD, "<");
-		else
-			pos = ft_process_word(line, len, pos, &(*g_data)->token);
+   // start = pos;
+	while(pos < len)
+	{   
+		current_char = g_data->cpy_line[pos];
+		if (current_char == '\"' || current_char == '\'') 
+        {
+                //printf("pos antes comilla es: %d\n\n", pos);
+                ft_process_quote(g_data, &pos);
+                //printf("\nla cadena tras quote: %s\n\n", g_data->cpy_line);
+        }         
 		pos++;
 	}
+    g_data->split_tokens = ft_tokenize(g_data, ft_strlen(g_data->cpy_line));
+    i = 0;
+    /*
+    while(g_data->split_tokens[i])
+    {
+        printf("\033[0;32m");
+        printf("\nla cadena tras separar en tokens: %s", g_data->split_tokens[i]);
+        printf("\033[0m");
+        i++;
+    }
+    */
+    ft_funcion_junta_redirecciones(g_data);
+    g_data->split_tokens = ft_eliminar_espacios(g_data->split_tokens);
+    g_data->split_tokens = ft_concatenate_until_pipe(g_data->split_tokens);
+    /*
+    i = 0;
+    while(g_data->split_tokens[i])
+    {
+        //ft_quitar_comillas(g_data->split_tokens[i]);
+        printf("\033[0;32m");
+        printf("\nla cadena tras separar en comandos: %s", g_data->split_tokens[i]);
+        printf("\033[0m");
+        i++;
+    }*/
+}
+
+void ft_funcion_junta_redirecciones(t_general *g_data)
+{
+    int i = 0;
+    while (g_data->split_tokens[i] != NULL)
+    {
+        if ((ft_strcmp(g_data->split_tokens[i], "<") == 0 || ft_strcmp(g_data->split_tokens[i], ">") == 0) && g_data->split_tokens[i + 1] != NULL)
+        {
+            if (ft_strcmp(g_data->split_tokens[i], g_data->split_tokens[i + 1]) == 0)
+            {
+                // Combina las dos redirecciones en una
+                g_data->split_tokens[i] = ft_strjoin(g_data->split_tokens[i], g_data->split_tokens[i + 1]);
+
+                // Mueve el resto de las cadenas hacia abajo para eliminar la redirección duplicada
+                int j = i + 1;
+                while (g_data->split_tokens[j] != NULL)
+                {
+                    g_data->split_tokens[j] = g_data->split_tokens[j + 1];
+                    j++;
+                }
+            }
+        }
+        i++;
+    }
 }
 
 void	ft_parser(t_general *g_data, char *line)
 {
-	int	len;
-
-	len = ft_strlen(line);
-	// ft_inicializar_tokens(t_token *token);
-	ft_parse_tokens(line, len, &g_data);
-	ft_print_tokens(g_data->token);
-	ft_free_tokens(g_data->token);
+    g_data->cpy_line = ft_strdup(line);
+    /*printf("\033[0;33m");
+    printf("\nlinea copiada ft_parser: %s\n", g_data->cpy_line);
+    printf("\033[0m");
+    //printf("len: %d\n", len);*/
+   // ft_inicializar_tokens(t_token *token);
+    ft_parse_tokens(g_data);
 }

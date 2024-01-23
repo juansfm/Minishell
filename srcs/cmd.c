@@ -112,7 +112,7 @@ char	*ft_path(t_general *g_data, char *cmd)
 	t_env	*temp;
 	char	*aux;
 	int		i;
-
+	
 	if (access(cmd, F_OK) == 0)
 		return (cmd);
 	temp = ft_env_search(g_data, "PATH");

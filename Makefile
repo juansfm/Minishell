@@ -14,7 +14,18 @@ SRCS = srcs/minishell.c\
 		srcs/cmd_utils.c\
 		srcs/heredoc.c
 
-SRCS_PARSER = parser/lexer.c parser/list_tokens.c parser/utils_parser.c
+SRCS_PARSER = parser/expansion_utils.c\
+			parser/expansion.c\
+			parser/lexer_utils.c\
+			parser/lexer.c\
+			parser/list_cmd.c\
+			parser/prompt.c\
+			parser/utils_minishell.c\
+			parser/utils_parser_cmd.c\
+			parser/utils_parser.c\
+			parser/utils_parser2.c\
+			parser/comillas.c
+#parser/split_modify.c
 
 CFILES = ${SRCS_PARSER} ${SRCS} 
 

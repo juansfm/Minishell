@@ -4,9 +4,7 @@ void	ft_env_add_back(t_general *g_data, t_env *new)
 {
 	t_env	*temp;
 	if (g_data->env == NULL)
-	{
 		g_data->env = new;
-	}
 	else
 	{
 		temp = ft_env_last(g_data);
