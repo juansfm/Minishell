@@ -18,6 +18,7 @@ void	ft_redir(t_general *g_data, t_cmd *cmd)
 		close(cmd->infile);
 	}
 }
+
 static void	ft_heredoc_pipe(char *input)
 {
 	int	pipefd[2];
@@ -60,11 +61,12 @@ void	ft_heredoc(t_general *g_data, char *delimiter)
 			free(line);
 			break ;
 		}
-		input = ft_strjoin(input, line);
-		input = ft_strjoin(input, "\n");
+		input = ft_strjoin_free(input, line);
+		input = ft_strjoin_free(input, "\n");
 		free(line);
 	}
 	ft_heredoc_pipe(input);
 	dup2(out, STDOUT_FILENO);
 	close(out);
+	free(input);
 }

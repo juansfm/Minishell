@@ -6,7 +6,7 @@
 /*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 12:34:16 by jsaavedr          #+#    #+#             */
-/*   Updated: 2023/11/09 20:11:26 by jsaavedr         ###   ########.fr       */
+/*   Updated: 2024/01/23 14:06:37 by jsaavedr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 
 # include "ft_printf.h"
 # include "get_next_line.h"
+# include <limits.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <limits.h>
 
 typedef struct s_list
 {
@@ -142,6 +142,8 @@ int					ft_strcmp(const char *s1, const char *s2);
 long				ft_atol(const char *str);
 
 unsigned int		ft_atou(const char *str);
+
+char				*ft_strjoin_free(char *s1, const char *s2);
 
 t_list				*ft_lstnew(void *content);
 void				ft_lstadd_front(t_list **lst, t_list *new);

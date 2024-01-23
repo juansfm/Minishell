@@ -121,6 +121,7 @@ void	ft_free_cmd(t_general *g_data)
 		temp = g_data->cmd;
 		g_data->cmd = g_data->cmd->next;
 		ft_free(temp->cmd, ft_mtxrow(temp->cmd));
+		ft_free(temp->heredoc, ft_mtxrow(temp->heredoc));
 		free(temp->infile_name);
 		free(temp->outfile_name);
 		free(temp);
@@ -147,7 +148,7 @@ void	ft_minish(char **envp)
 
 	g_data.token = NULL;
 	g_data.cmd = NULL;
-	// atexit(ft_l);
+	atexit(ft_l);
 	ft_dup_env(&g_data, envp);
 	g_data.og_in = dup(STDIN_FILENO);
 	g_data.og_out = dup(STDOUT_FILENO);
