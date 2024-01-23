@@ -4,8 +4,8 @@
 # include "../libft/includes/libft.h"
 # include <dirent.h>
 # include <fcntl.h>
-# include <readline/readline.h>
 # include <readline/history.h>
+# include <readline/readline.h>
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -39,6 +39,7 @@ typedef struct s_cmd
 	int				outfile;
 	char			*infile_name;
 	char			*outfile_name;
+	char **heredoc; //probando varios heredoc en un solo comando
 	struct s_cmd	*next;
 }					t_cmd;
 
@@ -58,8 +59,6 @@ typedef struct s_token
 	char			*value;
 	struct s_token	*next;
 }					t_token;
-
-// t_general			g_data;
 
 //ENV
 void				ft_dup_env(t_general *g_data, char **envp);
@@ -96,6 +95,8 @@ int					ft_other_cmd(t_general *g_data, char **arg);
 char				**ft_union_cmd_arg(char *cmd, char **arg);
 char				**ft_env_mtx(t_general *g_data);
 char				*ft_path(t_general *g_data, char *cmd);
+void				ft_heredoc(t_general *g_data, char *delimiter);
+void				ft_redir(t_general *g_data, t_cmd *cmd);
 
 //CMD_UTILS
 int					ft_cmd_len(t_general *g_data);
@@ -110,9 +111,6 @@ t_cmd				*ft_cmd_new(char *arg);
 void				ft_cmd_add_back(t_general *g_data, t_cmd *new);
 t_cmd				*ft_cmd_last(t_general *g_data);
 void				ft_free_cmd(t_general *g_data);
-void				ft_cmd_lst(t_general *g_data, char **mtx);
-t_cmd				*ft_cmd_new(char *arg);
-void				ft_cmd_add_back(t_general *g_data, t_cmd *new);
 
 //lexer
 

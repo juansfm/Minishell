@@ -11,7 +11,8 @@ SRCS = srcs/minishell.c\
 		srcs/env_utils_2.c\
 		srcs/cmd.c\
 		srcs/multiple_cmd.c\
-		srcs/cmd_utils.c
+		srcs/cmd_utils.c\
+		srcs/heredoc.c
 
 SRCS_PARSER = parser/lexer.c parser/list_tokens.c parser/utils_parser.c
 

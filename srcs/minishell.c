@@ -28,7 +28,9 @@ t_cmd	*ft_cmd_new(char *arg)
 	char	**mtx;
 	int		i;
 	int		j;
+	int		k;
 	int		len;
+	int		lenh;
 
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	cmd->infile = -1;
@@ -36,6 +38,7 @@ t_cmd	*ft_cmd_new(char *arg)
 	mtx = ft_split(arg, ' ');
 	i = -1;
 	len = 0;
+	lenh = 0;
 	while (mtx[++i] != NULL)
 	{
 		if (!ft_strcmp(mtx[i], "<") && mtx[i + 1] != NULL)
@@ -44,7 +47,7 @@ t_cmd	*ft_cmd_new(char *arg)
 			cmd->infile_name = ft_strdup(mtx[i]);
 			if (cmd->infile != -1)
 				close(cmd->infile);
-			cmd->infile = open(cmd->infile_name, O_RDONLY);
+			cmd->infile = open(cmd->infile_name, O_RDONLY, 0777);
 		}
 		else if (!ft_strcmp(mtx[i], ">") && mtx[i + 1] != NULL)
 		{
@@ -52,25 +55,39 @@ t_cmd	*ft_cmd_new(char *arg)
 			cmd->outfile_name = ft_strdup(mtx[i]);
 			if (cmd->outfile != -1)
 				close(cmd->outfile);
-			cmd->outfile = open(cmd->outfile_name, O_WRONLY | O_CREAT | O_TRUNC);
+			cmd->outfile = open(cmd->outfile_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		}
 		else if (!ft_strcmp(mtx[i], ">>") && mtx[i + 1] != NULL)
 		{
 			i++;
 			cmd->outfile_name = ft_strdup(mtx[i]);
-			cmd->outfile = open(cmd->outfile_name, O_WRONLY | O_CREAT | O_APPEND);
+			cmd->outfile = open(cmd->outfile_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		}
+		else if (!ft_strcmp(mtx[i], "<<") && mtx[i + 1] != NULL)
+		{
+			i++;
+			// cmd->heredoc = ft_strdup(mtx[i]);
+			lenh++;
 		}
 		else
 			len++;
 	}
 	cmd->cmd = ft_calloc(len + 1, sizeof(char *));
+	if (lenh > 0)
+		cmd->heredoc = ft_calloc(lenh + 1, sizeof(char *));
 	i = -1;
 	j = 0;
+	k = 0;
 	while (mtx[++i] != NULL)
 	{
-		if ((!ft_strcmp(mtx[i], "<") || !ft_strcmp(mtx[i], ">")
-				|| !ft_strcmp(mtx[i], ">>")) && mtx[i + 1] != NULL)
+		if ((!ft_strcmp(mtx[i], "<") || !ft_strcmp(mtx[i], ">") || !ft_strcmp(mtx[i], ">>")) && mtx[i + 1] != NULL)
 			i++;
+		else if (!ft_strcmp(mtx[i], "<<"))
+		{
+			i++;
+			cmd->heredoc[k] = ft_strdup(mtx[i]);
+			k++;
+		}
 		else
 		{
 			cmd->cmd[j] = ft_strdup(mtx[i]);
@@ -148,16 +165,7 @@ void	ft_minish(char **envp)
 		ft_cmd_lst(&g_data, mtx);
 		if (ft_cmd_len(&g_data) == 1)
 		{
-			if (g_data.cmd->infile != -1)
-			{
-				dup2(g_data.cmd->infile, STDIN_FILENO);
-				close(g_data.cmd->infile);
-			}
-			if (g_data.cmd->outfile != -1)
-			{
-				dup2(g_data.cmd->outfile, STDOUT_FILENO);
-				close(g_data.cmd->outfile);
-			}
+			ft_redir(&g_data, g_data.cmd);
 			if (!ft_builtins(&g_data, g_data.cmd->cmd))
 				ft_other_cmd(&g_data, g_data.cmd->cmd);
 		}
@@ -166,8 +174,8 @@ void	ft_minish(char **envp)
 		// ft_parser(&g_data, line);
 		dup2(g_data.og_in, STDIN_FILENO);
 		dup2(g_data.og_out, STDOUT_FILENO);
-		free(line);
-		ft_free_cmd(&g_data);
+		if (g_data.cmd != NULL)
+			ft_free_cmd(&g_data);
 	}
 	// rl_clear_history();
 }
