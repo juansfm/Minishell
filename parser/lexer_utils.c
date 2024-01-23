@@ -10,15 +10,11 @@ int ft_count_pipes(char **input)
     while (input[i])
 	{
         if (ft_strcmp(input[i], "|") == 0)
-		{
             count++;
-        }
         i++;
     }
-
     return count;
 }
-
 
 char *ft_concatenate_strings(char *temp, char *input)
 {
@@ -59,6 +55,5 @@ char **ft_concatenate_until_pipe(char **input)
     }
     result[j++] = temp;
     result[j] = NULL;
-
     return result;
 }

@@ -16,12 +16,13 @@ void	ft_parse_tokens(t_general *g_data)//usado para hacer split primero
         {
                 //printf("pos antes comilla es: %d\n\n", pos);
                 ft_process_quote(g_data, &pos);
-                printf("\nla cadena tras quote: %s\n\n", g_data->cpy_line);
+                //printf("\nla cadena tras quote: %s\n\n", g_data->cpy_line);
         }         
 		pos++;
 	}
     g_data->split_tokens = ft_tokenize(g_data, ft_strlen(g_data->cpy_line));
     i = 0;
+    /*
     while(g_data->split_tokens[i])
     {
         printf("\033[0;32m");
@@ -29,10 +30,11 @@ void	ft_parse_tokens(t_general *g_data)//usado para hacer split primero
         printf("\033[0m");
         i++;
     }
+    */
     ft_funcion_junta_redirecciones(g_data);
     g_data->split_tokens = ft_eliminar_espacios(g_data->split_tokens);
     g_data->split_tokens = ft_concatenate_until_pipe(g_data->split_tokens);
-    
+    /*
     i = 0;
     while(g_data->split_tokens[i])
     {
@@ -41,7 +43,7 @@ void	ft_parse_tokens(t_general *g_data)//usado para hacer split primero
         printf("\nla cadena tras separar en comandos: %s", g_data->split_tokens[i]);
         printf("\033[0m");
         i++;
-    }
+    }*/
 }
 
 void ft_funcion_junta_redirecciones(t_general *g_data)

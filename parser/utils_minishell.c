@@ -8,7 +8,6 @@ t_cmd *ft_create_new_cmd(void)
     new_cmd->next = NULL;
     return new_cmd;
 }
-/*
 char **ft_convert_token_list_to_array(t_token *token_list)
 {
     // Contar el número de tokens
@@ -42,4 +41,5 @@ char **ft_convert_token_list_to_array(t_token *token_list)
 
     return array;
 }
+/*
 */

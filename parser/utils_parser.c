@@ -26,9 +26,9 @@ void ft_process_quote(t_general *g_data, int *pos)
 
     count_quotes = 0;
     current_char = g_data->cpy_line[*pos];
-    printf("\033[0;36m");
+   /*printf("\033[0;36m");
     printf("La comilla abierta(current) es: %c\n",current_char);
-    printf("\033[0m");
+    printf("\033[0m");*/
     while(g_data->cpy_line[*pos] && ((count_quotes % 2 != 0) || (count_quotes == 0)))
     {
         if(g_data->cpy_line[*pos] == ' ')
@@ -43,9 +43,9 @@ void ft_process_quote(t_general *g_data, int *pos)
             count_quotes++; 
         (*pos)++;
     }
-    printf("\033[0;31m");
+    /*printf("\033[0;31m");
     printf("\nvalor de linea tras transfor[pos]: %s", g_data->cpy_line);
-    printf("\033[0m");
+    printf("\033[0m");*/
     /*
     printf("\ncount fuera bucle: %d", count_quotes);
     printf("\033[0;31m");
@@ -105,7 +105,6 @@ void *ft_realloc(void *ptr, size_t size, size_t new_size)
         free(ptr);
         return NULL;
     }
-
     if (ptr == NULL)
         return malloc(new_size);
     new_ptr = malloc(new_size);

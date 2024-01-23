@@ -829,3 +829,115 @@ char **ft_eliminar_espacios(char **cadena_de_cadenas)
     return resultado;
 }
 */
+
+void ft_quita_comillas(t_general *g_data)
+{
+    int i;
+    int j;
+    int k;
+    int len;
+    int in_quotes;
+    char quote_char;
+    char *temp;
+    char *temp2;
+
+    i = 0;
+    j = 0;
+    k = 0;
+    len = 0;
+    in_quotes = 0;
+    quote_char = '\0';
+    temp = NULL;
+    temp2 = NULL;
+    while(g_data->split_tokens[i])
+    {
+        len = ft_strlen(g_data->split_tokens[i]);
+        temp = ft_calloc(len + 1, sizeof(char));
+        temp2 = ft_calloc(len + 1, sizeof(char));
+        while(g_data->split_tokens[i][j])
+        {
+            if(g_data->split_tokens[i][j] == '\"' || g_data->split_tokens[i][j] == '\'')
+            {
+                if (in_quotes)
+                {
+                    if (g_data->split_tokens[i][j] == quote_char)
+                    {
+                        // Closing quote matches opening quote
+                        in_quotes = 0;
+                        quote_char = '\0';
+                    }
+                    else
+                    {
+                        // Quote doesn't match opening quote, so copy it
+                        temp[k] = g_data->split_tokens[i][j];
+                        k++;
+                    }
+                }
+                else
+                {
+                    // Not in quotes, so start a new quote sequence
+                    in_quotes = 1;
+                    quote_char = g_data->split_tokens[i][j];
+                }
+                j++;
+            }
+            else
+            {
+                temp[k] = g_data->split_tokens[i][j];
+                k++;
+                j++;
+            }
+        }
+        temp[k] = '\0';
+        temp2 = ft_strdup(temp);
+        free(g_data->split_tokens[i]);
+        g_data->split_tokens[i] = ft_strdup(temp2);
+        free(temp);
+        free(temp2);
+        i++;
+        j = 0;
+        k = 0;
+    }
+}
+
+/*
+    int i;
+    int j;
+    int k;
+    int len;
+    char *temp;
+    char *temp2;
+
+    i = 0;
+    j = 0;
+    k = 0;
+    len = 0;
+    temp = NULL;
+    temp2 = NULL;
+    while(g_data->split_tokens[i])
+    {
+        len = ft_strlen(g_data->split_tokens[i]);
+        temp = ft_calloc(len + 1, sizeof(char));
+        temp2 = ft_calloc(len + 1, sizeof(char));
+        while(g_data->split_tokens[i][j])
+        {
+            if(g_data->split_tokens[i][j] == '\"' || g_data->split_tokens[i][j] == '\'')
+                j++;
+            else
+            {
+                temp[k] = g_data->split_tokens[i][j];
+                k++;
+                j++;
+            }
+        }
+        temp[k] = '\0';
+        temp2 = ft_strdup(temp);
+        free(g_data->split_tokens[i]);
+        g_data->split_tokens[i] = ft_strdup(temp2);
+        free(temp);
+        free(temp2);
+        i++;
+        j = 0;
+        k = 0;
+    }
+*/

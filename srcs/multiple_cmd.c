@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void	ft_no_last_cmd(int *fd, t_general *g_data, t_cmd *cmd)
+static void		ft_no_last_cmd(int *fd, t_general *g_data, t_cmd *cmd)
 {
 	char	**env_mtx;
 	int		status;

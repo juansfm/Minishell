@@ -73,7 +73,18 @@ typedef struct s_general
 	int				og_out;
 	char 			**array_tokens;
 }					t_general;
-/*No lo uso por ahora
+/*******************************parser estructuras**************************/
+/*comillas*/
+typedef struct s_process_character
+{
+    char *token;
+    int *j;
+    int *k;
+    int *in_quotes;
+    char *quote_char;
+    char *temp;
+}              t_process_character;
+//tokens
 typedef struct s_token
 {
 	int				type_token;
@@ -82,6 +93,13 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
+typedef struct s_temp //no se usa
+{
+	char			*temp;
+	struct s_temp	*next;
+}					t_temp;
+
+/*No lo uso por ahora
 */
 
 
@@ -132,6 +150,7 @@ void				ft_multiple_cmd(t_general *g_data, t_cmd *cmd);
 void				ft_minish(char **envp);
 int 				main(int argc, char **argv, char **envp);
 void 				ft_print_commands(t_cmd *cmd);
+void ft_quita_comillas(t_general *g_data);
 
 //***********************ft_expansion_utils.c***********************
 char				*ft_extract_word(char *str, int pos_dolar, int *pos);
@@ -187,14 +206,17 @@ char 				**ft_tokenize(t_general *g_data, int len);
 int					ft_contar_cadenas_validas(char **cadena_de_cadenas);
 char 				**ft_eliminar_espacios(char **cadena_de_cadenas);
 
-
+//***************************comillas.c**********************************
+//char *process_token(t_process_character *p);
+//void replace_token_in_cmd(t_general *g_data, int i, char *temp);
+//void ft_quita_comillas(t_general *g_data);
 //cosas.c//no se usa
 t_cmd *ft_split_commands_by_pipe(char **tokens);
-//void ft_add_token_to_cmd(t_cmd *current_cmd, char *token, t_temp *temp);
-//void ft_print_tokens(t_token *head);
+void ft_add_token_to_cmd(t_cmd *current_cmd, char *token, t_temp *temp);
+void ft_print_tokens(t_token *head);
 int ft_get_token_type(char *value);
-//t_token *ft_new_token(char *value);
-//t_token *ft_convert_to_tokens(char **str);
+t_token *ft_new_token(char *value);
+t_token *ft_convert_to_tokens(char **str);
 
 
 

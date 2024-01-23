@@ -20,7 +20,7 @@ void ft_vamos_a_expandir(t_general *g_data)
 			// 	printf("\nPre funcion que lo lleva todo: %s\n", g_data->cmd->cmd[i]);
             // 	g_data->cmd->cmd[i] = ft_funcion_que_lo_lleva_todo(g_data, g_data->cmd->cmd[i]);
 	}			
-   	printf("\nPost funcion que lo lleva todo: %s\n", g_data->cmd->cmd[i]);
+//   	printf("\nPost funcion que lo lleva todo: %s\n", g_data->cmd->cmd[i]);
 }
 
 char *ft_funcion_que_lo_lleva_todo(t_general *g_data, char *cmd)//esta funcion la llamare mas veces por si hay mas dolar
@@ -31,26 +31,33 @@ char *ft_funcion_que_lo_lleva_todo(t_general *g_data, char *cmd)//esta funcion l
     char *word_exchange = NULL;
     char *cadena_ya_reestructurada = cmd;
 
-    t_env *env = NULL; 
+    t_env *env = NULL;
+
     while ((pos_dolar = ft_encontrar_dolar(cadena_ya_reestructurada, pos)) >= 0)
     {
         palabra_dolar = ft_extract_word(cadena_ya_reestructurada, pos_dolar, &pos);
+
         printf("\033[0;31m");
         printf("\nesta es la palabra que tiene el dolar: %s\n", palabra_dolar);
         printf("\033[0m");
         //llamo a la funcion que busca en el execve
-        if(ft_env_search(g_data, palabra_dolar))
+        if(palabra_dolar[0] == '\0')
+            return (cadena_ya_reestructurada);
         {
-            env = ft_env_search(g_data, palabra_dolar);
-            ft_strdup(env->valor);
-            word_exchange = ft_strdup(env->valor);
+            if(ft_env_search(g_data, palabra_dolar))
+            {
+                env = ft_env_search(g_data, palabra_dolar);
+                ft_strdup(env->valor);
+                word_exchange = ft_strdup(env->valor);
+            }
+            else
+                word_exchange = "";
+            cadena_ya_reestructurada = ft_remodelar_cadena(cadena_ya_reestructurada, palabra_dolar, word_exchange, pos_dolar);
+
         }
-        else
-            word_exchange = "";
-        cadena_ya_reestructurada = ft_remodelar_cadena(cadena_ya_reestructurada, palabra_dolar, word_exchange, pos_dolar);
-        printf("\033[0;35m");
+    /*    printf("\033[0;35m");
         printf("\nla cadena ya reestructurada: %s\n", cadena_ya_reestructurada);
-        printf("\033[0m");
+        printf("\033[0m");*/
         pos = 0;
     }
     return (cadena_ya_reestructurada);

@@ -17,6 +17,10 @@ char *ft_extract_word(char *str, int pos_dolar, int *pos)//pos es donde esta el 
     fin = 0;
     start = pos_dolar;
     end = start + 1;
+    // if (str[end] && str[end] == ' ')
+    // {
+    //     return (ft_strdup("$"));
+    // }
     if(str[end] && ft_isdigit(str[end]))
     {
        // word = //lamar al execve con el dolar y el numero solamente
@@ -78,9 +82,11 @@ char *ft_cpy_part(char *str, int *pos, int num_chars)
         dest = ft_substr(str, start, num_chars);
     else
         dest = ft_strdup(""); // return an empty string instead of NULL
+ /*
     printf("\033[0;34m");
     printf("\nAqui copiamos: %s\n", dest);
     printf("\033[0m");
+ */
     *pos = start + num_chars;
     return (dest);//esta cadena sera tanto para reservar la palabra que hay antes de $
     // como para reservar la palabra que hay despues de la extraccion del $
@@ -93,19 +99,19 @@ char *ft_remodelar_cadena(char *split_tokens, char *palabra_dolar, char *word_ex
     char *cadena_parte_final = NULL;
     int pos = 0;
 
-    printf("\ncacahuete verde: %s\n", palabra_dolar);
+    //printf("\ncacahuete verde: %s\n", palabra_dolar);
     cadena_a_trozos = ft_cpy_part(split_tokens, &pos, pos_dolar);
     palabra_a_cambiar = ft_cpy_part(split_tokens, &pos, ft_strlen(palabra_dolar) + 1);
-    printf("La palabra a cambiar: %s\n", palabra_a_cambiar);
+    //printf("La palabra a cambiar: %s\n", palabra_a_cambiar);
     cadena_parte_final = ft_cpy_part(split_tokens, &pos, ft_strlen(split_tokens) - pos);
-    printf("La cadena parte final: %s\n", cadena_parte_final);
+    //printf("La cadena parte final: %s\n", cadena_parte_final);
     if(cadena_a_trozos != NULL)
         cadena_a_trozos = ft_strjoin(cadena_a_trozos, word_exchange);
     else
         cadena_a_trozos = ft_strdup(word_exchange);
-    printf("\033[0;35m");
-    printf("\nunion principio con palabra modificada: %s\n",cadena_a_trozos);
-    printf("\033[0m");
+    //printf("\033[0;35m");
+    //printf("\nunion principio con palabra modificada: %s\n",cadena_a_trozos);
+    //printf("\033[0m");
     cadena_a_trozos = ft_strjoin(cadena_a_trozos, cadena_parte_final);
     return (cadena_a_trozos);
 }
