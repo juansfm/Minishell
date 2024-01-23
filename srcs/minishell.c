@@ -138,9 +138,6 @@ void	ft_minish(char **envp)
 			}
 			*/
 			ft_redir(&g_data, g_data.cmd);
-			ft_vamos_a_expandir(&g_data);
-			ft_restore_quotes(g_data.cmd->cmd);
-			ft_quita_comillas(&g_data);
 			if (!ft_builtins(&g_data, g_data.cmd->cmd))
 				ft_other_cmd(&g_data, g_data.cmd->cmd);
 		}

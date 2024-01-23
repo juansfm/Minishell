@@ -6,7 +6,7 @@
 /*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 19:40:09 by jsaavedr          #+#    #+#             */
-/*   Updated: 2023/11/09 19:58:30 by jsaavedr         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:13:49 by jsaavedr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,3 @@ unsigned int	ft_atou(const char *str)
 	}
 	return (sign * num);
 }
-

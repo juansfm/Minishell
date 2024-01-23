@@ -9,6 +9,7 @@ t_cmd	*ft_cmd_last(t_general *g_data)
 		temp = temp->next;
 	return (temp);
 }
+
 void	ft_cmd_add_back(t_general *g_data, t_cmd *new)
 {
 	t_cmd	*temp;
@@ -75,13 +76,15 @@ t_cmd	*ft_cmd_new(char *arg)
 			cmd->outfile_name = ft_strdup(mtx[i]);
 			if (cmd->outfile != -1)
 				close(cmd->outfile);
-			cmd->outfile = open(cmd->outfile_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			cmd->outfile = open(cmd->outfile_name, O_WRONLY
+					| O_CREAT | O_TRUNC, 0644);
 		}
 		else if (!ft_strcmp(mtx[i], ">>") && mtx[i + 1] != NULL)
 		{
 			i++;
 			cmd->outfile_name = ft_strdup(mtx[i]);
-			cmd->outfile = open(cmd->outfile_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			cmd->outfile = open(cmd->outfile_name, O_WRONLY
+					| O_CREAT | O_APPEND, 0644);
 		}
 		else if (!ft_strcmp(mtx[i], "<<") && mtx[i + 1] != NULL)
 		{
@@ -99,7 +102,8 @@ t_cmd	*ft_cmd_new(char *arg)
 	k = 0;
 	while (mtx[++i] != NULL)
 	{
-		if ((!ft_strcmp(mtx[i], "<") || !ft_strcmp(mtx[i], ">") || !ft_strcmp(mtx[i], ">>")) && mtx[i + 1] != NULL)
+		if ((!ft_strcmp(mtx[i], "<") || !ft_strcmp(mtx[i], ">")
+				|| !ft_strcmp(mtx[i], ">>")) && mtx[i + 1] != NULL)
 			i++;
 		else if (!ft_strcmp(mtx[i], "<<"))
 		{

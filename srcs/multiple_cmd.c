@@ -10,9 +10,6 @@ static void	ft_no_last_cmd(int *fd, t_general *g_data, t_cmd *cmd)
 	dup2(fd[1], STDOUT_FILENO);
 	close(fd[1]);
 	ft_redir(g_data, cmd);
-	ft_vamos_a_expandir(g_data);
-	ft_restore_quotes(g_data->cmd->cmd);
-	ft_quita_comillas(g_data);
 	if (!ft_builtins(g_data, cmd->cmd))
 	{
 		cmd->cmd[0] = ft_path(g_data, cmd->cmd[0]);
@@ -46,9 +43,6 @@ void	ft_multiple_cmd(t_general *g_data, t_cmd *cmd)
 		else
 		{
 			ft_redir(g_data, temp);
-			ft_vamos_a_expandir(g_data);
-			ft_restore_quotes(g_data->cmd->cmd);
-			ft_quita_comillas(g_data);
 			if (!ft_builtins(g_data, temp->cmd))
 				ft_other_cmd(g_data, temp->cmd);
 		}

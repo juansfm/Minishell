@@ -17,6 +17,9 @@ void	ft_redir(t_general *g_data, t_cmd *cmd)
 		dup2(cmd->infile, STDIN_FILENO);
 		close(cmd->infile);
 	}
+	ft_vamos_a_expandir(g_data);
+	ft_restore_quotes(g_data->cmd->cmd);
+	ft_quita_comillas(g_data);
 }
 
 static void	ft_heredoc_pipe(char *input)

@@ -1,84 +1,74 @@
 #include "minishell.h"
 
-typedef struct s_process_data
+void	ft_process_quote_character(t_process_data *p)
 {
-    t_general *g_data;
-    int i;
-    int j;
-    int k;
-    int in_quotes;
-    char quote_char;
-    char *temp;
-}              t_process_data;
-
-void ft_process_quote_character(t_process_data *p)
-{
-    if (p->in_quotes)
-    {
-        if (p->g_data->cmd->cmd[p->i][p->j] == p->quote_char)
-        {
-            p->in_quotes = 0;
-            p->quote_char = '\0';
-        }
-        else
-        {
-            p->temp[p->k] = p->g_data->cmd->cmd[p->i][p->j];
-            p->k++;
-        }
-    }
-    else
-    {
-        p->in_quotes = 1;
-        p->quote_char = p->g_data->cmd->cmd[p->i][p->j];
-    }
-    p->j++;
+	if (p->in_quotes)
+	{
+		if (p->g_data->cmd->cmd[p->i][p->j] == p->quote_char)
+		{
+			p->in_quotes = 0;
+			p->quote_char = '\0';
+		}
+		else
+		{
+			p->temp[p->k] = p->g_data->cmd->cmd[p->i][p->j];
+			p->k++;
+		}
+	}
+	else
+	{
+		p->in_quotes = 1;
+		p->quote_char = p->g_data->cmd->cmd[p->i][p->j];
+	}
+	p->j++;
 }
 
-void ft_process_non_quote_character(t_process_data *p)
+void	ft_process_non_quote_character(t_process_data *p)
 {
-    p->temp[p->k] = p->g_data->cmd->cmd[p->i][p->j];
-    p->k++;
-    p->j++;
+	p->temp[p->k] = p->g_data->cmd->cmd[p->i][p->j];
+	p->k++;
+	p->j++;
 }
 
-void ft_process_character(t_process_data *p)
+void	ft_process_character(t_process_data *p)
 {
-    if(p->g_data->cmd->cmd[p->i][p->j] == '\"' || p->g_data->cmd->cmd[p->i][p->j] == '\'')
-    {
-        ft_process_quote_character(p);
-    }
-    else
-    {
-        ft_process_non_quote_character(p);
-    }
+	if (p->g_data->cmd->cmd[p->i][p->j] == '\"'
+		|| p->g_data->cmd->cmd[p->i][p->j] == '\'')
+	{
+		ft_process_quote_character(p);
+	}
+	else
+	{
+		ft_process_non_quote_character(p);
+	}
 }
 
-void process_token(t_process_data *p)
+void	process_token(t_process_data *p)
 {
-    int len;
+	int	len;
 
 	len = ft_strlen(p->g_data->cmd->cmd[p->i]);
-    p->temp = ft_calloc(len + 1, sizeof(char));
-    while(p->g_data->cmd->cmd[p->i][p->j])
-        ft_process_character(p);
-    p->temp[p->k] = '\0';
+	p->temp = ft_calloc(len + 1, sizeof(char));
+	while (p->g_data->cmd->cmd[p->i][p->j])
+		ft_process_character(p);
+	p->temp[p->k] = '\0';
 }
 
-void replace_token_in_cmd(t_process_data *p)
+void	replace_token_in_cmd(t_process_data *p)
 {
-    char *temp2;
+	char	*temp2;
 
 	temp2 = ft_strdup(p->temp);
-    free(p->g_data->cmd->cmd[p->i]);
-    p->g_data->cmd->cmd[p->i] = ft_strdup(temp2);
-    free(p->temp);
-    free(temp2);
+	free(p->g_data->cmd->cmd[p->i]);
+	p->g_data->cmd->cmd[p->i] = ft_strdup(temp2);
+	free(p->temp);
+	free(temp2);
 }
 
-void ft_quita_comillas(t_general *g_data)
+void	ft_quita_comillas(t_general *g_data)
 {
-    t_process_data p;
-	
+	t_process_data	p;
+
 	p.g_data = g_data;
 	p.i = 0;
 	p.j = 0;
@@ -86,33 +76,30 @@ void ft_quita_comillas(t_general *g_data)
 	p.in_quotes = 0;
 	p.quote_char = '\0';
 	p.temp = NULL;
-
-    while(p.g_data->cmd->cmd[p.i])
-    {
-        process_token(&p);
-        replace_token_in_cmd(&p);
-        p.i++;
-        p.j = 0;
-        p.k = 0;
-    }
+	while (p.g_data->cmd->cmd[p.i])
+	{
+		process_token(&p);
+		replace_token_in_cmd(&p);
+		p.i++;
+		p.j = 0;
+		p.k = 0;
+	}
 }
-
 
 /*
 typedef struct s_process_character
 {
-    char *token;
-    int *j;
-    int *k;
-    int *in_quotes;
-    char *quote_char;
-    char *temp;
-}              t_process_character;
+    char		*token;
+    int			*j;
+    int			*k;
+    int			*in_quotes;
+    char		*quote_char;
+    char		*temp;
+}				t_process_character;
 
 
-void process_character(t_process_character *p)
+void	process_character(t_process_character *p)
 {
-
     if(p->token[*(p->j)] == '\"' || p->token[*(p->j)] == '\'')
     {
         if (*(p->in_quotes))
@@ -146,31 +133,34 @@ void process_character(t_process_character *p)
     }
 }
 
-char *process_token(t_process_character *p)
+char	*process_token(t_process_character *p)
 {
+	int	len;
+
     *(p->j) = 0;
     *(p->k) = 0;
-    int len = ft_strlen(p->token);
+    len = ft_strlen(p->token);
     p->temp = ft_calloc(len + 1, sizeof(char));
-
     while(p->token[*(p->j)])
     {
         process_character(p);
     }
     p->temp[*(p->k)] = '\0';
-    return p->temp;
+    return (p->temp);
 }
 
-void replace_token_in_cmd(t_general *g_data, int i, char *temp)
+void	replace_token_in_cmd(t_general *g_data, int i, char *temp)
 {
-    char *temp2 = ft_strdup(temp);
+	char	*temp2;
+
+    temp2 = ft_strdup(temp);
     free(g_data->cmd->cmd[i]);
     g_data->cmd->cmd[i] = ft_strdup(temp2);
     free(temp);
     free(temp2);
 }
 
-void ft_quita_comillas(t_general *g_data)
+void	ft_quita_comillas(t_general *g_data)
 {
     int i = 0;
     int in_quotes = 0;
