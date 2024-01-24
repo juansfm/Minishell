@@ -71,19 +71,11 @@ typedef struct s_general
 	struct s_cmd	*cmd;
 	int				og_in;
 	int				og_out;
+	int				status;
 	char			**array_tokens;
 }					t_general;
 /*******************************parser estructuras**************************/
 /*comillas*/
-typedef struct s_process_character
-{
-	char			*token;
-	int				*j;
-	int				*k;
-	int				*in_quotes;
-	char			*quote_char;
-	char			*temp;
-}					t_process_character;
 
 typedef struct s_process_data
 {

@@ -13,6 +13,8 @@ int	ft_builtins(t_general *g_data, char **arg)
 	int	i;
 
 	i = 0;
+	if (access(".", R_OK | W_OK | X_OK) == -1)
+		return (0);
 	if (!ft_strcmp(arg[0], "echo") || !ft_strcmp(arg[0], "ECHO"))
 		ft_echo(g_data, arg);
 	else if (!ft_strcmp(arg[0], "cd"))
@@ -53,7 +55,7 @@ int	ft_other_cmd(t_general *g_data, char **arg)
 	{
 		status = execve(arg[0], arg, env_mtx);
 		printf("%s: command not found\n", arg[0]);
-		exit(status);
+		exit(127);
 	}
 	else
 		waitpid(pid, &status, 0);

@@ -107,6 +107,7 @@ void	ft_minish(char **envp)
 	ft_dup_env(&g_data, envp);
 	g_data.og_in = dup(STDIN_FILENO);
 	g_data.og_out = dup(STDOUT_FILENO);
+	g_data.status = 0;
 	ft_prompt();
 	while (g_running)
 	{
@@ -139,11 +140,10 @@ void	ft_minish(char **envp)
 			*/
 			ft_redir(&g_data, g_data.cmd);
 			if (!ft_builtins(&g_data, g_data.cmd->cmd))
-				ft_other_cmd(&g_data, g_data.cmd->cmd);
+				g_data.status = ft_other_cmd(&g_data, g_data.cmd->cmd);
 		}
 		else if (ft_cmd_len(&g_data) >= 2)
 		{
-			
 			ft_multiple_cmd(&g_data, g_data.cmd);
 		}
 		// ft_parser(&g_data, line);
@@ -151,6 +151,8 @@ void	ft_minish(char **envp)
 		dup2(g_data.og_out, STDOUT_FILENO);
 		free(line);
 		ft_free_cmd(&g_data);
+
+			printf("status: %d\n", g_data.status);
 	}
 
 		//ft_print_commands(g_data.cmd);
