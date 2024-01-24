@@ -87,15 +87,26 @@ typedef struct s_process_data
 	char			quote_char;
 	char			*temp;
 }					t_process_data;
+
+
+typedef struct s_cmd_data
+{
+    int i;
+    int j;
+    int k;
+    int len;
+    int lenh;
+} t_cmd_data;
+
 //tokens
-typedef struct s_token
+/*typedef struct s_token
 {
 	int				type_token;
 	int				len;
 	char			*value;
 	struct s_token	*next;
 }					t_token;
-
+*/
 //no se usa
 typedef struct s_temp
 {
@@ -156,7 +167,6 @@ void				ft_multiple_cmd(t_general *g_data, t_cmd *cmd);
 void				ft_minish(char **envp);
 int					main(int argc, char **argv, char **envp);
 void				ft_print_commands(t_cmd *cmd);
-void				ft_quita_comillas(t_general *g_data);
 
 //***********************ft_expansion_utils.c***********************
 char				*ft_extract_word(char *str, int pos_dolar, int *pos);
@@ -168,7 +178,9 @@ char				*ft_remodelar_cadena(char *split_tokens,
 
 //**************************expansion.c********************************
 void				ft_vamos_a_expandir(t_general *g_data);
-char				*ft_funcion_que_lo_lleva_todo(t_general *g_data, char *cmd);
+char				*ft_expand_all(t_general *g_data, char *cmd);//demasiado laarga
+char				*ft_get_word_exchange(t_general *g_data, char *palabra_dolar);
+char 				*ft_process_dolar(t_general *g_data, char *string_restruc, int pos_dolar, int *pos);
 
 //**********************************lexer_utils.c**********************
 int					ft_count_pipes(char **input);
@@ -179,12 +191,13 @@ char				**ft_concatenate_until_pipe(char **input);
 void				ft_parse_tokens(t_general *g_data);
 void				ft_funcion_junta_redirecciones(t_general *g_data);
 void				ft_parser(t_general *g_data, char *line);
+int		 			ft_solo_espacios(char *line);
 
 //**********************list_cmd.c********************************
 t_cmd				*ft_cmd_last(t_general *g_data);
 void				ft_cmd_add_back(t_general *g_data, t_cmd *new);
 t_cmd				*ft_init_cmd(void);
-t_cmd				*ft_cmd_new(char *arg);
+//t_cmd				*ft_cmd_new(char *arg);
 void				ft_cmd_lst(t_general *g_data, char **mtx);
 
 //*************************prompt.c********************************
@@ -206,30 +219,28 @@ void				ft_free_cmd(t_general *g_data);
 int					ft_char_reserved(char c);
 int					ft_isspace(int c);
 void				ft_process_quote(t_general *g_data, int *pos);
+void 				ft_replace_special_chars(t_general *g_data, int *pos, char current_char, int *count_quotes);
 void				ft_restore_quotes(char **split_tokens);
 void				*ft_realloc(void *ptr, size_t size, size_t new_size);
 
 //*************************utils_parser2.c********************************
 char				*ft_extract_token(char *cpy_line, int start, int end);
-char				**ft_tokenize(t_general *g_data, int len);
+char				**ft_tokenize(t_general *g_data);//demasiado largo
 int					ft_contar_cadenas_validas(char **cadena_de_cadenas);
 char				**ft_eliminar_espacios(char **cadena_de_cadenas);
 
 //***************************comillas.c**********************************
-//char *process_token(t_process_character *p);
-//void replace_token_in_cmd(t_general *g_data, int i, char *temp);
-//void ft_quita_comillas(t_general *g_data);
-//cosas.c//no se usa
-t_cmd				*ft_split_commands_by_pipe(char **tokens);
-void				ft_add_token_to_cmd(t_cmd *current_cmd, char *token,
-						t_temp *temp);
-void				ft_print_tokens(t_token *head);
-int					ft_get_token_type(char *value);
-t_token				*ft_new_token(char *value);
-t_token				*ft_convert_to_tokens(char **str);
+void				ft_process_quote_character(t_process_data *p);
+void				ft_process_non_quote_character(t_process_data *p);
+void				ft_process_token(t_process_data *p);
+void				ft_replace_token_in_cmd(t_process_data *p);
+void				ft_quita_comillas(t_general *g_data);
 
-void				ft_add_token_in_general(t_token **head, int type,
-						char *value);
-void				ft_free_tokens(t_token *head);
+//***************************nueva_funcion_new.c****************************
+void 				ft_process_input_file(t_cmd *cmd, char **mtx, t_cmd_data *data);
+void 				ft_process_output_file(t_cmd *cmd, char **mtx, t_cmd_data *data);
+void 				ft_process_redirects(t_cmd *cmd, char **mtx, t_cmd_data *data);
+void 				ft_fill_cmd_and_heredoc(t_cmd *cmd, char **mtx, t_cmd_data *data);
+t_cmd				*ft_cmd_new(char *arg);
 
 #endif

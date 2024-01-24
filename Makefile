@@ -2,6 +2,10 @@ NAME = minishell
 
 OBJS_DIR = objs/
 
+LIB = -L $(HOME)/.brew/opt/readline/lib -lreadline
+
+INCLUDE = -I $(HOME)/.brew/opt/readline/include
+
 SRCS = srcs/minishell.c\
 		srcs/env.c\
 		srcs/env_utils.c\
@@ -25,7 +29,7 @@ SRCS_PARSER = parser/expansion_utils.c\
 			parser/utils_parser.c\
 			parser/utils_parser2.c\
 			parser/comillas.c\
-			# parser/signals.c
+			parser/nueva_funcion_new.c
 #parser/split_modify.c
 
 CFILES = ${SRCS_PARSER} ${SRCS} 
@@ -55,7 +59,7 @@ HDR_INC = -I ./includes
 all: ${NAME}
 
 ${NAME}: ${LIBFT} ${ALL_OBJS}
-	${CC} ${CFLAGS} ${ALL_OBJS} ${LIBFT} -o ${NAME} -lreadline
+	${CC} ${CFLAGS} ${LIB} ${ALL_OBJS} ${LIBFT} -o ${NAME} -lreadline
 
 ${LIBFT}:
 	@make -C libft
@@ -65,7 +69,7 @@ ${OBJS_DIR}:
 
 ${OBJS_DIR}%.o: %.c ${HDR_PATH}
 	@mkdir -p $(dir $@)
-	@${CC} ${CFLAGS} ${HDR_INC} -o $@ -c $<
+	@${CC} ${CFLAGS} ${INCLUDE} ${HDR_INC} -o $@ -c $<
 
 
 clean:
