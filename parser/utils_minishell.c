@@ -10,7 +10,7 @@ t_cmd	*ft_create_new_cmd(void)
 	new_cmd->next = NULL;
 	return (new_cmd);
 }
-
+/*
 char	**ft_convert_token_list_to_array(t_token *token_list)
 {
 	int		count;
@@ -39,3 +39,5 @@ char	**ft_convert_token_list_to_array(t_token *token_list)
 	array[count] = NULL;
 	return (array);
 }
+
+*/

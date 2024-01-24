@@ -43,7 +43,7 @@ void	ft_process_character(t_process_data *p)
 	}
 }
 
-void	process_token(t_process_data *p)
+void	ft_process_token(t_process_data *p)
 {
 	int	len;
 
@@ -54,7 +54,7 @@ void	process_token(t_process_data *p)
 	p->temp[p->k] = '\0';
 }
 
-void	replace_token_in_cmd(t_process_data *p)
+void	ft_replace_token_in_cmd(t_process_data *p)
 {
 	char	*temp2;
 
@@ -78,8 +78,8 @@ void	ft_quita_comillas(t_general *g_data)
 	p.temp = NULL;
 	while (p.g_data->cmd->cmd[p.i])
 	{
-		process_token(&p);
-		replace_token_in_cmd(&p);
+		ft_process_token(&p);
+		ft_replace_token_in_cmd(&p);
 		p.i++;
 		p.j = 0;
 		p.k = 0;

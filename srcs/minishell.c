@@ -94,14 +94,13 @@ void	ft_l(void)
 {
 	system("leaks -q minishell");
 }
-//segfault con solo espacios
+
 void	ft_minish(char **envp)
 {
 	t_general	g_data;
 	char		*line;
-	//char		**mtx;
+
 	g_running = 1;
-	//g_data.token = NULL;
 	g_data.cmd = NULL;
 	//atexit(ft_l);
 	ft_dup_env(&g_data, envp);
@@ -114,62 +113,32 @@ void	ft_minish(char **envp)
 		line = readline("\033[0;32mMinishell$ \033[0m");
 		if (!line || line[0] == '\0')
 		{
-			printf("\nSe ha ejecutado solo un enter\n");
-			continue; // Salir si se presiona Ctrl+D o solo se da enter
+			continue ;
 		}
-		if(line && *line)
+		if (line && *line)
 			add_history(line);
 		//ft_fucncion_syntax_error(line);
-		ft_parser(&g_data, line);
-		//ft_print_tokens(g_data.token);
-		ft_cmd_lst(&g_data, g_data.split_tokens);
-		if (ft_cmd_len(&g_data) == 1)
+		if(ft_solo_espacios(line) == 1)
 		{
-			/*
-			if (g_data.cmd->infile != -1)
+			ft_parser(&g_data, line);
+			ft_cmd_lst(&g_data, g_data.split_tokens);
+			if (ft_cmd_len(&g_data) == 1)
 			{
-				dup2(g_data.cmd->infile, STDIN_FILENO);
-				close(g_data.cmd->infile);
+				ft_redir(&g_data, g_data.cmd);
+				if (!ft_builtins(&g_data, g_data.cmd->cmd))
+					ft_other_cmd(&g_data, g_data.cmd->cmd);
 			}
-			if (g_data.cmd->outfile != -1)
+			else if (ft_cmd_len(&g_data) >= 2)
 			{
-				dup2(g_data.cmd->outfile, STDOUT_FILENO);
-				close(g_data.cmd->outfile);
+				ft_multiple_cmd(&g_data, g_data.cmd);
 			}
-			*/
-			ft_redir(&g_data, g_data.cmd);
-			if (!ft_builtins(&g_data, g_data.cmd->cmd))
-				ft_other_cmd(&g_data, g_data.cmd->cmd);
 		}
-		else if (ft_cmd_len(&g_data) >= 2)
-		{
-			
-			ft_multiple_cmd(&g_data, g_data.cmd);
-		}
-		// ft_parser(&g_data, line);
 		dup2(g_data.og_in, STDIN_FILENO);
 		dup2(g_data.og_out, STDOUT_FILENO);
 		free(line);
 		ft_free_cmd(&g_data);
 	}
-
-		//ft_print_commands(g_data.cmd);
-		
-		//ft_print_commands(g_data.cmd);
-		//free(line);
-		//ft_free_cmd(&g_data);
-
-	// rl_clear_history();
-	//temp = g_data.env;
-	
-	// while (temp != NULL)
-	// {
-	// 	printf("%s=%s\n", temp->name, temp->valor);
-	// 	temp = temp->next;
-	// }
 	printf("\n");
-	//temp = g_data.env;
-
 }
 
 int	main(int argc, char **argv, char **envp)

@@ -17,37 +17,50 @@ char	*ft_extract_token(char *cpy_line, int start, int end)
 	return (token);
 }
 
-char	**ft_tokenize(t_general *g_data, int len)
+// static void	ft_print_tokens(char **tok)
+// {
+// 	char **tmp;
+
+// 	tmp = tok;
+// 	while(*tmp)
+// 	{
+// 		printf("%s\n", *tmp);
+// 		tmp++;
+// 	}
+// }
+
+int	ft_is_delimiter(char c)
+{
+	if (c == ' ' || c == '|' || c == '<' || c == '>')
+		return (1);
+	return (0);
+}
+
+char	**ft_tokenize(t_general *g_data)
 {
 	char	**tokens;
 	int		i;
 	int		count;
 	int		start;
-	char	*delimiter;
 
-	delimiter = " |<>";
 	count = 0;
 	start = 0;
-	i = 0;
-	tokens = ft_calloc((len + 1), sizeof(char *));
+	i = -1;
+	tokens = ft_calloc((ft_strlen(g_data->cpy_line) + 1), sizeof(char *));
 	if (!tokens)
 		exit(EXIT_FAILURE);
-	while (i < len)
+	while (g_data->cpy_line[++i])
 	{
-		while (i < len && ft_strchr(delimiter, g_data->cpy_line[i]))
+		if (ft_is_delimiter(g_data->cpy_line[i]))
 		{
-			tokens[count] = ft_extract_token(g_data->cpy_line, i, i + 1);
-			count++;
-			i++;
+			if (i > start)
+				tokens[count++] = ft_extract_token(g_data->cpy_line, start, i);
+			tokens[count++] = ft_extract_token(g_data->cpy_line, i, i + 1);
+			start = i + 1;
 		}
-		if (i == len)
-			break ;
-		start = i;
-		while (i < len && !ft_strchr(delimiter, g_data->cpy_line[i]))
-			i++;
-		tokens[count] = ft_extract_token(g_data->cpy_line, start, i);
-		count++;
 	}
+	if (i > start)
+		tokens[count++] = ft_extract_token(g_data->cpy_line, start, i);
 	tokens[count] = NULL;
 	return (tokens);
 }
