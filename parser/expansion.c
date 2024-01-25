@@ -15,56 +15,63 @@ void	ft_vamos_a_expandir(t_general *g_data)
 	{
 		if ((ft_encontrar_dolar(g_data->cmd->cmd[i], pos) > -1))
 			g_data->cmd->cmd[i] = ft_expand_all(g_data,
-					g_data->cmd->cmd[i]);
+												g_data->cmd->cmd[i]);
 		i++;
 	}
 }
 
-char *ft_get_word_exchange(t_general *g_data, char *palabra_dolar)
+char	*ft_get_word_exchange(t_general *g_data, char *palabra_dolar)
 {
-    t_env *env;
-    char *word_exchange;
+	t_env	*env;
+	char	*word_exchange;
 
-    if (ft_env_search(g_data, palabra_dolar))
-    {
-        env = ft_env_search(g_data, palabra_dolar);
-        word_exchange = ft_strdup(env->valor);
-    }
-    else
-        word_exchange = "";
-    return word_exchange;
+	// if (palabra_dolar[0] != '?')
+	// {
+	if (ft_env_search(g_data, palabra_dolar))
+	{
+		env = ft_env_search(g_data, palabra_dolar);
+		word_exchange = ft_strdup(env->valor);
+	}
+	else
+		word_exchange = "";
+	// }
+	// else
+	// 	word_exchange = ft_itoa(g_data->status);
+	return (word_exchange);
 }
 
-char *ft_process_dolar(t_general *g_data, char *string_restruc, int pos_dolar, int *pos)
+char	*ft_process_dolar(t_general *g_data, char *string_restruc,
+		int pos_dolar, int *pos)
 {
-    char *palabra_dolar;
-    char *word_exchange;
+	char	*palabra_dolar;
+	char	*word_exchange;
 
-    palabra_dolar = ft_extract_word(string_restruc, pos_dolar, pos);
-    if (palabra_dolar[0] == '\0')
-        return string_restruc;
-    word_exchange = ft_get_word_exchange(g_data, palabra_dolar);
-    string_restruc = ft_remodelar_cadena(string_restruc, palabra_dolar, word_exchange, pos_dolar);
-
-    return string_restruc;
+	palabra_dolar = ft_extract_word(string_restruc, pos_dolar, pos);
+	if (palabra_dolar[0] == '\0')
+		return (string_restruc);
+	word_exchange = ft_get_word_exchange(g_data, palabra_dolar);
+	string_restruc = ft_remodelar_cadena(string_restruc, palabra_dolar,
+			word_exchange, pos_dolar);
+	return (string_restruc);
 }
 
-char *ft_expand_all(t_general *g_data, char *cmd)
+char	*ft_expand_all(t_general *g_data, char *cmd)
 {
-    int pos;
-    int pos_dolar;
-    char *string_restruc;
+	int		pos;
+	int		pos_dolar;
+	char	*string_restruc;
 
-    pos = 0;
-    string_restruc = cmd;
-
-    while ((pos_dolar = ft_encontrar_dolar(string_restruc, pos)) >= 0)
-    {
-        string_restruc = ft_process_dolar(g_data, string_restruc, pos_dolar, &pos);
-        pos = 0;
-    }
-
-    return string_restruc;
+	pos = 0;
+	string_restruc = cmd;
+	pos_dolar = ft_encontrar_dolar(string_restruc, pos);
+	while ((pos_dolar) >= 0)
+	{
+		string_restruc = ft_process_dolar(g_data, string_restruc, pos_dolar,
+				&pos);
+		pos = 0;
+		pos_dolar = ft_encontrar_dolar(string_restruc, pos);
+	}
+	return (string_restruc);
 }
 /*
 char	*ft_expand_all(t_general *g_data, char *cmd)

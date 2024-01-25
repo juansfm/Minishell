@@ -17,18 +17,6 @@ char	*ft_extract_token(char *cpy_line, int start, int end)
 	return (token);
 }
 
-// static void	ft_print_tokens(char **tok)
-// {
-// 	char **tmp;
-
-// 	tmp = tok;
-// 	while(*tmp)
-// 	{
-// 		printf("%s\n", *tmp);
-// 		tmp++;
-// 	}
-// }
-
 int	ft_is_delimiter(char c)
 {
 	if (c == ' ' || c == '|' || c == '<' || c == '>')
@@ -81,28 +69,34 @@ int	ft_contar_cadenas_validas(char **cadena_de_cadenas)
 	return (cantidad_cadenas);
 }
 
-char	**ft_eliminar_espacios(char **cadena_de_cadenas)
+void	ft_copiar_cadenas_no_vacias(char **cadena_de_cadenas, char **resultado)
 {
-	int		cantidad_cadenas;
-	char	**resultado;
-	int		i;
-	int		j;
+	int	i;
+	int	j;
 
-	cantidad_cadenas = ft_contar_cadenas_validas(cadena_de_cadenas);
-	resultado = ft_calloc((cantidad_cadenas + 1), sizeof(char *));
-	if (!resultado)
-		return (NULL);
 	i = 0;
 	j = 0;
 	while (cadena_de_cadenas[i] != NULL)
 	{
 		if (ft_strcmp(cadena_de_cadenas[i], " ") != 0)
-		{
-			resultado[j] = cadena_de_cadenas[i];
-			j++;
-		}
+			resultado[j++] = cadena_de_cadenas[i];
+		else
+			free(cadena_de_cadenas[i]);
 		i++;
 	}
+	free(cadena_de_cadenas);
+}
+
+char	**ft_eliminar_espacios(char **cadena_de_cadenas)
+{
+	int		cantidad_cadenas;
+	char	**resultado;
+
+	cantidad_cadenas = ft_contar_cadenas_validas(cadena_de_cadenas);
+	resultado = ft_calloc((cantidad_cadenas + 1), sizeof(char *));
+	if (!resultado)
+		return (NULL);
+	ft_copiar_cadenas_no_vacias(cadena_de_cadenas, resultado);
 	resultado[cantidad_cadenas] = NULL;
 	return (resultado);
 }

@@ -98,7 +98,7 @@ int	ft_process_word(char *line, int len, int pos, t_token **head)
 		current_char = g_data->cpy_line[pos];
 		if (current_char == ' ')
 		{
-		   ft_añadir_comillas(g_data->cpy_line, &pos);
+			ft_añadir_comillas(g_data->cpy_line, &pos);
 		}
 		else if (current_char == '|')
 		{
@@ -132,7 +132,7 @@ int	ft_process_word(char *line, int len, int pos, t_token **head)
   */
 
 char	*funcion_que_lo_lleva_todo(t_general *g_data, char *split_tokens)
-	//esta funcion la llamare mas veces por si hay mas dolar
+//esta funcion la llamare mas veces por si hay mas dolar
 {
 	int pos = 0;
 	int pos_dolar = 0;
@@ -144,7 +144,7 @@ char	*funcion_que_lo_lleva_todo(t_general *g_data, char *split_tokens)
 	while (pos < ft_strlen(split_tokens))
 	{
 		pos_dolar = ft_encontrar_dolar(split_tokens, pos);
-			//guarda la posicion del dolar
+		//guarda la posicion del dolar
 		if (pos_dolar < 0)
 			return (split_tokens);
 		palabra_dolar = ft_extract_word(split_tokens, pos_dolar, &pos);
@@ -152,7 +152,8 @@ char	*funcion_que_lo_lleva_todo(t_general *g_data, char *split_tokens)
 		//llamo a la funcion que busca en el execve
 		word_exchange = "sustituto";
 		string_restruc = ft_remodelar_cadena(split_tokens,
-				palabra_dolar, word_exchange);
+												palabra_dolar,
+												word_exchange);
 		pos++;
 	}
 	//aqui mando la palabra al execve
@@ -332,7 +333,7 @@ void	ft_generate_cmds_from_tokens(t_general *g_data)
 	current_cmd->cmd = temp.data;
 }
 char	*ft_extract_word(char *str, int pos_dolar, int *pos)
-	//pos es donde esta el dolar
+//pos es donde esta el dolar
 {
 	int start;
 	int end;
@@ -402,6 +403,13 @@ char	*funcion_que_lo_lleva_todo(t_general *g_data,
 	int		pos;
 	int		pos_dolar;
 	int		num_chars;
+		t_token *token;
+		t_token *head;
+		t_token *current;
+		char *token;
+		int i;
+	int		len;
+	t_token	*new_node;
 
 	cadena_a_trozos = NULL;
 	palabra_dolar = NULL;
@@ -445,7 +453,7 @@ char	*funcion_que_lo_lleva_todo(t_general *g_data,
 			printf("\nunion principio con palabra modificada:
 		%s\n",cadena_a_trozos);
 			printf("\033[0m");
-		   
+			
 	//aqui tengo que unir la parte siguiente de la cadena que esta detras del dolar,previamente tendria que guardar esa info en algun lado
 			//cadena_parte_final = ft_cpy_part(split_tokens, &pos,
 		num_chars);      //esto quiero que sea despues del dolar
@@ -455,9 +463,9 @@ char	*funcion_que_lo_lleva_todo(t_general *g_data,
 			printf("\nla cadena a trozos juntitos final: %s\n",
 		cadena_a_trozos);
 		//else
-		   
+			
 	//la variable se sustituye por nada(dolar lo que sea desaparece)y se sigue con la cadena
-	   
+		
 	//lo que salga de aqui sera la cadena modificada en caso de $ valido o no
 	}
 	return (cadena_a_trozos);
@@ -525,79 +533,67 @@ char	*funcion_que_lo_lleva_todo(t_general *g_data,
 //funcion_expandir(t_general g_data, char **g_data->split_tokens);
 //cosas de tokens
 void	ft_print_tokens(t_token *head)
-{
-	while (head != NULL)
 	{
-		printf("Token Type: %d, Value: %s\n", head->type_token, head->value);
-		head = head->next;
-	}
-}
-
-int	ft_get_token_type(char *value)
-{
-	if (ft_strcmp(value, "|") == 0)
-		return (TOKEN_PIPE);
-	else if (ft_strcmp(value, "<") == 0)
-		return (TOKEN__IN);
-	else if (ft_strcmp(value, ">") == 0)
-		return (TOKEN__OUT);
-	else if (ft_strcmp(value, "<<") == 0)
-		return (TOKEN_HERE_DOC_IN);
-	else if (ft_strcmp(value, ">>") == 0)
-		return (TOKEN_HERE_DOC_OUT);
-	else if (ft_strchr(value, '=') != NULL)
-		return (TOKEN__ARG);
-	else
-		return (TOKEN_CMD);
-}
-
-t_token	*ft_new_token(char *value)
-{
-	t_token	*token;
-
-	token = malloc(sizeof(t_token));
-	if (!token)
-		return (NULL);
-	token->value = ft_strdup(value);
-	token->len = ft_strlen(value);
-	token->type_token = ft_get_token_type(value);
-	token->next = NULL;
-	return (token);
-}
-
-t_token	*ft_convert_to_tokens(char **str)
-{
-	t_token	*head;
-	t_token	*current;
-	char	*token;
-	int		i;
-
-	head = NULL;
-	current = NULL;
-	i = 0;
-	while (str[i] != NULL)
-	{
-		token = str[i];
-		if (head == NULL)
+		while (head != NULL)
 		{
-			head = ft_new_token(token);
-			current = head;
+			printf("Token Type: %d, Value: %s\n", head->type_token,
+					head->value);
+			head = head->next;
 		}
+	}
+	int ft_get_token_type(char *value)
+	{
+		if (ft_strcmp(value, "|") == 0)
+			return (TOKEN_PIPE);
+		else if (ft_strcmp(value, "<") == 0)
+			return (TOKEN__IN);
+		else if (ft_strcmp(value, ">") == 0)
+			return (TOKEN__OUT);
+		else if (ft_strcmp(value, "<<") == 0)
+			return (TOKEN_HERE_DOC_IN);
+		else if (ft_strcmp(value, ">>") == 0)
+			return (TOKEN_HERE_DOC_OUT);
+		else if (ft_strchr(value, '=') != NULL)
+			return (TOKEN__ARG);
 		else
-		{
-			current->next = ft_new_token(token);
-			current = current->next;
-		}
-		i++;
+			return (TOKEN_CMD);
 	}
-	return (head);
-}
-/*
+	t_token *ft_new_token(char *value)
+	{
+		token = malloc(sizeof(t_token));
+		if (!token)
+			return (NULL);
+		token->value = ft_strdup(value);
+		token->len = ft_strlen(value);
+		token->type_token = ft_get_token_type(value);
+		token->next = NULL;
+		return (token);
+	}
+	t_token *ft_convert_to_tokens(char **str)
+	{
+		head = NULL;
+		current = NULL;
+		i = 0;
+		while (str[i] != NULL)
+		{
+			token = str[i];
+			if (head == NULL)
+			{
+				head = ft_new_token(token);
+				current = head;
+			}
+			else
+			{
+				current->next = ft_new_token(token);
+				current = current->next;
+			}
+			i++;
+		}
+		return (head);
+	}
+	/*
 t_token	*ft_new_token(int type_token, char *value)
 {
-	int len;
-	t_token *new_node;
-
 	len = ft_strlen(value);
 	new_node = ft_calloc(1, sizeof(t_token));
 	if (new_node == NULL)
@@ -615,7 +611,7 @@ t_token	*ft_new_token(int type_token, char *value)
 // Función que añade un nuevo token a la lista dentro de t_general
 void	ft_add_token_in_general(t_token **head, int type_token, char *value)
 {
-	t_token *new_node;
+	t_token	*new_node;
 	t_token	*current;
 
 	new_node = NULL;
@@ -653,7 +649,7 @@ void	ft_free_tokens(t_token *head)
 }
 */
 
-/*
+	/*
 t_cmd	*ft_cmd_new(char *arg)
 {
 	t_cmd	*cmd;
@@ -717,10 +713,10 @@ t_cmd	*ft_cmd_new(char *arg)
 }
 */
 
-/* nuevo creo que desecho
+	/* nuevo creo que desecho
 void	ft_cmd_lst(t_general *g_data)
 {
-	t_cmd *cmd;
+	t_cmd	*cmd;
 	t_token	*current_token;
 	int		i;
 
@@ -741,7 +737,7 @@ void	ft_cmd_lst(t_general *g_data)
 }
 */
 
-/*
+	/*
 void	ft_process_args(t_cmd *cmd, char **mtx)
 {
 	int	i;
@@ -782,7 +778,7 @@ void	ft_process_args(t_cmd *cmd, char **mtx)
 }
 */
 
-/*quitar comillas no esta implementado
+	/*quitar comillas no esta implementado
 void	ft_quitar_comillas(char* cadena)
 {
 	int	i;
@@ -853,13 +849,13 @@ void	ft_reordenar_palabras(char *cadena)//no se usa
 	}
 }
 */
-/*funcion que divido en 2
+	/*funcion que divido en 2
 char	**ft_eliminar_espacios(char **cadena_de_cadenas)
 {
-	int i;
-	int cantidad_cadenas;
-	char **resultado;
-	int j;
+	int		i;
+	int		cantidad_cadenas;
+	char	**resultado;
+	int		j;
 
 	cantidad_cadenas = 0;
 	i = 0;
@@ -888,82 +884,82 @@ char	**ft_eliminar_espacios(char **cadena_de_cadenas)
 		i++;
 	}
 	resultado[cantidad_cadenas] = NULL; // Establecer el nuevo final del arreglo
-	return resultado;
+	return (resultado);
 }
 */
 
-void	ft_quita_comillas(t_general *g_data)
-{
-	int		i;
-	int		j;
-	int		k;
-	int		len;
-	int		in_quotes;
-	char	quote_char;
-	char	*temp;
-	char	*temp2;
-
-	i = 0;
-	j = 0;
-	k = 0;
-	len = 0;
-	in_quotes = 0;
-	quote_char = '\0';
-	temp = NULL;
-	temp2 = NULL;
-	while (g_data->split_tokens[i])
+	void ft_quita_comillas(t_general *g_data)
 	{
-		len = ft_strlen(g_data->split_tokens[i]);
-		temp = ft_calloc(len + 1, sizeof(char));
-		temp2 = ft_calloc(len + 1, sizeof(char));
-		while (g_data->split_tokens[i][j])
+		int i;
+		int j;
+		int k;
+		int len;
+		int in_quotes;
+		char quote_char;
+		char *temp;
+		char *temp2;
+
+		i = 0;
+		j = 0;
+		k = 0;
+		len = 0;
+		in_quotes = 0;
+		quote_char = '\0';
+		temp = NULL;
+		temp2 = NULL;
+		while (g_data->split_tokens[i])
 		{
-			if (g_data->split_tokens[i][j] == '\"'
-				|| g_data->split_tokens[i][j] == '\'')
+			len = ft_strlen(g_data->split_tokens[i]);
+			temp = ft_calloc(len + 1, sizeof(char));
+			temp2 = ft_calloc(len + 1, sizeof(char));
+			while (g_data->split_tokens[i][j])
 			{
-				if (in_quotes)
+				if (g_data->split_tokens[i][j] == '\"'
+					|| g_data->split_tokens[i][j] == '\'')
 				{
-					if (g_data->split_tokens[i][j] == quote_char)
+					if (in_quotes)
 					{
-						// Closing quote matches opening quote
-						in_quotes = 0;
-						quote_char = '\0';
+						if (g_data->split_tokens[i][j] == quote_char)
+						{
+							// Closing quote matches opening quote
+							in_quotes = 0;
+							quote_char = '\0';
+						}
+						else
+						{
+							// Quote doesn't match opening quote, so copy it
+							temp[k] = g_data->split_tokens[i][j];
+							k++;
+						}
 					}
 					else
 					{
-						// Quote doesn't match opening quote, so copy it
-						temp[k] = g_data->split_tokens[i][j];
-						k++;
+						// Not in quotes, so start a new quote sequence
+						in_quotes = 1;
+						quote_char = g_data->split_tokens[i][j];
 					}
+					j++;
 				}
 				else
 				{
-					// Not in quotes, so start a new quote sequence
-					in_quotes = 1;
-					quote_char = g_data->split_tokens[i][j];
+					temp[k] = g_data->split_tokens[i][j];
+					k++;
+					j++;
 				}
-				j++;
 			}
-			else
-			{
-				temp[k] = g_data->split_tokens[i][j];
-				k++;
-				j++;
-			}
+			temp[k] = '\0';
+			temp2 = ft_strdup(temp);
+			free(g_data->split_tokens[i]);
+			g_data->split_tokens[i] = ft_strdup(temp2);
+			free(temp);
+			free(temp2);
+			i++;
+			j = 0;
+			k = 0;
 		}
-		temp[k] = '\0';
-		temp2 = ft_strdup(temp);
-		free(g_data->split_tokens[i]);
-		g_data->split_tokens[i] = ft_strdup(temp2);
-		free(temp);
-		free(temp2);
-		i++;
-		j = 0;
-		k = 0;
 	}
-}
 
-/*
+	/*
 	int i;
 	int j;
 	int k;
@@ -1004,23 +1000,24 @@ void	ft_quita_comillas(t_general *g_data)
 		j = 0;
 		k = 0;
 	}
-*///void replace_token_in_cmd(t_general *g_data, int i, char *temp);
-//void ft_quita_comillas(t_general *g_data);
-//cosas.c//no se usa
-//t_cmd				*ft_split_commands_by_pipe(char **tokens); no se usa
-//void				ft_add_token_to_cmd(t_cmd *current_cmd, char *token,
-//						t_temp *temp);
-//void				ft_print_tokens(t_token *head);
-//int					ft_get_token_type(char *value);
-//t_token				*ft_new_token(char *value);
-//t_token				*ft_convert_to_tokens(char **str);
+*/
+	//void replace_token_in_cmd(t_general *g_data, int i, char *temp);
+	//void ft_quita_comillas(t_general *g_data);
+	//cosas.c//no se usa
+	//t_cmd				*ft_split_commands_by_pipe(char **tokens); no se usa
+	//void				ft_add_token_to_cmd(t_cmd *current_cmd, char *token,
+	//						t_temp *temp);
+	//void				ft_print_tokens(t_token *head);
+	//int					ft_get_token_type(char *value);
+	//t_token				*ft_new_token(char *value);
+	//t_token				*ft_convert_to_tokens(char **str);
 
-//void				ft_add_token_in_general(t_token **head, int type,
-//						char *value);
-//void				ft_free_tokens(t_token *head);
-/*
+	//void				ft_add_token_in_general(t_token **head, int type,
+	//						char *value);
+	//void				ft_free_tokens(t_token *head);
+	/*
 
-void ft_process_redirects(t_cmd *cmd, char **mtx, t_cmd_data *data)
+void	ft_process_redirects(t_cmd *cmd, char **mtx, t_cmd_data *data)
 {
     if (!ft_strcmp(mtx[data->i], "<") && mtx[data->i + 1] != NULL)
     {
@@ -1036,13 +1033,15 @@ void ft_process_redirects(t_cmd *cmd, char **mtx, t_cmd_data *data)
         cmd->outfile_name = ft_strdup(mtx[data->i]);
         if (cmd->outfile != -1)
             close(cmd->outfile);
-        cmd->outfile = open(cmd->outfile_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        cmd->outfile = open(cmd->outfile_name, O_WRONLY | O_CREAT | O_TRUNC,
+		0644);
     }
     else if (!ft_strcmp(mtx[data->i], ">>") && mtx[data->i + 1] != NULL)
     {
         data->i++;
         cmd->outfile_name = ft_strdup(mtx[data->i]);
-        cmd->outfile = open(cmd->outfile_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
+        cmd->outfile = open(cmd->outfile_name, O_WRONLY | O_CREAT | O_APPEND,
+		0644);
     }
     else if (!ft_strcmp(mtx[data->i], "<<") && mtx[data->i + 1] != NULL)
     {
@@ -1062,6 +1061,7 @@ t_cmd	*ft_cmd_new(char *arg)
 	int		k;
 	int		len;
 	int		lenh;
+	t_cmd	*cmd;
 
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	cmd->infile = -1;
@@ -1130,34 +1130,34 @@ t_cmd	*ft_cmd_new(char *arg)
 	cmd->next = NULL;
 	return (cmd);
 }*/
-
-/*
-t_cmd *ft_init_cmd(void)
+	/*
+t_cmd	*ft_init_cmd(void)
 {
-    t_cmd *cmd = ft_calloc(1, sizeof(t_cmd));
+    cmd = ft_calloc(1, sizeof(t_cmd));
     cmd->infile = -1;
     cmd->outfile = -1;
-    return cmd;
+    return (cmd);
 }
 
-t_cmd *ft_cmd_new(char *arg)
+t_cmd	*ft_cmd_new(char *arg)
 {
-    t_cmd *cmd = ft_init_cmd();
-    char **mtx = ft_split(arg, ' ');
+	t_cmd	*cmd;
+	char	**mtx;
+
+    cmd = ft_init_cmd();
+    mtx = ft_split(arg, ' ');
 	printf("\narg: %s\n", arg);
     ft_process_args(cmd, mtx);
 	printf("\nARG: %s\n", arg);
     ft_fill_cmd(cmd, mtx);
 	printf("\nARG2222: %s\n", arg);
-    return cmd;
+    return (cmd);
 }
 */
 
+	/*
 
-
-/*
-
-void process_redirects(t_cmd *cmd, char **mtx, int *i, int *len, int *lenh)
+void	process_redirects(t_cmd *cmd, char **mtx, int *i, int *len, int *lenh)
 {
     if (!ft_strcmp(mtx[*i], "<") && mtx[*i + 1] != NULL)
     {
@@ -1173,13 +1173,15 @@ void process_redirects(t_cmd *cmd, char **mtx, int *i, int *len, int *lenh)
         cmd->outfile_name = ft_strdup(mtx[*i]);
         if (cmd->outfile != -1)
             close(cmd->outfile);
-        cmd->outfile = open(cmd->outfile_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        cmd->outfile = open(cmd->outfile_name, O_WRONLY | O_CREAT | O_TRUNC,
+		0644);
     }
     else if (!ft_strcmp(mtx[*i], ">>") && mtx[*i + 1] != NULL)
     {
         (*i)++;
         cmd->outfile_name = ft_strdup(mtx[*i]);
-        cmd->outfile = open(cmd->outfile_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
+        cmd->outfile = open(cmd->outfile_name, O_WRONLY | O_CREAT | O_APPEND,
+		0644);
     }
     else if (!ft_strcmp(mtx[*i], "<<") && mtx[*i + 1] != NULL)
     {
@@ -1190,16 +1192,17 @@ void process_redirects(t_cmd *cmd, char **mtx, int *i, int *len, int *lenh)
         (*len)++;
 }
 
-void allocate_cmd_and_heredoc(t_cmd *cmd, int len, int lenh)
+void	allocate_cmd_and_heredoc(t_cmd *cmd, int len, int lenh)
 {
     cmd->cmd = ft_calloc(len + 1, sizeof(char *));
     if (lenh > 0)
         cmd->heredoc = ft_calloc(lenh + 1, sizeof(char *));
 }
 
-void fill_cmd_and_heredoc(t_cmd *cmd, char **mtx, int *i, int *j, int *k)
+void	fill_cmd_and_heredoc(t_cmd *cmd, char **mtx, int *i, int *j, int *k)
 {
-    if ((!ft_strcmp(mtx[*i], "<") || !ft_strcmp(mtx[*i], ">") || !ft_strcmp(mtx[*i], ">>")) && mtx[*i + 1] != NULL)
+    if ((!ft_strcmp(mtx[*i], "<") || !ft_strcmp(mtx[*i], ">")
+			|| !ft_strcmp(mtx[*i], ">>")) && mtx[*i + 1] != NULL)
         (*i)++;
     else if (!ft_strcmp(mtx[*i], "<<"))
     {
@@ -1246,4 +1249,88 @@ t_cmd	*ft_cmd_new(char *arg)
     cmd->next = NULL;
     return (cmd);
 }
+
+void	*ft_realloc(void *ptr, size_t size, size_t new_size)
+{
+	void	*new_ptr;
+	size_t	i;
+
+	if (new_size == 0)
+	{
+		free(ptr);
+		return (NULL);
+	}
+	if (ptr == NULL)
+		return (malloc(new_size));
+	new_ptr = malloc(new_size);
+	if (new_ptr)
+	{
+		i = 0;
+		while (i < size && i < new_size)
+		{
+			((char *)new_ptr)[i] = ((char *)ptr)[i];
+			i++;
+		}
+		free(ptr);
+	}
+	return (new_ptr);
+}
+
+// char	**ft_eliminar_espacios(char **cadena_de_cadenas)
+// {
+// 	int		cantidad_cadenas;
+// 	char	**resultado;
+// 	int		i;
+// 	int		j;
+
+// 	cantidad_cadenas = ft_contar_cadenas_validas(cadena_de_cadenas);
+// 	resultado = ft_calloc((cantidad_cadenas + 1), sizeof(char *));
+// 	if (!resultado)
+// 		return (NULL);
+// 	i = 0;
+// 	j = 0;
+// 	while (cadena_de_cadenas[i] != NULL)
+// 	{
+// 		if (ft_strcmp(cadena_de_cadenas[i], " ") != 0)
+// 		{
+// 			resultado[j] = cadena_de_cadenas[i];
+// 			j++;
+// 		}
+// 		else
+// 			free(cadena_de_cadenas[i]);
+// 		i++;
+// 	}
+// 	resultado[cantidad_cadenas] = NULL;
+// 	free(cadena_de_cadenas);
+// 	cadena_de_cadenas = NULL;
+// 	return (resultado);
+// }
+
+// char	**ft_eliminar_espacios(char **cadena_de_cadenas)
+// {
+// 	int		cantidad_cadenas;
+// 	char	**resultado;
+// 	int		i;
+// 	int		j;
+
+// 	cantidad_cadenas = ft_contar_cadenas_validas(cadena_de_cadenas);
+// 	resultado = ft_calloc((cantidad_cadenas + 1), sizeof(char *));
+// 	if (!resultado)
+// 		return (NULL);
+// 	i = 0;
+// 	j = 0;
+// 	while (cadena_de_cadenas[i] != NULL)
+// 	{
+// 		if (ft_strcmp(cadena_de_cadenas[i], " ") != 0)
+// 		{
+// 			resultado[j] = ft_strdup(cadena_de_cadenas[i]);
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// 	resultado[cantidad_cadenas] = NULL;
+// 	ft_free(cadena_de_cadenas, ft_mtxrow(cadena_de_cadenas));
+// 	cadena_de_cadenas = NULL;
+// 	return (resultado);
+// }
 */
