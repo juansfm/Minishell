@@ -47,7 +47,7 @@ int	ft_other_cmd(t_general *g_data, char **arg)
 	if (!arg[0])
 	{
 		printf("No such file or directory\n");
-		return (0);
+		return (127);
 	}
 	env_mtx = ft_env_mtx(g_data);
 	pid = fork();
@@ -108,20 +108,63 @@ char	**ft_env_mtx(t_general *g_data)
 	return (mtx);
 }
 
+// char	*ft_path(t_general *g_data, char *cmd)
+// {
+// 	char	**paths;
+// 	t_env	*temp;
+// 	char	*aux;
+// 	int		i;
+
+// 	if (access(cmd, F_OK) == 0)
+// 		return (cmd);
+// 	temp = ft_env_search(g_data, "PATH");
+// 	if (!temp)
+// 	{
+// 		free(cmd);
+// 		return (NULL);
+// 	}
+// 	paths = ft_split(temp->valor, ':');
+// 	i = -1;
+// 	while (paths[++i])
+// 	{
+// 		aux = ft_strjoin_free(ft_strjoin(paths[i], "/"), cmd);
+// 		if (access(aux, F_OK) == 0)
+// 			break ;
+// 		free(aux);
+// 		aux = NULL;
+// 	}
+// 	if (!aux)
+// 		aux = ft_strdup(cmd);
+// 	free(cmd);
+// 	ft_free(paths, ft_mtxrow(paths));
+// 	return (aux);
+// }
+char	**ft_get_paths(t_general *g_data, char *cmd)
+{
+	t_env	*temp;
+
+	if (access(cmd, F_OK) == 0)
+		return (NULL);
+	temp = ft_env_search(g_data, "PATH");
+	if (!temp)
+	{
+		free(cmd);
+		return (NULL);
+	}
+	return (ft_split(temp->valor, ':'));
+}
+
 char	*ft_path(t_general *g_data, char *cmd)
 {
 	char	**paths;
-	t_env	*temp;
 	char	*aux;
 	int		i;
 
-	if (access(cmd, F_OK) == 0)
-		return (cmd);
-	temp = ft_env_search(g_data, "PATH");
-	if (!temp)
-		return (NULL);
-	paths = ft_split(temp->valor, ':');
 	i = -1;
+	aux = NULL;
+	paths = ft_get_paths(g_data, cmd);
+	if (!paths)
+		return (cmd);
 	while (paths[++i])
 	{
 		aux = ft_strjoin_free(ft_strjoin(paths[i], "/"), cmd);

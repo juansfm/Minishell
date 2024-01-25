@@ -25,18 +25,18 @@ char	*ft_get_word_exchange(t_general *g_data, char *palabra_dolar)
 	t_env	*env;
 	char	*word_exchange;
 
-	// if (palabra_dolar[0] != '?')
-	// {
-	if (ft_env_search(g_data, palabra_dolar))
+	if (palabra_dolar[0] != '?')
 	{
-		env = ft_env_search(g_data, palabra_dolar);
-		word_exchange = ft_strdup(env->valor);
+		if (ft_env_search(g_data, palabra_dolar))
+		{
+			env = ft_env_search(g_data, palabra_dolar);
+			word_exchange = ft_strdup(env->valor);
+		}
+		else
+			word_exchange = "";
 	}
 	else
-		word_exchange = "";
-	// }
-	// else
-	// 	word_exchange = ft_itoa(g_data->status);
+		word_exchange = ft_itoa(g_data->status);
 	return (word_exchange);
 }
 
@@ -52,6 +52,8 @@ char	*ft_process_dolar(t_general *g_data, char *string_restruc,
 	word_exchange = ft_get_word_exchange(g_data, palabra_dolar);
 	string_restruc = ft_remodelar_cadena(string_restruc, palabra_dolar,
 			word_exchange, pos_dolar);
+	free(palabra_dolar);
+	free(word_exchange);
 	return (string_restruc);
 }
 
@@ -71,6 +73,7 @@ char	*ft_expand_all(t_general *g_data, char *cmd)
 		pos = 0;
 		pos_dolar = ft_encontrar_dolar(string_restruc, pos);
 	}
+	free(cmd);
 	return (string_restruc);
 }
 /*

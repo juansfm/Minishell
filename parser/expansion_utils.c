@@ -103,5 +103,7 @@ char	*ft_remodelar_cadena(char *split_tokens, char *palabra_dolar,
 	else
 		cadena_a_trozos = ft_strdup(word_exchange);
 	cadena_a_trozos = ft_strjoin_free(cadena_a_trozos, cadena_parte_final);
+	free(cadena_parte_final);
+	free(palabra_a_cambiar);
 	return (cadena_a_trozos);
 }
