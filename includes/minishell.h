@@ -88,31 +88,14 @@ typedef struct s_process_data
 	char			*temp;
 }					t_process_data;
 
-
 typedef struct s_cmd_data
 {
-    int i;
-    int j;
-    int k;
-    int len;
-    int lenh;
-} t_cmd_data;
-
-//tokens
-/*typedef struct s_token
-{
-	int				type_token;
+	int				i;
+	int				j;
+	int				k;
 	int				len;
-	char			*value;
-	struct s_token	*next;
-}					t_token;
-*/
-//no se usa
-typedef struct s_temp
-{
-	char			*temp;
-	struct s_temp	*next;
-}					t_temp;
+	int				lenh;
+}					t_cmd_data;
 
 /*No lo uso por ahora
 */
@@ -136,16 +119,17 @@ t_env				*ft_env_search(t_general *g_data, char *name);
 int					ft_env_len(t_general *g_data);
 
 //BUILTINS
-void				ft_export(t_general *g_data, char **env_line);
+int					ft_export(t_general *g_data, char **env_line);
 void				ft_exit(t_general *g_data, char **arg);
 void				ft_echo(t_general *g_data, char **arg);
-void				ft_cd(t_general *g_data, char **arg);
+int					ft_cd(t_general *g_data, char **arg);
 void				ft_pwd(t_general *g_data);
 int					ft_builtins(t_general *g_data, char **arg);
 
 //CD AUX
-void				ft_old_pwd(t_general *g_data);
-void				ft_home(t_general *g_data);
+int					ft_old_pwd(t_general *g_data);
+int					ft_home(t_general *g_data);
+int					ft_other_cd(t_general *g_data, char *dir, char **arg);
 
 //CMD
 int					ft_other_cmd(t_general *g_data, char **arg);
@@ -172,15 +156,18 @@ void				ft_print_commands(t_cmd *cmd);
 char				*ft_extract_word(char *str, int pos_dolar, int *pos);
 int					ft_encontrar_dolar(char *cadena, int inicio);
 char				*ft_cpy_part(char *str, int *pos, int num_chars);
-char				*ft_remodelar_cadena(char *split_tokens,
-						char *palabra_dolar, char *word_exchange,
-						int pos_dolar);
+char	*ft_remodelar_cadena(char *split_tokens,
+							char *palabra_dolar,
+							char *word_exchange,
+							int pos_dolar);
 
 //**************************expansion.c********************************
 void				ft_vamos_a_expandir(t_general *g_data);
-char				*ft_expand_all(t_general *g_data, char *cmd);//demasiado laarga
-char				*ft_get_word_exchange(t_general *g_data, char *palabra_dolar);
-char 				*ft_process_dolar(t_general *g_data, char *string_restruc, int pos_dolar, int *pos);
+char				*ft_expand_all(t_general *g_data, char *cmd);
+char	*ft_get_word_exchange(t_general *g_data,
+							char *palabra_dolar);
+char				*ft_process_dolar(t_general *g_data, char *string_restruc,
+						int pos_dolar, int *pos);
 
 //**********************************lexer_utils.c**********************
 int					ft_count_pipes(char **input);
@@ -191,13 +178,12 @@ char				**ft_concatenate_until_pipe(char **input);
 void				ft_parse_tokens(t_general *g_data);
 void				ft_funcion_junta_redirecciones(t_general *g_data);
 void				ft_parser(t_general *g_data, char *line);
-int		 			ft_solo_espacios(char *line);
+int					ft_solo_espacios(char *line);
 
 //**********************list_cmd.c********************************
 t_cmd				*ft_cmd_last(t_general *g_data);
 void				ft_cmd_add_back(t_general *g_data, t_cmd *new);
 t_cmd				*ft_init_cmd(void);
-//t_cmd				*ft_cmd_new(char *arg);
 void				ft_cmd_lst(t_general *g_data, char **mtx);
 
 //*************************prompt.c********************************
@@ -219,13 +205,14 @@ void				ft_free_cmd(t_general *g_data);
 int					ft_char_reserved(char c);
 int					ft_isspace(int c);
 void				ft_process_quote(t_general *g_data, int *pos);
-void 				ft_replace_special_chars(t_general *g_data, int *pos, char current_char, int *count_quotes);
+void				ft_replace_special_chars(t_general *g_data, int *pos,
+						char current_char, int *count_quotes);
 void				ft_restore_quotes(char **split_tokens);
 void				*ft_realloc(void *ptr, size_t size, size_t new_size);
 
 //*************************utils_parser2.c********************************
 char				*ft_extract_token(char *cpy_line, int start, int end);
-char				**ft_tokenize(t_general *g_data);//demasiado largo
+char				**ft_tokenize(t_general *g_data);
 int					ft_contar_cadenas_validas(char **cadena_de_cadenas);
 char				**ft_eliminar_espacios(char **cadena_de_cadenas);
 
@@ -237,10 +224,14 @@ void				ft_replace_token_in_cmd(t_process_data *p);
 void				ft_quita_comillas(t_general *g_data);
 
 //***************************nueva_funcion_new.c****************************
-void 				ft_process_input_file(t_cmd *cmd, char **mtx, t_cmd_data *data);
-void 				ft_process_output_file(t_cmd *cmd, char **mtx, t_cmd_data *data);
-void 				ft_process_redirects(t_cmd *cmd, char **mtx, t_cmd_data *data);
-void 				ft_fill_cmd_and_heredoc(t_cmd *cmd, char **mtx, t_cmd_data *data);
+void				ft_process_input_file(t_cmd *cmd, char **mtx,
+						t_cmd_data *data);
+void				ft_process_output_file(t_cmd *cmd, char **mtx,
+						t_cmd_data *data);
+void				ft_process_redirects(t_cmd *cmd, char **mtx,
+						t_cmd_data *data);
+void				ft_fill_cmd_and_heredoc(t_cmd *cmd, char **mtx,
+						t_cmd_data *data);
 t_cmd				*ft_cmd_new(char *arg);
 
 #endif

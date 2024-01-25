@@ -33,7 +33,7 @@ static int	ft_echo_flag(char *msg)
  * @param g_data general struct
  * @param env_line NAME=VALUE
  */
-void	ft_export(t_general *g_data, char **env_line)
+int	ft_export(t_general *g_data, char **env_line)
 {
 	t_env	*temp;
 	int		i;
@@ -41,7 +41,7 @@ void	ft_export(t_general *g_data, char **env_line)
 	if (!env_line[1])
 	{
 		ft_print_export(g_data);
-		return ;
+		return (0);
 	}
 	i = 1;
 	while (env_line[i])
@@ -51,13 +51,13 @@ void	ft_export(t_general *g_data, char **env_line)
 		{
 			printf("bash: export: '%s': not a valid identifier\n", temp->name);
 			ft_free_env(temp);
-			return ;
+			return (1);
 		}
 		ft_free_env(temp);
 		ft_add_mod_env(g_data, env_line[i]);
 		i++;
 	}
-	return ;
+	return (0);
 }
 
 /**

@@ -18,11 +18,11 @@ int	ft_builtins(t_general *g_data, char **arg)
 	if (!ft_strcmp(arg[0], "echo") || !ft_strcmp(arg[0], "ECHO"))
 		ft_echo(g_data, arg);
 	else if (!ft_strcmp(arg[0], "cd"))
-		ft_cd(g_data, arg);
+		g_data->status = ft_cd(g_data, arg);
 	else if (!ft_strcmp(arg[0], "pwd") || !ft_strcmp(arg[0], "PWD"))
 		ft_pwd(g_data);
 	else if (!ft_strcmp(arg[0], "export"))
-		ft_export(g_data, arg);
+		g_data->status = ft_export(g_data, arg);
 	else if (!ft_strcmp(arg[0], "env") || !ft_strcmp(arg[0], "ENV"))
 		ft_print_env(g_data);
 	else if (!ft_strcmp(arg[0], "unset"))
