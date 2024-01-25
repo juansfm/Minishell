@@ -59,7 +59,7 @@ int	ft_encontrar_dolar(char *cadena, int inicio)
 	}
 	return (-1);
 }
-/*/hola$USER*/
+
 //si la funcion busca_caracter encuentra el caracter que le paso,
 // devuelve la posicion donde esta el dolar
 	//esta funcion es solo una parte de otra funcion,

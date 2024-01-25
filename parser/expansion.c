@@ -14,7 +14,6 @@ void	ft_vamos_a_expandir(t_general *g_data)
 	while (g_data->cmd->cmd[i])
 	{
 		if ((ft_encontrar_dolar(g_data->cmd->cmd[i], pos) > -1))
-		{
 			g_data->cmd->cmd[i] = ft_expand_all(g_data,
 												g_data->cmd->cmd[i]);
 		i++;

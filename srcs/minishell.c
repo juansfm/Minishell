@@ -1,5 +1,27 @@
 #include "minishell.h"
 
+// void	ft_print_commands(t_cmd *cmd)
+// {
+// 	t_cmd	*current;
+// 	int		i;
+// 	char	**temp;
+
+// 	current = cmd;
+// 	i = 0;
+// 	while (current != NULL)
+// 	{
+// 		printf("Command group %d:\n", i);
+// 		temp = current->cmd;
+// 		while (*temp)
+// 		{
+// 			printf("(%s)\n", *temp);
+// 			temp++;
+// 		}
+// 		current = current->next;
+// 		i++;
+// 	}
+// }
+
 void	ft_l(void)
 {
 	system("leaks -q minishell");
@@ -12,7 +34,7 @@ void	ft_minish(char **envp)
 
 	g_running = 1;
 	g_data.cmd = NULL;
-	//atexit(ft_l);
+	atexit(ft_l);
 	ft_dup_env(&g_data, envp);
 	g_data.og_in = dup(STDIN_FILENO);
 	g_data.og_out = dup(STDOUT_FILENO);
