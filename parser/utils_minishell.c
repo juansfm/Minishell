@@ -31,6 +31,7 @@ void	ft_quita_comillas(t_general *g_data)
 		p.k = 0;
 	}
 }
+
 void	ft_print_commands(t_cmd *cmd)
 {
 	t_cmd	*current;

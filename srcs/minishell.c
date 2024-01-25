@@ -17,12 +17,16 @@ void	ft_minish(char **envp)
 	g_data.og_in = dup(STDIN_FILENO);
 	g_data.og_out = dup(STDOUT_FILENO);
 	g_data.status = 0;
+	g_data.cpy_line = NULL;
 	ft_prompt();
 	while (g_running)
 	{
 		line = readline("\033[0;32mMinishell$ \033[0m");
-		if (!line || line[0] == '\0')
+		if (!line)
+			continue ;
+		if (line[0] == '\0')
 		{
+			free(line);
 			continue ;
 		}
 		if (line && *line)
@@ -34,34 +38,38 @@ void	ft_minish(char **envp)
 			if (ft_cmd_len(&g_data) == 1)
 			{
 				ft_redir(&g_data, g_data.cmd);
-				if (!ft_builtins(&g_data, g_data.cmd->cmd))
-					g_data.status = ft_other_cmd(&g_data, g_data.cmd->cmd);
+				if (g_data.cmd->cmd[0] != NULL)
+				{
+					if (!ft_builtins(&g_data, g_data.cmd->cmd))
+						g_data.status = ft_other_cmd(&g_data, g_data.cmd->cmd);
+				}
 			}
 			else if (ft_cmd_len(&g_data) >= 2)
 			{
 				ft_multiple_cmd(&g_data, g_data.cmd);
 			}
+			// printf("status: %d\n", g_data.status);
+			free(g_data.cpy_line);
+			ft_free(g_data.split_tokens, ft_mtxrow(g_data.split_tokens));
 		}
 		dup2(g_data.og_in, STDIN_FILENO);
 		dup2(g_data.og_out, STDOUT_FILENO);
 		free(line);
 		ft_free_cmd(&g_data);
-		printf("status: %d\n", g_data.status);
 	}
 	printf("\n");
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-    signal(SIGINT, ft_handler);
-
-    (void)argv;
-    if (argc == 1)
-    {
-        using_history();
-        ft_minish(envp);
-    }
-    else
-        printf("Error: too many arguments\n");
-    return (0);
+	signal(SIGINT, ft_handler);
+	(void)argv;
+	if (argc == 1)
+	{
+		using_history();
+		ft_minish(envp);
+	}
+	else
+		printf("Error: too many arguments\n");
+	return (0);
 }

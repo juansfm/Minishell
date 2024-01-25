@@ -124,8 +124,7 @@ char	*ft_path(t_general *g_data, char *cmd)
 	i = -1;
 	while (paths[++i])
 	{
-		aux = ft_strjoin(paths[i], "/");
-		aux = ft_strjoin_free(aux, cmd);
+		aux = ft_strjoin_free(ft_strjoin(paths[i], "/"), cmd);
 		if (access(aux, F_OK) == 0)
 			break ;
 		free(aux);

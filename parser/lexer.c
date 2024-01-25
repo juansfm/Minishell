@@ -6,6 +6,7 @@ void	ft_parse_tokens(t_general *g_data) //usado para hacer split primero
 	int		pos;
 	int		len;
 
+	g_data->split_tokens = NULL;
 	len = ft_strlen(g_data->cpy_line);
 	pos = 0;
 	while (pos < len)
@@ -36,9 +37,10 @@ void	ft_funcion_junta_redirecciones(t_general *g_data)
 			if (ft_strcmp(g_data->split_tokens[i],
 					g_data->split_tokens[i + 1]) == 0)
 			{
-				g_data->split_tokens[i] = ft_strjoin(g_data->split_tokens[i],
+				g_data->split_tokens[i] = ft_strjoin_free(g_data->split_tokens[i],
 						g_data->split_tokens[i + 1]);
 				j = i + 1;
+				free(g_data->split_tokens[j]);
 				while (g_data->split_tokens[j] != NULL)
 				{
 					g_data->split_tokens[j] = g_data->split_tokens[j + 1];
@@ -55,6 +57,7 @@ void	ft_parser(t_general *g_data, char *line)
 	g_data->cpy_line = ft_strdup(line);
 	ft_parse_tokens(g_data);
 }
+
 int	ft_solo_espacios(char *line)
 {
 	int	i;

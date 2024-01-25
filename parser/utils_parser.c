@@ -9,41 +9,45 @@ int	ft_char_reserved(char c)
 
 int	ft_isspace(int c)
 {
-	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r');
+	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
+		|| c == '\r');
 }
 
-void ft_replace_special_chars(t_general *g_data, int *pos, char current_char, int *count_quotes)
+void	ft_replace_special_chars(t_general *g_data, int *pos, char current_char,
+		int *count_quotes)
 {
-    while (g_data->cpy_line[*pos] && ((*count_quotes % 2 != 0) || (*count_quotes == 0)))
-    {
-        if (g_data->cpy_line[*pos] == ' ')
-            g_data->cpy_line[*pos] = '\1';
-        else if (g_data->cpy_line[*pos] == '|')
-            g_data->cpy_line[*pos] = '\2';
-        else if (g_data->cpy_line[*pos] == '>')
-            g_data->cpy_line[*pos] = '\3';
-        else if (g_data->cpy_line[*pos] == '<')
-            g_data->cpy_line[*pos] = '\4';
-        else if (g_data->cpy_line[*pos] == current_char)
-            (*count_quotes)++;
-        (*pos)++;
-    }
+	while (g_data->cpy_line[*pos] && ((*count_quotes % 2 != 0)
+			|| (*count_quotes == 0)))
+	{
+		if (g_data->cpy_line[*pos] == ' ')
+			g_data->cpy_line[*pos] = '\1';
+		else if (g_data->cpy_line[*pos] == '|')
+			g_data->cpy_line[*pos] = '\2';
+		else if (g_data->cpy_line[*pos] == '>')
+			g_data->cpy_line[*pos] = '\3';
+		else if (g_data->cpy_line[*pos] == '<')
+			g_data->cpy_line[*pos] = '\4';
+		else if (g_data->cpy_line[*pos] == current_char)
+			(*count_quotes)++;
+		(*pos)++;
+	}
 }
 
-void ft_process_quote(t_general *g_data, int *pos)
+void	ft_process_quote(t_general *g_data, int *pos)
 {
-    char current_char;
-    int count_quotes = 0;
+	char	current_char;
+	int		count_quotes;
 
-    current_char = g_data->cpy_line[*pos];
-    ft_replace_special_chars(g_data, pos, current_char, &count_quotes);
-
-    if ((!g_data->cpy_line[*pos] && (count_quotes % 2 != 0)) || (count_quotes % 2 != 0))
-    {
-        printf("Error: No se encontró el cierre de las comillas.\n");
-        return;
-    }
-    *(pos) = *(pos) - 1;
+	count_quotes = 0;
+	current_char = g_data->cpy_line[*pos];
+	ft_replace_special_chars(g_data, pos, current_char, &count_quotes);
+	if ((!g_data->cpy_line[*pos] && (count_quotes % 2 != 0)) || (count_quotes
+			% 2 != 0))
+	{
+		printf("Error: No se encontró el cierre de las comillas.\n");
+		return ;
+	}
+	*(pos) = *(pos)-1;
 }
 
 void	ft_restore_quotes(char **split_tokens)

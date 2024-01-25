@@ -82,6 +82,11 @@ int	ft_home(t_general *g_data)
 int	ft_other_cd(t_general *g_data, char *dir, char **arg)
 {
 	ft_add_mod_env(g_data, dir);
+	if (access(arg[1], F_OK) == -1)
+	{
+		printf("%s: No such file or directory\n", arg[1]);
+		return (1);
+	}
 	if (access(arg[1], R_OK | W_OK) == -1)
 	{
 		printf("%s: Permission denied\n", arg[1]);

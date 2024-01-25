@@ -29,32 +29,29 @@ void	ft_signals(void)
 }*/
 void	ft_handler(int sig)
 {
-    if (SIGINT == sig) // user press CTRL+C
-    {
-        g_running = 1;
-        rl_on_new_line();
-        rl_redisplay();
-        ft_putstr_fd("   ", 1);
-        ioctl(STDIN_FILENO, TIOCSTI, "\n"); // 0 es STDIN_FILENO
-        rl_on_new_line();
-    }
+	if (SIGINT == sig)
+	{
+		g_running = 1;
+		rl_on_new_line();
+		rl_redisplay();
+		ft_putstr_fd("   ", 1);
+		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+		rl_on_new_line();
+	}
 }
 
 void	ft_ctrl_d(t_general *g_data)
 {
-    if (!g_data->cmd)
-    {
-        rl_on_new_line();
-        rl_redisplay();
-        ft_putstr_fd("exit\n", 1);
-        rl_clear_history();
-        ft_free_cmd(g_data);
-        exit(EXIT_SUCCESS);
-    }
+	if (!g_data->cmd)
+	{
+		rl_on_new_line();
+		rl_redisplay();
+		ft_putstr_fd("exit\n", 1);
+		rl_clear_history();
+		ft_free_cmd(g_data);
+		exit(EXIT_SUCCESS);
+	}
 }
-
-
-
 
 /*void	ft_handler(int sig, siginfo_t *info, void *context)
 {

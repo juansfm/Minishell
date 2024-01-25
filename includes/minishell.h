@@ -72,7 +72,6 @@ typedef struct s_general
 	int				og_in;
 	int				og_out;
 	int				status;
-	char			**array_tokens;
 }					t_general;
 /*******************************parser estructuras**************************/
 /*comillas*/
@@ -97,8 +96,6 @@ typedef struct s_cmd_data
 	int				lenh;
 }					t_cmd_data;
 
-/*No lo uso por ahora
-*/
 
 //ENV
 void				ft_dup_env(t_general *g_data, char **envp);
@@ -155,14 +152,14 @@ char				*ft_extract_word(char *str, int pos_dolar, int *pos);
 int					ft_encontrar_dolar(char *cadena, int inicio);
 char				*ft_cpy_part(char *str, int *pos, int num_chars);
 char				*ft_remodelar_cadena(char *split_tokens,
-							char *palabra_dolar, char *word_exchange,
-							int pos_dolar);
+						char *palabra_dolar, char *word_exchange,
+						int pos_dolar);
 
 //**************************expansion.c********************************
 void				ft_vamos_a_expandir(t_general *g_data);
 char				*ft_expand_all(t_general *g_data, char *cmd);
 char				*ft_get_word_exchange(t_general *g_data,
-							char *palabra_dolar);
+						char *palabra_dolar);
 char				*ft_process_dolar(t_general *g_data, char *string_restruc,
 						int pos_dolar, int *pos);
 

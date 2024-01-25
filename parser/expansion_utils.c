@@ -99,9 +99,9 @@ char	*ft_remodelar_cadena(char *split_tokens, char *palabra_dolar,
 	cadena_parte_final = ft_cpy_part(split_tokens, &pos, ft_strlen(split_tokens)
 			- pos);
 	if (cadena_a_trozos != NULL)
-		cadena_a_trozos = ft_strjoin(cadena_a_trozos, word_exchange);
+		cadena_a_trozos = ft_strjoin_free(cadena_a_trozos, word_exchange);
 	else
 		cadena_a_trozos = ft_strdup(word_exchange);
-	cadena_a_trozos = ft_strjoin(cadena_a_trozos, cadena_parte_final);
+	cadena_a_trozos = ft_strjoin_free(cadena_a_trozos, cadena_parte_final);
 	return (cadena_a_trozos);
 }

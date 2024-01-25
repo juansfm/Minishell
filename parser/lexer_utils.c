@@ -20,15 +20,16 @@ char	*ft_concatenate_strings(char *temp, char *input)
 {
 	char	*old_temp;
 	size_t	temp_len;
+	char	*result;
 
 	old_temp = temp;
 	temp_len = ft_strlen(temp) + ft_strlen(input) + 2;
-	temp = malloc(temp_len);
-	ft_strlcpy(temp, old_temp, temp_len);
-	ft_strlcat(temp, " ", temp_len);
-	ft_strlcat(temp, input, temp_len);
+	result = malloc(temp_len);
+	ft_strlcpy(result, old_temp, temp_len);
+	ft_strlcat(result, " ", temp_len);
+	ft_strlcat(result, input, temp_len);
 	free(old_temp);
-	return (temp);
+	return (result);
 }
 
 char	**ft_concatenate_until_pipe(char **input)
@@ -58,5 +59,7 @@ char	**ft_concatenate_until_pipe(char **input)
 	}
 	result[j++] = temp;
 	result[j] = NULL;
+	ft_free(input, ft_mtxrow(input));
+	// free(temp);
 	return (result);
 }
