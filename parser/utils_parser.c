@@ -70,29 +70,3 @@ void	ft_restore_quotes(char **split_tokens)
 		i++;
 	}
 }
-
-void	*ft_realloc(void *ptr, size_t size, size_t new_size)
-{
-	void	*new_ptr;
-	size_t	i;
-
-	if (new_size == 0)
-	{
-		free(ptr);
-		return (NULL);
-	}
-	if (ptr == NULL)
-		return (malloc(new_size));
-	new_ptr = malloc(new_size);
-	if (new_ptr)
-	{
-		i = 0;
-		while (i < size && i < new_size)
-		{
-			((char *)new_ptr)[i] = ((char *)ptr)[i];
-			i++;
-		}
-		free(ptr);
-	}
-	return (new_ptr);
-}

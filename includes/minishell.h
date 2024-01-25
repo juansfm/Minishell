@@ -105,7 +105,6 @@ void				ft_dup_env(t_general *g_data, char **envp);
 void				ft_add_mod_env(t_general *g_data, char *env_new);
 void				ft_delete_env(t_general *g_data, char *env_del);
 int					ft_env_error(char *env_line);
-
 void				ft_print_env(t_general *g_data);
 void				ft_print_export(t_general *g_data);
 
@@ -150,21 +149,19 @@ void				ft_multiple_cmd(t_general *g_data, t_cmd *cmd);
 //************************minishell.c********************************
 void				ft_minish(char **envp);
 int					main(int argc, char **argv, char **envp);
-void				ft_print_commands(t_cmd *cmd);
 
 //***********************ft_expansion_utils.c***********************
 char				*ft_extract_word(char *str, int pos_dolar, int *pos);
 int					ft_encontrar_dolar(char *cadena, int inicio);
 char				*ft_cpy_part(char *str, int *pos, int num_chars);
-char	*ft_remodelar_cadena(char *split_tokens,
-							char *palabra_dolar,
-							char *word_exchange,
+char				*ft_remodelar_cadena(char *split_tokens,
+							char *palabra_dolar, char *word_exchange,
 							int pos_dolar);
 
 //**************************expansion.c********************************
 void				ft_vamos_a_expandir(t_general *g_data);
 char				*ft_expand_all(t_general *g_data, char *cmd);
-char	*ft_get_word_exchange(t_general *g_data,
+char				*ft_get_word_exchange(t_general *g_data,
 							char *palabra_dolar);
 char				*ft_process_dolar(t_general *g_data, char *string_restruc,
 						int pos_dolar, int *pos);
@@ -195,6 +192,8 @@ void				ft_ctrl_d(t_general *g_data);
 //**************************utils_minishell.c**************************
 t_cmd				*ft_create_new_cmd(void);
 void				ft_generate_cmds_from_tokens(t_general *g_data);
+void				ft_quita_comillas(t_general *g_data);
+void				ft_print_commands(t_cmd *cmd);
 
 //**************************utils_parsers_cmd.c**************************
 void				ft_process_args(t_cmd *cmd, char **mtx);
@@ -211,7 +210,6 @@ void				ft_process_quote(t_general *g_data, int *pos);
 void				ft_replace_special_chars(t_general *g_data, int *pos,
 						char current_char, int *count_quotes);
 void				ft_restore_quotes(char **split_tokens);
-void				*ft_realloc(void *ptr, size_t size, size_t new_size);
 
 //*************************utils_parser2.c********************************
 char				*ft_extract_token(char *cpy_line, int start, int end);
@@ -224,7 +222,6 @@ void				ft_process_quote_character(t_process_data *p);
 void				ft_process_non_quote_character(t_process_data *p);
 void				ft_process_token(t_process_data *p);
 void				ft_replace_token_in_cmd(t_process_data *p);
-void				ft_quita_comillas(t_general *g_data);
 
 //***************************nueva_funcion_new.c****************************
 void				ft_process_input_file(t_cmd *cmd, char **mtx,

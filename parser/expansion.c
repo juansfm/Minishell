@@ -14,8 +14,10 @@ void	ft_vamos_a_expandir(t_general *g_data)
 	while (g_data->cmd->cmd[i])
 	{
 		if ((ft_encontrar_dolar(g_data->cmd->cmd[i], pos) > -1))
+		{
 			g_data->cmd->cmd[i] = ft_expand_all(g_data,
 					g_data->cmd->cmd[i]);
+		}
 		i++;
 	}
 }
@@ -24,15 +26,15 @@ char *ft_get_word_exchange(t_general *g_data, char *palabra_dolar)
 {
     t_env *env;
     char *word_exchange;
-
-    if (ft_env_search(g_data, palabra_dolar))
-    {
-        env = ft_env_search(g_data, palabra_dolar);
-        word_exchange = ft_strdup(env->valor);
-    }
-    else
-        word_exchange = "";
-    return word_exchange;
+	
+	if (ft_env_search(g_data, palabra_dolar))
+	{
+    env = ft_env_search(g_data, palabra_dolar);
+    word_exchange = ft_strdup(env->valor);
+	}
+	else
+	    word_exchange = "";
+	return word_exchange;
 }
 
 char *ft_process_dolar(t_general *g_data, char *string_restruc, int pos_dolar, int *pos)
@@ -42,8 +44,9 @@ char *ft_process_dolar(t_general *g_data, char *string_restruc, int pos_dolar, i
 
     palabra_dolar = ft_extract_word(string_restruc, pos_dolar, pos);
     if (palabra_dolar[0] == '\0')
-        return string_restruc;
+		return string_restruc;
     word_exchange = ft_get_word_exchange(g_data, palabra_dolar);
+	
     string_restruc = ft_remodelar_cadena(string_restruc, palabra_dolar, word_exchange, pos_dolar);
 
     return string_restruc;
@@ -54,11 +57,13 @@ char *ft_expand_all(t_general *g_data, char *cmd)
     int pos;
     int pos_dolar;
     char *string_restruc;
+	int control_dolar;
 
     pos = 0;
+	control_dolar = 1;
     string_restruc = cmd;
 
-    while ((pos_dolar = ft_encontrar_dolar(string_restruc, pos)) >= 0)
+    while (((pos_dolar = ft_encontrar_dolar(string_restruc, pos)) >= 0))
     {
         string_restruc = ft_process_dolar(g_data, string_restruc, pos_dolar, &pos);
         pos = 0;

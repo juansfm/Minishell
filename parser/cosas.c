@@ -1247,3 +1247,69 @@ t_cmd	*ft_cmd_new(char *arg)
     return (cmd);
 }
 */
+
+void	*ft_realloc(void *ptr, size_t size, size_t new_size)
+{
+	void	*new_ptr;
+	size_t	i;
+
+	if (new_size == 0)
+	{
+		free(ptr);
+		return (NULL);
+	}
+	if (ptr == NULL)
+		return (malloc(new_size));
+	new_ptr = malloc(new_size);
+	if (new_ptr)
+	{
+		i = 0;
+		while (i < size && i < new_size)
+		{
+			((char *)new_ptr)[i] = ((char *)ptr)[i];
+			i++;
+		}
+		free(ptr);
+	}
+	return (new_ptr);
+}
+/*
+char	*ft_expand_all(t_general *g_data, char *cmd)
+{
+	int		pos;
+	int		pos_dolar;
+	char	*palabra_dolar;
+	char	*word_exchange;
+	char	*string_restruc;
+	t_env	*env;
+
+	pos = 0;
+	pos_dolar = 0;
+	palabra_dolar = NULL;
+	word_exchange = NULL;
+	string_restruc = cmd;
+	env = NULL;
+	while ((pos_dolar = ft_encontrar_dolar(string_restruc, pos)) >= 0)
+	{
+		palabra_dolar = ft_extract_word(string_restruc, pos_dolar,
+				&pos);
+		if (palabra_dolar[0] == '\0')
+			return (string_restruc);
+		{
+			if (ft_env_search(g_data, palabra_dolar))
+			{
+				env = ft_env_search(g_data, palabra_dolar);
+				ft_strdup(env->valor);
+				word_exchange = ft_strdup(env->valor);
+			}
+			else
+				word_exchange = "";
+			string_restruc = ft_remodelar_cadena(string_restruc,
+					palabra_dolar, word_exchange, pos_dolar);
+		}
+		pos = 0;
+	}
+	return (string_restruc);
+}
+
+*/

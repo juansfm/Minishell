@@ -45,7 +45,10 @@ char	**ft_concatenate_until_pipe(char **input)
 	while (input[i])
 	{
 		if (ft_strcmp(input[i], "|") != 0)
+		{
+			free(temp);
 			temp = ft_concatenate_strings(temp, input[i]);
+		}
 		else
 		{
 			result[j++] = temp;

@@ -65,26 +65,7 @@ void	ft_replace_token_in_cmd(t_process_data *p)
 	free(temp2);
 }
 
-void	ft_quita_comillas(t_general *g_data)
-{
-	t_process_data	p;
 
-	p.g_data = g_data;
-	p.i = 0;
-	p.j = 0;
-	p.k = 0;
-	p.in_quotes = 0;
-	p.quote_char = '\0';
-	p.temp = NULL;
-	while (p.g_data->cmd->cmd[p.i])
-	{
-		ft_process_token(&p);
-		ft_replace_token_in_cmd(&p);
-		p.i++;
-		p.j = 0;
-		p.k = 0;
-	}
-}
 
 /*
 typedef struct s_process_character
