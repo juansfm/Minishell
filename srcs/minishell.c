@@ -1,22 +1,25 @@
 #include "minishell.h"
 
-void ft_print_commands(t_cmd *cmd)
+void	ft_print_commands(t_cmd *cmd)
 {
-    t_cmd *current = cmd;
-    int i = 0;
+	t_cmd	*current;
+	int		i;
+	char	**temp;
 
-    while (current != NULL)
+	current = cmd;
+	i = 0;
+	while (current != NULL)
 	{
-        printf("Command group %d:\n", i);
-        char **temp = current->cmd;
-        while (*temp)
+		printf("Command group %d:\n", i);
+		temp = current->cmd;
+		while (*temp)
 		{
-            printf("(%s)\n", *temp);
-            temp++;
-        }
-        current = current->next;
-        i++;
-    }
+			printf("(%s)\n", *temp);
+			temp++;
+		}
+		current = current->next;
+		i++;
+	}
 }
 
 void	ft_l(void)
@@ -31,10 +34,11 @@ void	ft_minish(char **envp)
 
 	g_running = 1;
 	g_data.cmd = NULL;
-	//atexit(ft_l);
+	atexit(ft_l);
 	ft_dup_env(&g_data, envp);
 	g_data.og_in = dup(STDIN_FILENO);
 	g_data.og_out = dup(STDOUT_FILENO);
+	g_data.status = 0;
 	ft_prompt();
 	while (g_running)
 	{
@@ -45,8 +49,7 @@ void	ft_minish(char **envp)
 		}
 		if (line && *line)
 			add_history(line);
-		//ft_fucncion_syntax_error(line);
-		if(ft_solo_espacios(line) == 1)
+		if (ft_solo_espacios(line) == 1)
 		{
 			ft_parser(&g_data, line);
 			ft_cmd_lst(&g_data, g_data.split_tokens);
@@ -54,7 +57,7 @@ void	ft_minish(char **envp)
 			{
 				ft_redir(&g_data, g_data.cmd);
 				if (!ft_builtins(&g_data, g_data.cmd->cmd))
-					ft_other_cmd(&g_data, g_data.cmd->cmd);
+					g_data.status = ft_other_cmd(&g_data, g_data.cmd->cmd);
 			}
 			else if (ft_cmd_len(&g_data) >= 2)
 			{
@@ -65,6 +68,7 @@ void	ft_minish(char **envp)
 		dup2(g_data.og_out, STDOUT_FILENO);
 		free(line);
 		ft_free_cmd(&g_data);
+		printf("status: %d\n", g_data.status);
 	}
 	printf("\n");
 }

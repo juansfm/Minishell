@@ -15,7 +15,7 @@ static void	ft_no_last_cmd(int *fd, t_general *g_data, t_cmd *cmd)
 		cmd->cmd[0] = ft_path(g_data, cmd->cmd[0]);
 		status = execve(cmd->cmd[0], cmd->cmd, env_mtx);
 		printf("%s: command not found\n", cmd->cmd[0]);
-		exit(status);
+		exit(127);
 	}
 	ft_free(env_mtx, ft_mtxrow(env_mtx));
 	exit(0);

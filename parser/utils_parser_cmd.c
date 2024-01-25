@@ -76,6 +76,8 @@ void	ft_free_cmd(t_general *g_data)
 		ft_free(temp->cmd, ft_mtxrow(temp->cmd));
 		free(temp->infile_name);
 		free(temp->outfile_name);
+		if (temp->heredoc)
+			ft_free(temp->heredoc, ft_mtxrow(temp->heredoc));
 		free(temp);
 	}
 }

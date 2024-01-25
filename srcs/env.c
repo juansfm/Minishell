@@ -43,6 +43,7 @@ void	ft_add_mod_env(t_general *g_data, char *env_new)
 				return ;
 			}
 			free(temp->valor);
+			temp->equal = 1;
 			temp->valor = ft_strdup(new->valor);
 			ft_free_env(new);
 			return ;
