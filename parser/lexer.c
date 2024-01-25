@@ -55,7 +55,6 @@ void	ft_parser(t_general *g_data, char *line)
 	g_data->cpy_line = ft_strdup(line);
 	ft_parse_tokens(g_data);
 }
-
 int	ft_solo_espacios(char *line)
 {
 	int	i;
@@ -71,6 +70,7 @@ int	ft_solo_espacios(char *line)
 	}
 	return (0);
 }
+
 /*
 void	ft_fucncion_syntax_error(line)
 {
@@ -127,6 +127,7 @@ void	ft_fucncion_syntax_error(line)
 		
 		i++;
 	}
+
 }
 
 */

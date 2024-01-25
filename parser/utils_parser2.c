@@ -17,18 +17,6 @@ char	*ft_extract_token(char *cpy_line, int start, int end)
 	return (token);
 }
 
-// static void	ft_print_tokens(char **tok)
-// {
-// 	char **tmp;
-
-// 	tmp = tok;
-// 	while(*tmp)
-// 	{
-// 		printf("%s\n", *tmp);
-// 		tmp++;
-// 	}
-// }
-
 int	ft_is_delimiter(char c)
 {
 	if (c == ' ' || c == '|' || c == '<' || c == '>')

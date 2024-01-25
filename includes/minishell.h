@@ -106,15 +106,6 @@ typedef struct s_cmd_data
     int lenh;
 } t_cmd_data;
 
-//tokens
-/*typedef struct s_token
-{
-	int				type_token;
-	int				len;
-	char			*value;
-	struct s_token	*next;
-}					t_token;
-*/
 //no se usa
 typedef struct s_temp
 {
@@ -186,7 +177,7 @@ char				*ft_remodelar_cadena(char *split_tokens,
 
 //**************************expansion.c********************************
 void				ft_vamos_a_expandir(t_general *g_data);
-char				*ft_expand_all(t_general *g_data, char *cmd);//demasiado laarga
+char				*ft_expand_all(t_general *g_data, char *cmd);
 char				*ft_get_word_exchange(t_general *g_data, char *palabra_dolar);
 char 				*ft_process_dolar(t_general *g_data, char *string_restruc, int pos_dolar, int *pos);
 
@@ -211,6 +202,9 @@ void				ft_cmd_lst(t_general *g_data, char **mtx);
 //*************************prompt.c********************************
 void				ft_prompt(void);
 
+//***************************signals.c*******************************
+void				ft_handler(int sig);
+void				ft_ctrl_d(t_general *g_data);
 //**************************utils_minishell.c**************************
 t_cmd				*ft_create_new_cmd(void);
 void				ft_generate_cmds_from_tokens(t_general *g_data);
