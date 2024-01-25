@@ -45,7 +45,7 @@ void	ft_minish(char **envp)
 	{
 		line = readline("\033[0;32mMinishell$ \033[0m");
 		if (!line)
-			continue ;
+			exit(EXIT_FAILURE);
 		if (line[0] == '\0')
 		{
 			free(line);
@@ -70,7 +70,6 @@ void	ft_minish(char **envp)
 			{
 				ft_multiple_cmd(&g_data, g_data.cmd);
 			}
-			// printf("status: %d\n", g_data.status);
 			free(g_data.cpy_line);
 			ft_free(g_data.split_tokens, ft_mtxrow(g_data.split_tokens));
 		}

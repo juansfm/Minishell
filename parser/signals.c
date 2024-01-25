@@ -38,6 +38,9 @@ void	ft_handler(int sig)
 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		rl_on_new_line();
 	}
+	if (SIGQUIT == sig)
+	{
+	}
 }
 
 void	ft_ctrl_d(t_general *g_data)
