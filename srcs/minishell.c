@@ -21,6 +21,71 @@
 // 		i++;
 // 	}
 // }
+// void	ft_entrecomillas(char char_cmd, t_general *g_data)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	if (char_cmd == '\"' && g_data->quote_double == 0
+// 		&& g_data->quote_simple == 0)
+// 		g_data->quote_double = 1;
+// 	else if (char_cmd == '\'' && g_data->quote_double == 0
+// 		&& g_data->quote_simple == 0)
+// 		g_data->quote_simple = 1;
+// 	else if (char_cmd == '\"' && g_data->quote_double == 1)
+// 		g_data->quote_double = 0;
+// 	else if (char_cmd == '\'' && g_data->quote_simple == 1)
+// 		g_data->quote_simple = 0;
+// }
+
+// int	ft_syntax_error(t_general *g_data, char *line)
+// {
+// 	int	i;
+// 	int	redir;
+
+// 	redir = 0;
+// 	i = -1;
+// 	while (line[++i])
+// 	{
+// 		ft_entrecomillas(line[i], g_data);
+// 	}
+// 	if (g_data->quote_double == 1 || g_data->quote_simple == 1)
+// 	{
+// 		ft_putendl_fd(QUOTE, 1);
+// 		return (1);
+// 	}
+// 	i = -1;
+// 	if (line[0] == '|')
+// 	{
+// 		ft_putendl_fd(PIPE_ERROR, 1);
+// 		return (1);
+// 	}
+// 	while (line[++i])
+// 	{
+// 		if (line[i] == ' ')
+// 			continue ;
+// 		ft_entrecomillas(line[i], g_data);
+// 		if (g_data->quote_double == 1 || g_data->quote_simple == 1)
+// 			continue ;
+// 		if (line[i] == '<')
+// 		{
+// 			if (line[i + 1] != '<')
+// 				redir = 2;
+// 			else
+// 				redir = 1;
+// 		}
+// 		if (line[i] != '>')
+// 		{
+// 			if (line[i + 1] != '>')
+// 				redir = 3;
+// 			else
+// 				redir = 4;
+// 		}
+// 		if (line[i] == '|')
+// 			redir = 5;
+// 	}
+// 	return (0);
+// }
 
 void	ft_l(void)
 {
@@ -45,6 +110,8 @@ void	ft_minish(char **envp)
 	ft_prompt();
 	while (g_running)
 	{
+		g_data.quote_simple = 0;
+		g_data.quote_double = 0;
 		line = readline("\033[0;32mMinishell$ \033[0m");
 		if (!line)
 			exit(EXIT_FAILURE);
@@ -55,17 +122,19 @@ void	ft_minish(char **envp)
 		}
 		if (line && *line)
 			add_history(line);
-		if (ft_solo_espacios(line) == 1)
+		if (ft_solo_espacios(line) == 1 && ft_syntax_error(&g_data, line) == 0)
 		{
 			ft_parser(&g_data, line);
 			ft_cmd_lst(&g_data, g_data.split_tokens);
 			if (ft_cmd_len(&g_data) == 1)
 			{
 				ft_redir(&g_data, g_data.cmd);
-				if (g_data.cmd->cmd[0] != NULL)
+				if (g_running == 1 && g_data.cmd->cmd[0] != NULL)
 				{
+					g_running = 3;
 					if (!ft_builtins(&g_data, g_data.cmd->cmd))
-						g_data.status = ft_other_cmd(&g_data, g_data.cmd->cmd);
+						g_data.status = ft_other_cmd(&g_data,
+								g_data.cmd->cmd);
 				}
 			}
 			else if (ft_cmd_len(&g_data) >= 2)
@@ -79,12 +148,14 @@ void	ft_minish(char **envp)
 		dup2(g_data.og_out, STDOUT_FILENO);
 		free(line);
 		ft_free_cmd(&g_data);
+		g_running = 1;
 	}
 	printf("\n");
 }
 
 int	main(int argc, char **argv, char **envp)
 {
+	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, ft_handler);
 	(void)argv;
 	if (argc == 1)
@@ -96,3 +167,40 @@ int	main(int argc, char **argv, char **envp)
 		printf("Error: too many arguments\n");
 	return (0);
 }
+// void	ft_handler(int sig)
+// {
+// 	if (SIGINT == sig && g_running == 3)
+// 	{
+// 		g_running = 0;
+// 		rl_replace_line("", 0);
+// 		ft_putstr_fd("   \n", 1);
+// 	}
+// 	else if (SIGINT == sig && g_running == 2)
+// 	{
+// 		g_running = 0;
+// 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+// 	}
+// 	else if (SIGINT == sig)
+// 	{
+// 		g_running = 1;
+// 		rl_on_new_line();
+// 		rl_redisplay();
+// 		rl_replace_line("", 0);
+// 		ft_putstr_fd("   \n", 1);
+// 		rl_on_new_line();
+// 		rl_redisplay();
+// 	}
+// }
+
+// void	ft_ctrl_d(t_general *g_data)
+// {
+// 	if (!g_data->cmd)
+// 	{
+// 		rl_on_new_line();
+// 		rl_redisplay();
+// 		ft_putstr_fd("exit\n", 1);
+// 		rl_clear_history();
+// 		ft_free_cmd(g_data);
+// 		exit(EXIT_SUCCESS);
+// 	}
+// }

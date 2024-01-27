@@ -43,6 +43,14 @@
 # define HIDE "\e[8m"
 # define STRIKE "\e[9m"
 
+# define PIPE_ERROR "syntax error near unexpected token '|'"
+# define NEWLINE_ERROR "syntax error near unexpected token 'newline'"
+# define REDIR_ERROR_1 "syntax error near unexpected token '>'"
+# define REDIR_ERROR_2 "syntax error near unexpected token '>>'"
+# define REDIR_ERROR_3 "syntax error near unexpected token '<'"
+# define REDIR_ERROR_4 "syntax error near unexpected token '<<'"
+# define QUOTE "syntax error near unexpected quote"
+
 int					g_running;
 typedef struct s_env
 {
@@ -73,8 +81,8 @@ typedef struct s_general
 	int				og_in;
 	int				og_out;
 	int				status;
-	int 			quote_double;
-	int 			quote_simple;
+	int				quote_simple;
+	int				quote_double;
 }					t_general;
 /*******************************parser estructuras**************************/
 /*comillas*/

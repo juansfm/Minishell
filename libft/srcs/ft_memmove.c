@@ -6,7 +6,7 @@
 /*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:36:02 by jsaavedr          #+#    #+#             */
-/*   Updated: 2023/10/16 13:41:53 by jsaavedr         ###   ########.fr       */
+/*   Updated: 2024/01/26 10:01:29 by jsaavedr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 	size_t	i;
 
 	i = 0;
-	if ((char)dst == '\0' && (char)src == '\0')
+	if (dst == NULL && src == NULL)
 		return (dst);
 	if ((size_t)dst - (size_t)src < len)
 	{
