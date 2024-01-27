@@ -24,7 +24,7 @@ SRCS_PARSER = parser/comillas.c\
 			parser/lexer_utils.c\
 			parser/lexer.c\
 			parser/list_cmd.c\
-			parser/nueva_funcion_new.c\
+			parser/redirects.c\
 			parser/prompt.c\
 			parser/signals.c\
 			parser/utils_minishell.c\
