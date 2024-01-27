@@ -26,10 +26,8 @@ void	ft_cmd_add_back(t_general *g_data, t_cmd *new)
 void	ft_cmd_lst(t_general *g_data, char **mtx)
 {
 	t_cmd	*cmd;
-	t_cmd	*temp;
 	int		i;
 
-	temp = g_data->cmd;
 	i = -1;
 	while (mtx[++i])
 	{

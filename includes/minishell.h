@@ -69,7 +69,7 @@ typedef struct s_cmd
 	char			*outfile_name;
 	char			**heredoc;
 	struct s_cmd	*next;
-	int 			pos_ult_dolar;
+	int				pos_ult_dolar;
 }					t_cmd;
 
 typedef struct s_general
@@ -107,7 +107,6 @@ typedef struct s_cmd_data
 	int				lenh;
 }					t_cmd_data;
 
-
 //ENV
 void				ft_dup_env(t_general *g_data, char **envp);
 void				ft_add_mod_env(t_general *g_data, char *env_new);
@@ -126,7 +125,7 @@ t_env				*ft_env_search(t_general *g_data, char *name);
 int					ft_env_len(t_general *g_data);
 
 //BUILTINS
-int					ft_export(t_general *g_data, char **env_line);
+void				ft_export(t_general *g_data, char **env_line);
 void				ft_exit(t_general *g_data, char **arg);
 void				ft_echo(t_general *g_data, char **arg);
 int					ft_cd(t_general *g_data, char **arg);
@@ -167,7 +166,7 @@ char				*ft_remodelar_cadena(char *split_tokens,
 						int pos_dolar);
 
 //**************************expansion.c********************************
-void				ft_vamos_a_expandir(t_general *g_data);
+void				ft_vamos_a_expandir(t_general *g_data, t_cmd *cmd);
 char				*ft_expand_all(t_general *g_data, char *cmd);
 char				*ft_get_word_exchange(t_general *g_data,
 						char *palabra_dolar);
@@ -242,8 +241,8 @@ void				ft_fill_cmd_and_heredoc(t_cmd *cmd, char **mtx,
 						t_cmd_data *data);
 t_cmd				*ft_cmd_new(char *arg);
 
-char	*ft_charjoin_free(char *s1, char s2);
-int ft_existe_dolar_valido(char *comannd);
-void ft_entrecomillas(char char_cmd, t_general *g_data);
-int ft_comprobar_dolar(char cmd_char, t_general *g_data);
+char				*ft_charjoin_free(char *s1, char s2);
+int					ft_existe_dolar_valido(char *comannd);
+void				ft_entrecomillas(char char_cmd, t_general *g_data);
+int					ft_comprobar_dolar(char cmd_char, t_general *g_data);
 #endif

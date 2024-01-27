@@ -65,6 +65,8 @@ char	**ft_env_split(char *line, char c)
 	char	**matrix;
 
 	i = -1;
+	if (line[0] == '=')
+		i++;
 	while (line[++i])
 	{
 		if (line[i] == c)
