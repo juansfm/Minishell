@@ -41,12 +41,6 @@ void	ft_process_quote(t_general *g_data, int *pos)
 	count_quotes = 0;
 	current_char = g_data->cpy_line[*pos];
 	ft_replace_special_chars(g_data, pos, current_char, &count_quotes);
-	if ((!g_data->cpy_line[*pos] && (count_quotes % 2 != 0)) || (count_quotes
-			% 2 != 0))
-	{
-		printf("Error: No se encontró el cierre de las comillas.\n");
-		return ;
-	}
 	*(pos) = *(pos)-1;
 }
 

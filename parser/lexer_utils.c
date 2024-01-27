@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	ft_count_pipes(char **input)
+int		ft_count_pipes(char **input)
 {
 	int	i;
 	int	count;

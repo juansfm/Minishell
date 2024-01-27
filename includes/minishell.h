@@ -186,6 +186,7 @@ char				*ft_get_word_exchange(t_general *g_data,
 						char *dollar_word);
 char				*ft_process_dolar(t_general *g_data, char *string_restruc,
 						int dollar_pos);
+int					ft_is_delimiter(char c);
 
 //**********************************lexer_utils.c**********************
 int					ft_count_pipes(char **input);
@@ -235,8 +236,8 @@ void				ft_restore_quotes(char **split_tokens);
 //*************************utils_parser2.c********************************
 char				*ft_extract_token(char *cpy_line, int start, int end);
 char				**ft_tokenize(t_general *g_data);
-int					ft_contar_cadenas_validas(char **cadena_de_cadenas);
-char				**ft_clean_spaces(char **cadena_de_cadenas);
+int					ft_count_valid_strings(char **string_of_strings);
+char				**ft_clean_spaces(char **string_of_strings);
 
 //***************************comillas.c**********************************
 void				ft_process_quote_character(t_process_data *p);
