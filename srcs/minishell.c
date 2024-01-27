@@ -9,7 +9,7 @@ int	ft_syntax_error(t_general *g_data, char *line)
 	i = -1;
 	while (line[++i])
 	{
-		ft_entrecomillas(line[i], g_data);
+		ft_if_is_quote(line[i], g_data);
 	}
 	if (g_data->quote_double == 1 || g_data->quote_simple == 1)
 	{
@@ -28,7 +28,7 @@ int	ft_syntax_error(t_general *g_data, char *line)
 	{
 		if (line[i] == ' ')
 			continue ;
-		ft_entrecomillas(line[i], g_data);
+		ft_if_is_quote(line[i], g_data);
 		if (g_data->quote_double == 1 || g_data->quote_simple == 1)
 			continue ;
 		if (i == 0)
@@ -154,7 +154,7 @@ void	ft_minish(char **envp)
 		}
 		if (line && *line)
 			add_history(line);
-		if ((ft_solo_espacios(line)) == 1 && ft_syntax_error(&g_data,
+		if ((ft_only_spaces(line)) == 1 && ft_syntax_error(&g_data,
 				line) == 0)
 		{
 			ft_parser(&g_data, line);

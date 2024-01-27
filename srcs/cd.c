@@ -52,8 +52,8 @@ int	ft_old_pwd(t_general *g_data)
 		printf("cd: OLDPWD not set\n");
 		return (1);
 	}
-	chdir(old_pwd->valor);
-	aux = ft_strjoin("PWD=", old_pwd->valor);
+	chdir(old_pwd->value);
+	aux = ft_strjoin("PWD=", old_pwd->value);
 	ft_add_mod_env(g_data, ft_strjoin("OLDPWD=", pwd));
 	ft_add_mod_env(g_data, aux);
 	free(aux);
@@ -80,8 +80,8 @@ int	ft_home(t_general *g_data)
 		printf("cd: HOME not set\n");
 		return (1);
 	}
-	ft_add_mod_env(g_data, ft_strjoin("PWD=", home->valor));
-	chdir(home->valor);
+	ft_add_mod_env(g_data, ft_strjoin("PWD=", home->value));
+	chdir(home->value);
 	return (0);
 }
 

@@ -36,14 +36,14 @@ t_env	*ft_env_new(char *env_line)
 	if (!ft_strchr(env_line, '='))
 	{
 		env->name = ft_strdup(env_line);
-		env->valor = ft_strdup("\0");
+		env->value = ft_strdup("\0");
 		env->equal = 0;
 	}
 	else
 	{
 		matrix = ft_env_split(env_line, '=');
 		env->name = ft_strdup(matrix[0]);
-		env->valor = ft_strdup(matrix[1]);
+		env->value = ft_strdup(matrix[1]);
 		env->equal = 1;
 		ft_free(matrix, ft_mtxrow(matrix));
 	}
@@ -54,7 +54,7 @@ t_env	*ft_env_new(char *env_line)
 void	ft_free_env(t_env *env)
 {
 	free(env->name);
-	free(env->valor);
+	free(env->value);
 	env->next = NULL;
 	free(env);
 }

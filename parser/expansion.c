@@ -1,23 +1,6 @@
 #include "minishell.h"
 
-void	ft_entrecomillas(char char_cmd, t_general *g_data)
-{
-	int	i;
-
-	i = 0;
-	if (char_cmd == '\"' && g_data->quote_double == 0
-		&& g_data->quote_simple == 0)
-		g_data->quote_double = 1;
-	else if (char_cmd == '\'' && g_data->quote_double == 0
-			&& g_data->quote_simple == 0)
-		g_data->quote_simple = 1;
-	else if (char_cmd == '\"' && g_data->quote_double == 1)
-		g_data->quote_double = 0;
-	else if (char_cmd == '\'' && g_data->quote_simple == 1)
-		g_data->quote_simple = 0;
-}
-
-int	ft_existe_dolar_valido(char *comand)
+int	ft_exist_valid_dollar(char *comand)
 {
 	int	i;
 	int	quote_simple;
@@ -42,7 +25,7 @@ int	ft_existe_dolar_valido(char *comand)
 	return (-1);
 }
 
-void	ft_vamos_a_expandir(t_general *g_data, t_cmd *cmd)
+void	ft_start_expand(t_general *g_data, t_cmd *cmd)
 {
 	int	i;
 	int	pos;
@@ -53,88 +36,78 @@ void	ft_vamos_a_expandir(t_general *g_data, t_cmd *cmd)
 	j = 0;
 	while (cmd->cmd[i])
 	{
-		if ((ft_existe_dolar_valido(cmd->cmd[i]) > -1))
+		if ((ft_exist_valid_dollar(cmd->cmd[i]) > -1))
 			cmd->cmd[i] = ft_expand_all(g_data, cmd->cmd[i]);
 		i++;
 	}
 }
 
-char	*ft_get_word_exchange(t_general *g_data, char *palabra_dolar)
+char	*ft_get_word_exchange(t_general *g_data, char *dollar_word)
 {
 	t_env	*env;
 	char	*word_exchange;
 
-	if (ft_env_search(g_data, palabra_dolar))
+	if (ft_env_search(g_data, dollar_word))
 	{
-		env = ft_env_search(g_data, palabra_dolar);
-		word_exchange = ft_strdup(env->valor);
+		env = ft_env_search(g_data, dollar_word);
+		word_exchange = ft_strdup(env->value);
 	}
 	else
 		word_exchange = ft_strdup("");
 	return (word_exchange);
 }
 
-int	ft_comprobar_dolar(char cmd_char, t_general *g_data)
-{
-	if (cmd_char == '$' && g_data->quote_simple == 0)
-		return (0);
-	return (-1);
-}
 
 char	*ft_expand_all(t_general *g_data, char *cmd)
 {
-	int		pos_dolar;
+	int		dollar_pos;
 	int		i;
 	char	*string_restruc;
 	char	*word_exchange;
-	char	*palabra_extraida;
+	char	*extract_word;
 
 	i = 0;
-	pos_dolar = -1;
+	dollar_pos = -1;
 	string_restruc = ft_strdup("");
 	word_exchange = NULL;
 	while (cmd[i])
 	{
-		ft_entrecomillas(cmd[i], g_data);
-		if (ft_comprobar_dolar(cmd[i], g_data) == 0)
-			pos_dolar = i;
-		printf("\npos_dolar: %d\n", pos_dolar);
-		if (pos_dolar == -1)
+		ft_if_is_quote(cmd[i], g_data);
+		if (ft_char_is_dollar(cmd[i], g_data) == 0)
+			dollar_pos = i;
+		if (dollar_pos == -1)
 		{
 			string_restruc = ft_charjoin_free(string_restruc, cmd[i]);
-			printf("\nstring_restruc: %s\n", string_restruc);
 			i++;
 		}
 		else
 		{
-			palabra_extraida = ft_extract_word(cmd, pos_dolar);
+			extract_word = ft_extract_word(cmd, dollar_pos);
 			i++;
-			printf("\npalabra_extraida: %s\n", palabra_extraida);
-			if (ft_strcmp(palabra_extraida, "?") == 0)
+			if (ft_strcmp(extract_word, "?") == 0)
 			{
-				printf("\nstatus: %d\n", g_data->status);
 				word_exchange = ft_itoa(g_data->status);
 				string_restruc = ft_strjoin_free(string_restruc,
 													word_exchange);
 				free(word_exchange);
 				i++;
 			}
-			else if (!(*palabra_extraida)
-					|| (ft_char_reserved(palabra_extraida[0]) == 1))
+			else if (!(*extract_word)
+					|| (ft_char_reserved(extract_word[0]) == 1))
 			{
 				string_restruc = ft_charjoin_free(string_restruc, '$');
 				i++;
 			}
 			else
 			{
-				word_exchange = ft_get_word_exchange(g_data, palabra_extraida);
+				word_exchange = ft_get_word_exchange(g_data, extract_word);
 				string_restruc = ft_strjoin_free(string_restruc, word_exchange);
-				i += ft_strlen(palabra_extraida);
+				i += ft_strlen(extract_word);
 				free(word_exchange);
 			}
-			free(palabra_extraida);
+			free(extract_word);
 		}
-		pos_dolar = -1;
+		dollar_pos = -1;
 	}
 	g_data->quote_double = 0;
 	g_data->quote_simple = 0;
@@ -142,7 +115,7 @@ char	*ft_expand_all(t_general *g_data, char *cmd)
 	return (string_restruc);
 }
 
-char	*ft_extract_word(char *str, int pos_dolar)
+char	*ft_extract_word(char *str, int dollar_pos)
 {
 	int		start;
 	int		end;
@@ -151,11 +124,11 @@ char	*ft_extract_word(char *str, int pos_dolar)
 
 	word = NULL;
 	fin = 0;
-	start = pos_dolar;
+	start = dollar_pos;
 	end = start + 1;
 	if (str[end] && ft_isdigit(str[end]))
 		fin = 1;
-	if (str[pos_dolar + 1] == '?')
+	if (str[dollar_pos + 1] == '?')
 		fin = 1;
 	while (str[end] && (fin == 0))
 	{
@@ -168,18 +141,4 @@ char	*ft_extract_word(char *str, int pos_dolar)
 	}
 	word = ft_substr(str, start + 1, end - start);
 	return (word);
-}
-
-char	*ft_cpy_part(char *str, int *pos, int num_chars)
-{
-	int		start;
-	char	*dest;
-
-	start = *pos;
-	if (num_chars > 0)
-		dest = ft_substr(str, start, num_chars);
-	else
-		dest = ft_strdup("");
-	*pos = start + num_chars;
-	return (dest);
 }

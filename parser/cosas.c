@@ -1333,4 +1333,33 @@ void	*ft_realloc(void *ptr, size_t size, size_t new_size)
 // 	cadena_de_cadenas = NULL;
 // 	return (resultado);
 // }
-*/
+*/// void	ft_function_union_reds(t_general *g_data)
+// {
+// 	int	i;
+// 	int	j;
+
+// 	i = 0;
+// 	while (g_data->split_tokens[i] != NULL)
+// 	{
+// 		if ((ft_strcmp(g_data->split_tokens[i], "<") == 0
+// 				|| ft_strcmp(g_data->split_tokens[i], ">") == 0)
+// 			&& g_data->split_tokens[i + 1] != NULL)
+// 		{
+// 			if (ft_strcmp(g_data->split_tokens[i],
+// 					g_data->split_tokens[i + 1]) == 0)
+// 			{
+// 				g_data->split_tokens[i] = ft_strjoin_free(g_data->split_tokens[i],
+// 						g_data->split_tokens[i + 1]);
+// 				j = i + 1;
+// 				free(g_data->split_tokens[j]);
+// 				while (g_data->split_tokens[j] != NULL)
+// 				{
+// 					g_data->split_tokens[j] = g_data->split_tokens[j + 1];
+// 					j++;
+// 				}
+// 			}
+// 		}
+// 		i++;
+// 	}
+// }
+

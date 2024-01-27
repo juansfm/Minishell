@@ -87,7 +87,7 @@ void	ft_copiar_cadenas_no_vacias(char **cadena_de_cadenas, char **resultado)
 	free(cadena_de_cadenas);
 }
 
-char	**ft_eliminar_espacios(char **cadena_de_cadenas)
+char	**ft_clean_spaces(char **cadena_de_cadenas)
 {
 	int		cantidad_cadenas;
 	char	**resultado;
