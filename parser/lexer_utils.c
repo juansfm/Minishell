@@ -57,6 +57,5 @@ char	**ft_concatenate_until_pipe(char **input)
 	result[j++] = temp;
 	result[j] = NULL;
 	ft_free(input, ft_mtxrow(input));
-	// free(temp);
 	return (result);
 }

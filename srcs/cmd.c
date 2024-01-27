@@ -22,7 +22,7 @@ int	ft_builtins(t_general *g_data, char **arg)
 	else if (!ft_strcmp(arg[0], "pwd") || !ft_strcmp(arg[0], "PWD"))
 		ft_pwd(g_data);
 	else if (!ft_strcmp(arg[0], "export"))
-		g_data->status = ft_export(g_data, arg);
+		ft_export(g_data, arg);
 	else if (!ft_strcmp(arg[0], "env") || !ft_strcmp(arg[0], "ENV"))
 		ft_print_env(g_data);
 	else if (!ft_strcmp(arg[0], "unset"))
@@ -108,37 +108,6 @@ char	**ft_env_mtx(t_general *g_data)
 	return (mtx);
 }
 
-// char	*ft_path(t_general *g_data, char *cmd)
-// {
-// 	char	**paths;
-// 	t_env	*temp;
-// 	char	*aux;
-// 	int		i;
-
-// 	if (access(cmd, F_OK) == 0)
-// 		return (cmd);
-// 	temp = ft_env_search(g_data, "PATH");
-// 	if (!temp)
-// 	{
-// 		free(cmd);
-// 		return (NULL);
-// 	}
-// 	paths = ft_split(temp->valor, ':');
-// 	i = -1;
-// 	while (paths[++i])
-// 	{
-// 		aux = ft_strjoin_free(ft_strjoin(paths[i], "/"), cmd);
-// 		if (access(aux, F_OK) == 0)
-// 			break ;
-// 		free(aux);
-// 		aux = NULL;
-// 	}
-// 	if (!aux)
-// 		aux = ft_strdup(cmd);
-// 	free(cmd);
-// 	ft_free(paths, ft_mtxrow(paths));
-// 	return (aux);
-// }
 char	**ft_get_paths(t_general *g_data, char *cmd)
 {
 	t_env	*temp;

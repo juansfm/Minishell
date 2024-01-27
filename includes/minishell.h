@@ -126,7 +126,7 @@ t_env				*ft_env_search(t_general *g_data, char *name);
 int					ft_env_len(t_general *g_data);
 
 //BUILTINS
-int					ft_export(t_general *g_data, char **env_line);
+void				ft_export(t_general *g_data, char **env_line);
 void				ft_exit(t_general *g_data, char **arg);
 void				ft_echo(t_general *g_data, char **arg);
 int					ft_cd(t_general *g_data, char **arg);
@@ -242,8 +242,8 @@ void				ft_fill_cmd_and_heredoc(t_cmd *cmd, char **mtx,
 						t_cmd_data *data);
 t_cmd				*ft_cmd_new(char *arg);
 
-char	*ft_charjoin_free(char *s1, char s2);
-int ft_existe_dolar_valido(char *comannd);
-void ft_entrecomillas(char char_cmd, t_general *g_data);
-int ft_comprobar_dolar(char cmd_char, t_general *g_data);
+char				*ft_charjoin_free(char *s1, char s2);
+int					ft_existe_dolar_valido(char *comannd);
+void				ft_entrecomillas(char char_cmd, t_general *g_data);
+int					ft_comprobar_dolar(char cmd_char, t_general *g_data);
 #endif

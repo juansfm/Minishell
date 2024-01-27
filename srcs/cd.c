@@ -9,9 +9,12 @@
 int	ft_cd(t_general *g_data, char **arg)
 {
 	char	*dir;
+	char	*aux;
 
-	dir = ft_strjoin("OLDPWD=", getcwd(NULL, 0));
-	if (!arg[1] || !ft_strcmp(arg[1], "~"))
+	aux = getcwd(NULL, 0);
+	if (aux)
+		dir = ft_strjoin("OLDPWD=", aux);
+	if (!arg[1] || !ft_strcmp(arg[1], "~") || !aux)
 	{
 		if (ft_home(g_data))
 			return (1);
