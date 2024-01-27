@@ -45,10 +45,10 @@
 
 # define PIPE_ERROR "syntax error near unexpected token '|'"
 # define NEWLINE_ERROR "syntax error near unexpected token 'newline'"
-# define REDIR_ERROR_1 "syntax error near unexpected token '>'"
-# define REDIR_ERROR_2 "syntax error near unexpected token '>>'"
-# define REDIR_ERROR_3 "syntax error near unexpected token '<'"
-# define REDIR_ERROR_4 "syntax error near unexpected token '<<'"
+# define REDIR_ERROR_1 "syntax error near unexpected token '<'"
+# define REDIR_ERROR_2 "syntax error near unexpected token '<<'"
+# define REDIR_ERROR_3 "syntax error near unexpected token '>'"
+# define REDIR_ERROR_4 "syntax error near unexpected token '>>'"
 # define QUOTE "syntax error near unexpected quote"
 
 int					g_running;

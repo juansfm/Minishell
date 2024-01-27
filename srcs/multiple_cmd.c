@@ -54,5 +54,4 @@ void	ft_multiple_cmd(t_general *g_data, t_cmd *cmd)
 		g_data->status = ft_no_last_cmd(fd, g_data, cmd);
 	else if (pid > 0)
 		ft_parent_process(g_data, fd, pid, cmd);
-	printf("status: %d\n", g_data->status);
 }
