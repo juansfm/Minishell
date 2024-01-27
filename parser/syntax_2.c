@@ -7,7 +7,7 @@ int	ft_check_quotes(t_general *g_data, char *line)
 	i = -1;
 	while (line[++i])
 	{
-		ft_entrecomillas(line[i], g_data);
+		ft_if_is_quote(line[i], g_data);
 	}
 	if (g_data->quote_double == 1 || g_data->quote_simple == 1)
 	{

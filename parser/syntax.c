@@ -17,7 +17,7 @@ int	ft_syntax_error(t_general *g_data, char *line)
 	{
 		if (line[i] == ' ')
 			continue ;
-		ft_entrecomillas(line[i], g_data);
+		ft_if_is_quote(line[i], g_data);
 		if (g_data->quote_double == 1 || g_data->quote_simple == 1)
 			continue ;
 		if (ft_syntax_boucle(g_data, line, &redir, i))
