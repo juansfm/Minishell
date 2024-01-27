@@ -1,136 +1,18 @@
 #include "minishell.h"
 
-int	ft_syntax_error(t_general *g_data, char *line)
-{
-	int	i;
-	int	redir;
-
-	redir = 0;
-	i = -1;
-	while (line[++i])
-	{
-		ft_entrecomillas(line[i], g_data);
-	}
-	if (g_data->quote_double == 1 || g_data->quote_simple == 1)
-	{
-		ft_putendl_fd(QUOTE, 1);
-		g_data->status = 258;
-		return (1);
-	}
-	i = -1;
-	if (line[0] == '|')
-	{
-		ft_putendl_fd(PIPE_ERROR, 1);
-		g_data->status = 258;
-		return (1);
-	}
-	while (line[++i])
-	{
-		if (line[i] == ' ')
-			continue ;
-		ft_entrecomillas(line[i], g_data);
-		if (g_data->quote_double == 1 || g_data->quote_simple == 1)
-			continue ;
-		if (i == 0)
-		{
-			if (line[i] == '>')
-				redir = 1;
-			else if (line[i] == '<')
-				redir = 3;
-			if (line[i] == '>' || line[i] == '<')
-				continue ;
-		}
-		if (line[i] == '<' && line[i - 1] != '<')
-		{
-			if ((redir > 0 && redir < 5) && line[i + 1] != '<')
-			{
-				ft_putendl_fd(REDIR_ERROR_1, 1);
-				g_data->status = 258;
-				return (1);
-			}
-			if ((redir > 0 && redir < 5) && line[i + 1] == '<')
-			{
-				ft_putendl_fd(REDIR_ERROR_2, 1);
-				g_data->status = 258;
-				return (1);
-			}
-		}
-		if (line[i] == '>' && line[i - 1] != '>')
-		{
-			if ((redir > 0 && redir < 5) && line[i + 1] != '>')
-			{
-				ft_putendl_fd(REDIR_ERROR_3, 1);
-				g_data->status = 258;
-				return (1);
-			}
-			if ((redir > 0 && redir < 5) && line[i + 1] == '>')
-			{
-				ft_putendl_fd(REDIR_ERROR_4, 1);
-				g_data->status = 258;
-				return (1);
-			}
-		}
-		if (line[i] == '|')
-		{
-			if (redir != 0)
-			{
-				ft_putendl_fd(PIPE_ERROR, 1);
-				g_data->status = 258;
-				return (1);
-			}
-			redir = 5;
-		}
-		if (line[i] == '<')
-		{
-			if (i > 2 && line[i - 1] == '<' && line[i - 2] == '<')
-			{
-				ft_putendl_fd(REDIR_ERROR_1, 1);
-				g_data->status = 258;
-				return (1);
-			}
-			if (line[i - 1] != '<')
-				redir = 1;
-			else
-				redir = 2;
-		}
-		if (line[i] == '>')
-		{
-			if (i > 2 && line[i - 1] == '>' && line[i - 2] == '>')
-			{
-				ft_putendl_fd(REDIR_ERROR_3, 1);
-				g_data->status = 258;
-				return (1);
-			}
-			if (line[i - 1] != '>')
-				redir = 3;
-			else
-				redir = 4;
-		}
-		if (line[i] != '<' && line[i] != '>' && line[i] != '|')
-			redir = 0;
-	}
-	if (redir != 0)
-	{
-		ft_putendl_fd(NEWLINE_ERROR, 1);
-		g_data->status = 258;
-		return (1);
-	}
-	return (0);
-}
-
-void	ft_l(void)
-{
-	system("leaks -q minishell");
-}
+// void	ft_l(void)
+// {
+// 	system("leaks -q minishell");
+// }
 
 void	ft_minish(char **envp)
 {
 	t_general	g_data;
 	char		*line;
 
+	//atexit(ft_l);
 	g_running = 1;
 	g_data.cmd = NULL;
-	//atexit(ft_l);
 	ft_dup_env(&g_data, envp);
 	g_data.og_in = dup(STDIN_FILENO);
 	g_data.og_out = dup(STDOUT_FILENO);

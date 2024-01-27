@@ -30,7 +30,9 @@ SRCS_PARSER = parser/comillas.c\
 			parser/utils_minishell.c\
 			parser/utils_parser_cmd.c\
 			parser/utils_parser.c\
-			parser/utils_parser2.c
+			parser/utils_parser2.c\
+			parser/syntax.c\
+			parser/syntax_2.c\
 #parser/split_modify.c
 
 CFILES = ${SRCS_PARSER} ${SRCS} 

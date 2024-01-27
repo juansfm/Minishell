@@ -153,6 +153,20 @@ int					ft_cmd_len(t_general *g_data);
 //MULTIPLE_CMD
 void				ft_multiple_cmd(t_general *g_data, t_cmd *cmd);
 
+int					ft_syntax_error(t_general *g_data, char *line);
+int					ft_check_quotes(t_general *g_data, char *line);
+int					ft_redir_out_error(t_general *g_data, char *line,
+						int *redir, int i);
+int					ft_redir_in_error(t_general *g_data, char *line, int *redir,
+						int i);
+int					ft_redir_out_valor(t_general *g_data, char *line,
+						int *redir, int i);
+int					ft_redir_in_valor(t_general *g_data, char *line, int *redir,
+						int i);
+int					ft_syntax_boucle(t_general *g_data, char *line, int *redir,
+						int i);
+int					ft_final_redir(t_general *g_data, int redir);
+
 //************************minishell.c********************************
 void				ft_minish(char **envp);
 int					main(int argc, char **argv, char **envp);
@@ -161,7 +175,7 @@ int					main(int argc, char **argv, char **envp);
 char				*ft_extract_word(char *str, int pos_dolar);
 int					ft_encontrar_dolar(char *cadena, t_general *g_data);
 char				*ft_cpy_part(char *str, int *pos, int num_chars);
-char				*ft_remodelar_cadena(char *split_tokens,
+char				ft_remodelar_cadena(char *split_tokens,
 						char *palabra_dolar, char *word_exchange,
 						int pos_dolar);
 

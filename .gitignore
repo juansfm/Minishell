@@ -9,3 +9,4 @@ Minishell
 a.out
 *.txt
 *.dSYM
+parser/cosas.c
