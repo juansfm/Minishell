@@ -21,22 +21,6 @@
 // 		i++;
 // 	}
 // }
-void	ft_entrecomillas(char char_cmd, t_general *g_data)
-{
-	int	i;
-
-	i = 0;
-	if (char_cmd == '\"' && g_data->quote_double == 0
-		&& g_data->quote_simple == 0)
-		g_data->quote_double = 1;
-	else if (char_cmd == '\'' && g_data->quote_double == 0
-			&& g_data->quote_simple == 0)
-		g_data->quote_simple = 1;
-	else if (char_cmd == '\"' && g_data->quote_double == 1)
-		g_data->quote_double = 0;
-	else if (char_cmd == '\'' && g_data->quote_simple == 1)
-		g_data->quote_simple = 0;
-}
 
 int	ft_syntax_error(t_general *g_data, char *line)
 {
