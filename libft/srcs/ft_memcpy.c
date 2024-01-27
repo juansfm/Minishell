@@ -6,7 +6,7 @@
 /*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:35:19 by jsaavedr          #+#    #+#             */
-/*   Updated: 2023/10/16 13:41:53 by jsaavedr         ###   ########.fr       */
+/*   Updated: 2024/01/26 10:01:39 by jsaavedr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	char	*s2;
 
 	i = 0;
-	if ((char)dst == '\0' && (char)src == '\0')
+	if (dst == NULL && src == NULL)
 		return (dst);
 	s1 = (char *)dst;
 	s2 = (char *)src;

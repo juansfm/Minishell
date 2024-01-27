@@ -5,7 +5,7 @@ void	ft_redir(t_general *g_data, t_cmd *cmd)
 	int	i;
 
 	i = -1;
-	while (cmd->heredoc != NULL && cmd->heredoc[++i] != NULL)
+	while (cmd->heredoc != NULL && cmd->heredoc[++i] != NULL && g_running != 0)
 		ft_heredoc(g_data, cmd->heredoc[i]);
 	if (cmd->outfile != -1)
 	{
@@ -23,7 +23,6 @@ void	ft_redir(t_general *g_data, t_cmd *cmd)
 		ft_restore_quotes(g_data->cmd->cmd);
 		ft_quita_comillas(g_data);
 	}
-	g_data->status = 0;
 }
 
 static void	ft_heredoc_pipe(char *input)
@@ -56,24 +55,27 @@ void	ft_heredoc(t_general *g_data, char *delimiter)
 	char	*line;
 	int		out;
 
+	g_running = 2;
 	input = ft_strdup("");
+	line = ft_strdup("");
 	dup2(g_data->og_in, STDIN_FILENO);
 	out = dup(STDOUT_FILENO);
 	dup2(g_data->og_out, STDOUT_FILENO);
-	while (1)
+	line = readline("> ");
+	while (g_running == 2 && (line && ft_strcmp(line, delimiter)))
 	{
-		line = readline("> ");
-		if (!line || !ft_strcmp(line, delimiter))
-		{
-			free(line);
-			break ;
-		}
 		input = ft_strjoin_free(input, line);
 		input = ft_strjoin_free(input, "\n");
 		free(line);
+		line = readline("> ");
 	}
 	ft_heredoc_pipe(input);
 	dup2(out, STDOUT_FILENO);
 	close(out);
 	free(input);
+	free(line);
+	if (g_running == 2 && g_data->cmd->next == NULL)
+		g_running = 1;
+	else if (g_running == 2 && g_data->cmd->next != NULL)
+		g_running = 3;
 }

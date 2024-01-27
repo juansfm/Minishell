@@ -34,7 +34,7 @@ void	ft_minish(char **envp)
 
 	g_running = 1;
 	g_data.cmd = NULL;
-	atexit(ft_l);
+	// atexit(ft_l);
 	ft_dup_env(&g_data, envp);
 	g_data.og_in = dup(STDIN_FILENO);
 	g_data.og_out = dup(STDOUT_FILENO);
@@ -60,10 +60,12 @@ void	ft_minish(char **envp)
 			if (ft_cmd_len(&g_data) == 1)
 			{
 				ft_redir(&g_data, g_data.cmd);
-				if (g_data.cmd->cmd[0] != NULL)
+				if (g_running == 1 && g_data.cmd->cmd[0] != NULL)
 				{
+					g_running = 3;
 					if (!ft_builtins(&g_data, g_data.cmd->cmd))
-						g_data.status = ft_other_cmd(&g_data, g_data.cmd->cmd);
+						g_data.status = ft_other_cmd(&g_data,
+								g_data.cmd->cmd);
 				}
 			}
 			else if (ft_cmd_len(&g_data) >= 2)
@@ -77,12 +79,14 @@ void	ft_minish(char **envp)
 		dup2(g_data.og_out, STDOUT_FILENO);
 		free(line);
 		ft_free_cmd(&g_data);
+		g_running = 1;
 	}
 	printf("\n");
 }
 
 int	main(int argc, char **argv, char **envp)
 {
+	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, ft_handler);
 	(void)argv;
 	if (argc == 1)
@@ -94,3 +98,40 @@ int	main(int argc, char **argv, char **envp)
 		printf("Error: too many arguments\n");
 	return (0);
 }
+// void	ft_handler(int sig)
+// {
+// 	if (SIGINT == sig && g_running == 3)
+// 	{
+// 		g_running = 0;
+// 		rl_replace_line("", 0);
+// 		ft_putstr_fd("   \n", 1);
+// 	}
+// 	else if (SIGINT == sig && g_running == 2)
+// 	{
+// 		g_running = 0;
+// 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+// 	}
+// 	else if (SIGINT == sig)
+// 	{
+// 		g_running = 1;
+// 		rl_on_new_line();
+// 		rl_redisplay();
+// 		rl_replace_line("", 0);
+// 		ft_putstr_fd("   \n", 1);
+// 		rl_on_new_line();
+// 		rl_redisplay();
+// 	}
+// }
+
+// void	ft_ctrl_d(t_general *g_data)
+// {
+// 	if (!g_data->cmd)
+// 	{
+// 		rl_on_new_line();
+// 		rl_redisplay();
+// 		ft_putstr_fd("exit\n", 1);
+// 		rl_clear_history();
+// 		ft_free_cmd(g_data);
+// 		exit(EXIT_SUCCESS);
+// 	}
+// }
