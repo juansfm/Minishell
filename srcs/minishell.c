@@ -21,22 +21,7 @@
 // 		i++;
 // 	}
 // }
-void	ft_entrecomillas(char char_cmd, t_general *g_data)
-{
-	int	i;
 
-	i = 0;
-	if (char_cmd == '\"' && g_data->quote_double == 0
-		&& g_data->quote_simple == 0)
-		g_data->quote_double = 1;
-	else if (char_cmd == '\'' && g_data->quote_double == 0
-			&& g_data->quote_simple == 0)
-		g_data->quote_simple = 1;
-	else if (char_cmd == '\"' && g_data->quote_double == 1)
-		g_data->quote_double = 0;
-	else if (char_cmd == '\'' && g_data->quote_simple == 1)
-		g_data->quote_simple = 0;
-}
 
 int	ft_syntax_error(t_general *g_data, char *line)
 {
@@ -158,12 +143,14 @@ void	ft_minish(char **envp)
 
 	g_running = 1;
 	g_data.cmd = NULL;
-	// atexit(ft_l);
+	//atexit(ft_l);
 	ft_dup_env(&g_data, envp);
 	g_data.og_in = dup(STDIN_FILENO);
 	g_data.og_out = dup(STDOUT_FILENO);
 	g_data.status = 0;
 	g_data.cpy_line = NULL;
+	g_data.quote_simple = 0;
+	g_data.quote_double = 0;
 	ft_prompt();
 	while (g_running)
 	{
@@ -179,7 +166,7 @@ void	ft_minish(char **envp)
 		}
 		if (line && *line)
 			add_history(line);
-		if (ft_solo_espacios(line) == 1 && ft_syntax_error(&g_data, line) == 0)
+		if ((ft_solo_espacios(line)) == 1 && ft_syntax_error(&g_data, line) == 0)
 		{
 			ft_parser(&g_data, line);
 			ft_cmd_lst(&g_data, g_data.split_tokens);
