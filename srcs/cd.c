@@ -30,6 +30,7 @@ int	ft_cd(t_general *g_data, char **arg)
 			return (1);
 	}
 	free(dir);
+	free(aux);
 	return (0);
 }
 
@@ -70,6 +71,8 @@ int	ft_home(t_general *g_data)
 	t_env	*home;
 
 	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		return (1);
 	ft_add_mod_env(g_data, ft_strjoin("OLDPWD=", pwd));
 	home = ft_env_search(g_data, "HOME");
 	if (!home)

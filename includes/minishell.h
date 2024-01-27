@@ -69,7 +69,7 @@ typedef struct s_cmd
 	char			*outfile_name;
 	char			**heredoc;
 	struct s_cmd	*next;
-	int 			pos_ult_dolar;
+	int				pos_ult_dolar;
 }					t_cmd;
 
 typedef struct s_general
@@ -106,7 +106,6 @@ typedef struct s_cmd_data
 	int				len;
 	int				lenh;
 }					t_cmd_data;
-
 
 //ENV
 void				ft_dup_env(t_general *g_data, char **envp);
@@ -167,7 +166,7 @@ char				*ft_remodelar_cadena(char *split_tokens,
 						int pos_dolar);
 
 //**************************expansion.c********************************
-void				ft_vamos_a_expandir(t_general *g_data);
+void				ft_vamos_a_expandir(t_general *g_data, t_cmd *cmd);
 char				*ft_expand_all(t_general *g_data, char *cmd);
 char				*ft_get_word_exchange(t_general *g_data,
 						char *palabra_dolar);

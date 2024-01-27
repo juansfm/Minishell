@@ -82,7 +82,7 @@ int	ft_syntax_error(t_general *g_data, char *line)
 		}
 		if (line[i] == '<')
 		{
-			if (line[i - 1] == '<' && line[i - 2] == '<')
+			if (i > 2 && line[i - 1] == '<' && line[i - 2] == '<')
 			{
 				ft_putendl_fd(REDIR_ERROR_1, 1);
 				g_data->status = 258;
@@ -95,7 +95,7 @@ int	ft_syntax_error(t_general *g_data, char *line)
 		}
 		if (line[i] == '>')
 		{
-			if (line[i - 1] == '>' && line[i - 2] == '>')
+			if (i > 2 && line[i - 1] == '>' && line[i - 2] == '>')
 			{
 				ft_putendl_fd(REDIR_ERROR_3, 1);
 				g_data->status = 258;
@@ -167,7 +167,7 @@ void	ft_minish(char **envp)
 					g_running = 3;
 					if (!ft_builtins(&g_data, g_data.cmd->cmd))
 						g_data.status = ft_other_cmd(&g_data,
-								g_data.cmd->cmd);
+														g_data.cmd->cmd);
 				}
 			}
 			else if (ft_cmd_len(&g_data) >= 2)

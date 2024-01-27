@@ -58,7 +58,9 @@ int	ft_other_cmd(t_general *g_data, char **arg)
 		exit(127);
 	}
 	else
+	{
 		waitpid(pid, &status, 0);
+	}
 	ft_free(env_mtx, ft_mtxrow(env_mtx));
 	return (WEXITSTATUS(status));
 }

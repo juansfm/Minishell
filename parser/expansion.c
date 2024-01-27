@@ -42,7 +42,7 @@ int	ft_existe_dolar_valido(char *comand)
 	return (-1);
 }
 
-void	ft_vamos_a_expandir(t_general *g_data)
+void	ft_vamos_a_expandir(t_general *g_data, t_cmd *cmd)
 {
 	int	i;
 	int	pos;
@@ -51,10 +51,10 @@ void	ft_vamos_a_expandir(t_general *g_data)
 	i = 0;
 	pos = 0;
 	j = 0;
-	while (g_data->cmd->cmd[i])
+	while (cmd->cmd[i])
 	{
-		if ((ft_existe_dolar_valido(g_data->cmd->cmd[i]) > -1))
-			g_data->cmd->cmd[i] = ft_expand_all(g_data, g_data->cmd->cmd[i]);
+		if ((ft_existe_dolar_valido(cmd->cmd[i]) > -1))
+			cmd->cmd[i] = ft_expand_all(g_data, cmd->cmd[i]);
 		i++;
 	}
 }
@@ -113,12 +113,14 @@ char	*ft_expand_all(t_general *g_data, char *cmd)
 			if (ft_strcmp(palabra_extraida, "?") == 0)
 			{
 				printf("\nstatus: %d\n", g_data->status);
+				word_exchange = ft_itoa(g_data->status);
 				string_restruc = ft_strjoin_free(string_restruc,
-						ft_itoa(g_data->status));
+													word_exchange);
+				free(word_exchange);
 				i++;
 			}
 			else if (!(*palabra_extraida)
-				|| (ft_char_reserved(palabra_extraida[0]) == 1))
+					|| (ft_char_reserved(palabra_extraida[0]) == 1))
 			{
 				string_restruc = ft_charjoin_free(string_restruc, '$');
 				i++;
@@ -128,6 +130,7 @@ char	*ft_expand_all(t_general *g_data, char *cmd)
 				word_exchange = ft_get_word_exchange(g_data, palabra_extraida);
 				string_restruc = ft_strjoin_free(string_restruc, word_exchange);
 				i += ft_strlen(palabra_extraida);
+				free(word_exchange);
 			}
 			free(palabra_extraida);
 		}
@@ -135,6 +138,7 @@ char	*ft_expand_all(t_general *g_data, char *cmd)
 	}
 	g_data->quote_double = 0;
 	g_data->quote_simple = 0;
+	free(cmd);
 	return (string_restruc);
 }
 

@@ -20,7 +20,7 @@ void	ft_redir(t_general *g_data, t_cmd *cmd)
 	if (cmd->cmd[0] != NULL)
 	{
 		ft_restore_quotes(g_data->cmd->cmd);
-		ft_vamos_a_expandir(g_data);
+		ft_vamos_a_expandir(g_data, cmd);
 		ft_quita_comillas(g_data);
 	}
 	g_data->status = 0;
@@ -58,15 +58,13 @@ void	ft_heredoc(t_general *g_data, char *delimiter)
 
 	g_running = 2;
 	input = ft_strdup("");
-	line = ft_strdup("");
 	dup2(g_data->og_in, STDIN_FILENO);
 	out = dup(STDOUT_FILENO);
 	dup2(g_data->og_out, STDOUT_FILENO);
 	line = readline("> ");
 	while (g_running == 2 && (line && ft_strcmp(line, delimiter)))
 	{
-		input = ft_strjoin_free(input, line);
-		input = ft_strjoin_free(input, "\n");
+		input = ft_strjoin_free(ft_strjoin_free(input, line), "\n");
 		free(line);
 		line = readline("> ");
 	}
