@@ -16,8 +16,8 @@ void	ft_print_env(t_general *g_data)
 		{
 			ft_putstr_fd(temp->name, 1);
 			ft_putchar_fd('=', 1);
-			if (temp->valor)
-				ft_putstr_fd(temp->valor, 1);
+			if (temp->value)
+				ft_putstr_fd(temp->value, 1);
 			ft_putchar_fd('\n', 1);
 		}
 		temp = temp->next;
@@ -41,8 +41,8 @@ void	ft_print_export(t_general *g_data)
 		if (temp->equal)
 		{
 			ft_putchar_fd('=', 1);
-			if (temp->valor)
-				ft_putstr_fd(temp->valor, 1);
+			if (temp->value)
+				ft_putstr_fd(temp->value, 1);
 		}
 		ft_putchar_fd('\n', 1);
 		temp = temp->next;

@@ -36,7 +36,7 @@ void	ft_minish(char **envp)
 		}
 		if (line && *line)
 			add_history(line);
-		if ((ft_solo_espacios(line)) == 1 && ft_syntax_error(&g_data,
+		if ((ft_only_spaces(line)) == 1 && ft_syntax_error(&g_data,
 				line) == 0)
 		{
 			ft_parser(&g_data, line);

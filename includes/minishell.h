@@ -55,7 +55,7 @@ int					g_running;
 typedef struct s_env
 {
 	char			*name;
-	char			*valor;
+	char			*value;
 	int				equal;
 	struct s_env	*next;
 }					t_env;
@@ -172,20 +172,20 @@ void				ft_minish(char **envp);
 int					main(int argc, char **argv, char **envp);
 
 //***********************ft_expansion_utils.c***********************
-char				*ft_extract_word(char *str, int pos_dolar);
+char				*ft_extract_word(char *str, int dollar_pos);
 int					ft_encontrar_dolar(char *cadena, t_general *g_data);
 char				*ft_cpy_part(char *str, int *pos, int num_chars);
-char				ft_remodelar_cadena(char *split_tokens,
-						char *palabra_dolar, char *word_exchange,
-						int pos_dolar);
+char				*ft_remodelar_cadena(char *split_tokens,
+						char *dollar_word, char *word_exchange,
+						int dollar_pos);
 
 //**************************expansion.c********************************
-void				ft_vamos_a_expandir(t_general *g_data, t_cmd *cmd);
+void				ft_start_expand(t_general *g_data, t_cmd *cmd);
 char				*ft_expand_all(t_general *g_data, char *cmd);
 char				*ft_get_word_exchange(t_general *g_data,
-						char *palabra_dolar);
+						char *dollar_word);
 char				*ft_process_dolar(t_general *g_data, char *string_restruc,
-						int pos_dolar);
+						int dollar_pos);
 
 //**********************************lexer_utils.c**********************
 int					ft_count_pipes(char **input);
@@ -194,9 +194,9 @@ char				**ft_concatenate_until_pipe(char **input);
 
 //**********************lexer.c********************************
 void				ft_parse_tokens(t_general *g_data);
-void				ft_funcion_junta_redirecciones(t_general *g_data);
+void				ft_function_union_reds(t_general *g_data);
 void				ft_parser(t_general *g_data, char *line);
-int					ft_solo_espacios(char *line);
+int					ft_only_spaces(char *line);
 
 //**********************list_cmd.c********************************
 t_cmd				*ft_cmd_last(t_general *g_data);
@@ -236,7 +236,7 @@ void				ft_restore_quotes(char **split_tokens);
 char				*ft_extract_token(char *cpy_line, int start, int end);
 char				**ft_tokenize(t_general *g_data);
 int					ft_contar_cadenas_validas(char **cadena_de_cadenas);
-char				**ft_eliminar_espacios(char **cadena_de_cadenas);
+char				**ft_clean_spaces(char **cadena_de_cadenas);
 
 //***************************comillas.c**********************************
 void				ft_process_quote_character(t_process_data *p);
@@ -256,7 +256,9 @@ void				ft_fill_cmd_and_heredoc(t_cmd *cmd, char **mtx,
 t_cmd				*ft_cmd_new(char *arg);
 
 char				*ft_charjoin_free(char *s1, char s2);
-int					ft_existe_dolar_valido(char *comannd);
-void				ft_entrecomillas(char char_cmd, t_general *g_data);
-int					ft_comprobar_dolar(char cmd_char, t_general *g_data);
+int					ft_exist_valid_dollar(char *comannd);
+void				ft_if_is_quote(char char_cmd, t_general *g_data);
+int					ft_char_is_dollar(char cmd_char, t_general *g_data);
+
+void	ft_shift_tokens(t_general *g_data, int start);
 #endif

@@ -98,8 +98,8 @@ char	**ft_env_mtx(t_general *g_data)
 		if (temp->equal)
 		{
 			aux = ft_strjoin(temp->name, "=");
-			if (temp->valor)
-				mtx[i] = ft_strjoin(aux, temp->valor);
+			if (temp->value)
+				mtx[i] = ft_strjoin(aux, temp->value);
 			else
 				mtx[i] = ft_strdup(aux);
 			free(aux);
@@ -119,7 +119,7 @@ char	**ft_get_paths(t_general *g_data, char *cmd)
 	temp = ft_env_search(g_data, "PATH");
 	if (!temp)
 		return (NULL);
-	return (ft_split(temp->valor, ':'));
+	return (ft_split(temp->value, ':'));
 }
 
 char	*ft_path(t_general *g_data, char *cmd)

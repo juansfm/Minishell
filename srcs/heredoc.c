@@ -20,7 +20,7 @@ void	ft_redir(t_general *g_data, t_cmd *cmd)
 	if (cmd->cmd[0] != NULL)
 	{
 		ft_restore_quotes(g_data->cmd->cmd);
-		ft_vamos_a_expandir(g_data, cmd);
+		ft_start_expand(g_data, cmd);
 		ft_quita_comillas(g_data);
 	}
 	g_data->status = 0;

@@ -42,9 +42,9 @@ void	ft_add_mod_env(t_general *g_data, char *env_new)
 				ft_free_env(new);
 				return ;
 			}
-			free(temp->valor);
+			free(temp->value);
 			temp->equal = 1;
-			temp->valor = ft_strdup(new->valor);
+			temp->value = ft_strdup(new->value);
 			ft_free_env(new);
 			return ;
 		}
