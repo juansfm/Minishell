@@ -850,7 +850,7 @@ void	ft_reordenar_palabras(char *cadena)//no se usa
 }
 */
 	/*funcion que divido en 2
-char	**ft_eliminar_espacios(char **cadena_de_cadenas)
+char	**ft_eliminar_espacios(char **string_of_strings)
 {
 	int		i;
 	int		cantidad_cadenas;
@@ -861,9 +861,9 @@ char	**ft_eliminar_espacios(char **cadena_de_cadenas)
 	i = 0;
 	resultado = NULL;
 	// Contar la cantidad de cadenas válidas
-	while (cadena_de_cadenas[i] != NULL)
+	while (string_of_strings[i] != NULL)
 	{
-		if (ft_strcmp(cadena_de_cadenas[i], " ") != 0)
+		if (ft_strcmp(string_of_strings[i], " ") != 0)
 			cantidad_cadenas++;
 		i++;
 	}
@@ -874,11 +874,11 @@ char	**ft_eliminar_espacios(char **cadena_de_cadenas)
 	// Eliminar cadenas que contienen solo espacios
 	i = 0;
 	j = 0;
-	while (cadena_de_cadenas[i] != NULL)
+	while (string_of_strings[i] != NULL)
 	{
-		if (ft_strcmp(cadena_de_cadenas[i], " ") != 0)
+		if (ft_strcmp(string_of_strings[i], " ") != 0)
 		{
-			resultado[j] = cadena_de_cadenas[i];
+			resultado[j] = string_of_strings[i];
 			j++;
 		}
 		i++;
@@ -1276,61 +1276,61 @@ void	*ft_realloc(void *ptr, size_t size, size_t new_size)
 	return (new_ptr);
 }
 
-// char	**ft_eliminar_espacios(char **cadena_de_cadenas)
+// char	**ft_eliminar_espacios(char **string_of_strings)
 // {
 // 	int		cantidad_cadenas;
 // 	char	**resultado;
 // 	int		i;
 // 	int		j;
 
-// 	cantidad_cadenas = ft_contar_cadenas_validas(cadena_de_cadenas);
+// 	cantidad_cadenas = ft_contar_cadenas_validas(string_of_strings);
 // 	resultado = ft_calloc((cantidad_cadenas + 1), sizeof(char *));
 // 	if (!resultado)
 // 		return (NULL);
 // 	i = 0;
 // 	j = 0;
-// 	while (cadena_de_cadenas[i] != NULL)
+// 	while (string_of_strings[i] != NULL)
 // 	{
-// 		if (ft_strcmp(cadena_de_cadenas[i], " ") != 0)
+// 		if (ft_strcmp(string_of_strings[i], " ") != 0)
 // 		{
-// 			resultado[j] = cadena_de_cadenas[i];
+// 			resultado[j] = string_of_strings[i];
 // 			j++;
 // 		}
 // 		else
-// 			free(cadena_de_cadenas[i]);
+// 			free(string_of_strings[i]);
 // 		i++;
 // 	}
 // 	resultado[cantidad_cadenas] = NULL;
-// 	free(cadena_de_cadenas);
-// 	cadena_de_cadenas = NULL;
+// 	free(string_of_strings);
+// 	string_of_strings = NULL;
 // 	return (resultado);
 // }
 
-// char	**ft_eliminar_espacios(char **cadena_de_cadenas)
+// char	**ft_eliminar_espacios(char **string_of_strings)
 // {
 // 	int		cantidad_cadenas;
 // 	char	**resultado;
 // 	int		i;
 // 	int		j;
 
-// 	cantidad_cadenas = ft_contar_cadenas_validas(cadena_de_cadenas);
+// 	cantidad_cadenas = ft_contar_cadenas_validas(string_of_strings);
 // 	resultado = ft_calloc((cantidad_cadenas + 1), sizeof(char *));
 // 	if (!resultado)
 // 		return (NULL);
 // 	i = 0;
 // 	j = 0;
-// 	while (cadena_de_cadenas[i] != NULL)
+// 	while (string_of_strings[i] != NULL)
 // 	{
-// 		if (ft_strcmp(cadena_de_cadenas[i], " ") != 0)
+// 		if (ft_strcmp(string_of_strings[i], " ") != 0)
 // 		{
-// 			resultado[j] = ft_strdup(cadena_de_cadenas[i]);
+// 			resultado[j] = ft_strdup(string_of_strings[i]);
 // 			j++;
 // 		}
 // 		i++;
 // 	}
 // 	resultado[cantidad_cadenas] = NULL;
-// 	ft_free(cadena_de_cadenas, ft_mtxrow(cadena_de_cadenas));
-// 	cadena_de_cadenas = NULL;
+// 	ft_free(string_of_strings, ft_mtxrow(string_of_strings));
+// 	string_of_strings = NULL;
 // 	return (resultado);
 // }
 */// void	ft_function_union_reds(t_general *g_data)

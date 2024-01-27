@@ -17,13 +17,6 @@ char	*ft_extract_token(char *cpy_line, int start, int end)
 	return (token);
 }
 
-int	ft_is_delimiter(char c)
-{
-	if (c == ' ' || c == '|' || c == '<' || c == '>')
-		return (1);
-	return (0);
-}
-
 char	**ft_tokenize(t_general *g_data)
 {
 	char	**tokens;
@@ -36,7 +29,7 @@ char	**ft_tokenize(t_general *g_data)
 	i = -1;
 	tokens = ft_calloc((ft_strlen(g_data->cpy_line) + 1), sizeof(char *));
 	if (!tokens)
-		exit(EXIT_FAILURE);
+		return (NULL);
 	while (g_data->cpy_line[++i])
 	{
 		if (ft_is_delimiter(g_data->cpy_line[i]))
@@ -53,50 +46,50 @@ char	**ft_tokenize(t_general *g_data)
 	return (tokens);
 }
 
-int	ft_contar_cadenas_validas(char **cadena_de_cadenas)
+int	ft_count_valid_strings(char **string_of_strings)
 {
 	int	i;
-	int	cantidad_cadenas;
+	int	num_of_strings;
 
-	cantidad_cadenas = 0;
+	num_of_strings = 0;
 	i = 0;
-	while (cadena_de_cadenas[i] != NULL)
+	while (string_of_strings[i] != NULL)
 	{
-		if (ft_strcmp(cadena_de_cadenas[i], " ") != 0)
-			cantidad_cadenas++;
+		if (ft_strcmp(string_of_strings[i], " ") != 0)
+			num_of_strings++;
 		i++;
 	}
-	return (cantidad_cadenas);
+	return (num_of_strings);
 }
 
-void	ft_copiar_cadenas_no_vacias(char **cadena_de_cadenas, char **resultado)
+void	ft_cpy_string_void(char **string_of_strings, char **resultado)
 {
 	int	i;
 	int	j;
 
 	i = 0;
 	j = 0;
-	while (cadena_de_cadenas[i] != NULL)
+	while (string_of_strings[i] != NULL)
 	{
-		if (ft_strcmp(cadena_de_cadenas[i], " ") != 0)
-			resultado[j++] = cadena_de_cadenas[i];
+		if (ft_strcmp(string_of_strings[i], " ") != 0)
+			resultado[j++] = string_of_strings[i];
 		else
-			free(cadena_de_cadenas[i]);
+			free(string_of_strings[i]);
 		i++;
 	}
-	free(cadena_de_cadenas);
+	free(string_of_strings);
 }
 
-char	**ft_clean_spaces(char **cadena_de_cadenas)
+char	**ft_clean_spaces(char **string_of_strings)
 {
-	int		cantidad_cadenas;
+	int		num_of_strings;
 	char	**resultado;
 
-	cantidad_cadenas = ft_contar_cadenas_validas(cadena_de_cadenas);
-	resultado = ft_calloc((cantidad_cadenas + 1), sizeof(char *));
+	num_of_strings = ft_count_valid_strings(string_of_strings);
+	resultado = ft_calloc((num_of_strings + 1), sizeof(char *));
 	if (!resultado)
 		return (NULL);
-	ft_copiar_cadenas_no_vacias(cadena_de_cadenas, resultado);
-	resultado[cantidad_cadenas] = NULL;
+	ft_cpy_string_void(string_of_strings, resultado);
+	resultado[num_of_strings] = NULL;
 	return (resultado);
 }

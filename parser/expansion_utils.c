@@ -62,3 +62,10 @@ char	*ft_cpy_part(char *str, int *pos, int num_chars)
 	*pos = start + num_chars;
 	return (dest);
 }
+
+int	ft_is_delimiter(char c)
+{
+	if (c == ' ' || c == '|' || c == '<' || c == '>')
+		return (1);
+	return (0);
+}
