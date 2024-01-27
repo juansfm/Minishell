@@ -70,6 +70,7 @@ void	ft_exit(t_general *g_data, char **arg)
 	int	i;
 
 	(void)g_data;
+	printf("exit\n");
 	if (!arg[1])
 		exit(0);
 	if (ft_mtxrow(arg) > 2)
@@ -89,7 +90,6 @@ void	ft_exit(t_general *g_data, char **arg)
 			exit(255);
 		}
 	}
-	printf("exit");
 	exit(ft_atou(arg[1]) % 256);
 }
 

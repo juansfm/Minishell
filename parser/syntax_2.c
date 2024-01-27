@@ -48,6 +48,7 @@ int	ft_syntax_boucle(t_general *g_data, char *line, int *redir, int i)
 		redir[0] = 0;
 	return (0);
 }
+
 int	ft_final_redir(t_general *g_data, int redir)
 {
 	if (redir != 0)
