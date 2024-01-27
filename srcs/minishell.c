@@ -34,12 +34,14 @@ void	ft_minish(char **envp)
 
 	g_running = 1;
 	g_data.cmd = NULL;
-	atexit(ft_l);
+	//atexit(ft_l);
 	ft_dup_env(&g_data, envp);
 	g_data.og_in = dup(STDIN_FILENO);
 	g_data.og_out = dup(STDOUT_FILENO);
 	g_data.status = 0;
 	g_data.cpy_line = NULL;
+	g_data.quote_simple = 0;
+	g_data.quote_double = 0;
 	ft_prompt();
 	while (g_running)
 	{

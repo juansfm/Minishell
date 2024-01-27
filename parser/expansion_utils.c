@@ -1,5 +1,5 @@
 #include "minishell.h"
-
+/*
 //funcion que comprueba si existe la variable de entorno que le paso
 
 //falta comprobar esta funcion extract_word
@@ -106,4 +106,44 @@ char	*ft_remodelar_cadena(char *split_tokens, char *palabra_dolar,
 	free(cadena_parte_final);
 	free(palabra_a_cambiar);
 	return (cadena_a_trozos);
+}
+*/
+/*
+void expandiremos_ahora(t_general *g_data)
+{
+	//voy a recorrer la lista de comandos
+	//y voy a ir caracter a caracter por comanndos
+	//si veo comillas simples activo a 1 una variable que tiene cmd->comilla_simple
+	//
+	//compruebo si hay dolar valido
+	//si existe entro
+	//compruebo que tiene dolar delante
+	//si tiene dolar delante un delimitador, fin de cadena o comillas
+	//una variable 
+}
+*/
+
+char	*ft_charjoin_free(char *s1, char s2)
+{
+	int		i;
+	int		j;
+	int		k;
+	char	*str;
+
+	i = ft_strlen(s1);
+	j = 1;
+	str = ft_calloc((i + j + 1), sizeof(char));
+	if (str != NULL)
+	{
+		k = 0;
+		while (s1[k] != '\0')
+		{
+			str[k] = s1[k];
+			k++;
+		}
+		str[k] = s2;
+		free(s1);
+		return (&str[0]);
+	}
+	return (0);
 }

@@ -70,6 +70,7 @@ t_cmd	*ft_cmd_new(char *arg)
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	cmd->infile = -1;
 	cmd->outfile = -1;
+	cmd->pos_ult_dolar = -1;
 	mtx = ft_split(arg, ' ');
 	data.i = -1;
 	data.len = 0;

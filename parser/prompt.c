@@ -2,7 +2,7 @@
 
 void	ft_prompt(void)
 {
-	ft_putstr_fd(YELLOW "⠀⠀⠀⣠⡿⠟⠛⠉⠉⠙⠿⣦⠀\n", 1);
+	ft_putstr_fd(RED "⠀⠀⠀⣠⡿⠟⠛⠉⠉⠙⠿⣦⠀\n", 1);
 	ft_putstr_fd("⠀⢰⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢿⣄⡀\n", 1);
 	ft_putstr_fd("⢠⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣶⣤⣀⡀\n", 1);
 	ft_putstr_fd("⣏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠙⠒⠲⠦⢤⣄⣀⣀⡀⠀⠀\n", 1);
