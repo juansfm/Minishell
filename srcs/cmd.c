@@ -147,10 +147,7 @@ char	**ft_get_paths(t_general *g_data, char *cmd)
 		return (NULL);
 	temp = ft_env_search(g_data, "PATH");
 	if (!temp)
-	{
-		free(cmd);
 		return (NULL);
-	}
 	return (ft_split(temp->valor, ':'));
 }
 

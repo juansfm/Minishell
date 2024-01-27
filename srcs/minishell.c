@@ -21,6 +21,71 @@
 // 		i++;
 // 	}
 // }
+// void	ft_entrecomillas(char char_cmd, t_general *g_data)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	if (char_cmd == '\"' && g_data->quote_double == 0
+// 		&& g_data->quote_simple == 0)
+// 		g_data->quote_double = 1;
+// 	else if (char_cmd == '\'' && g_data->quote_double == 0
+// 		&& g_data->quote_simple == 0)
+// 		g_data->quote_simple = 1;
+// 	else if (char_cmd == '\"' && g_data->quote_double == 1)
+// 		g_data->quote_double = 0;
+// 	else if (char_cmd == '\'' && g_data->quote_simple == 1)
+// 		g_data->quote_simple = 0;
+// }
+
+// int	ft_syntax_error(t_general *g_data, char *line)
+// {
+// 	int	i;
+// 	int	redir;
+
+// 	redir = 0;
+// 	i = -1;
+// 	while (line[++i])
+// 	{
+// 		ft_entrecomillas(line[i], g_data);
+// 	}
+// 	if (g_data->quote_double == 1 || g_data->quote_simple == 1)
+// 	{
+// 		ft_putendl_fd(QUOTE, 1);
+// 		return (1);
+// 	}
+// 	i = -1;
+// 	if (line[0] == '|')
+// 	{
+// 		ft_putendl_fd(PIPE_ERROR, 1);
+// 		return (1);
+// 	}
+// 	while (line[++i])
+// 	{
+// 		if (line[i] == ' ')
+// 			continue ;
+// 		ft_entrecomillas(line[i], g_data);
+// 		if (g_data->quote_double == 1 || g_data->quote_simple == 1)
+// 			continue ;
+// 		if (line[i] == '<')
+// 		{
+// 			if (line[i + 1] != '<')
+// 				redir = 2;
+// 			else
+// 				redir = 1;
+// 		}
+// 		if (line[i] != '>')
+// 		{
+// 			if (line[i + 1] != '>')
+// 				redir = 3;
+// 			else
+// 				redir = 4;
+// 		}
+// 		if (line[i] == '|')
+// 			redir = 5;
+// 	}
+// 	return (0);
+// }
 
 void	ft_l(void)
 {
@@ -43,6 +108,8 @@ void	ft_minish(char **envp)
 	ft_prompt();
 	while (g_running)
 	{
+		g_data.quote_simple = 0;
+		g_data.quote_double = 0;
 		line = readline("\033[0;32mMinishell$ \033[0m");
 		if (!line)
 			exit(EXIT_FAILURE);
@@ -53,7 +120,7 @@ void	ft_minish(char **envp)
 		}
 		if (line && *line)
 			add_history(line);
-		if (ft_solo_espacios(line) == 1)
+		if (ft_solo_espacios(line) == 1 && ft_syntax_error(&g_data, line) == 0)
 		{
 			ft_parser(&g_data, line);
 			ft_cmd_lst(&g_data, g_data.split_tokens);
