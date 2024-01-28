@@ -31,6 +31,8 @@ void	ft_principal_boucle(t_general *g_data, char *line)
 			g_running = 3;
 			if (!ft_builtins(g_data, g_data->cmd->cmd))
 				g_data->status = ft_other_cmd(g_data, g_data->cmd->cmd);
+			if (g_running == -3)
+				g_data->status = 130;
 		}
 	}
 	else if (ft_cmd_len(g_data) >= 2)

@@ -24,11 +24,14 @@ static void	ft_parent_process(t_general *g_data, int *fd, int pid, t_cmd *cmd)
 {
 	t_cmd	*temp;
 
+	(void)pid;
 	close(fd[1]);
 	dup2(fd[0], STDIN_FILENO);
 	close(fd[0]);
-	waitpid(pid, NULL, 0);
+	if (cmd->heredoc != NULL)
+		waitpid(pid, &g_data->status, 0);
 	temp = cmd->next;
+	g_data->status = WEXITSTATUS(g_data->status);
 	if (temp->next != NULL)
 		ft_multiple_cmd(g_data, temp);
 	else

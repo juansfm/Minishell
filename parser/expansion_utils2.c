@@ -55,4 +55,3 @@ char	*ft_extract_word(char *str, int dollar_pos)
 	word = ft_substr(str, start + 1, end - start);
 	return (word);
 }
-

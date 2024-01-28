@@ -65,22 +65,6 @@ int	ft_other_cmd(t_general *g_data, char **arg)
 	return (WEXITSTATUS(status));
 }
 
-char	**ft_union_cmd_arg(char *cmd, char **arg)
-{
-	char	**mtx;
-	int		i;
-
-	i = ft_mtxrow(arg) + 2;
-	mtx = ft_calloc(i, sizeof(char *));
-	mtx[0] = ft_strdup(cmd);
-	if (!arg)
-		return (mtx);
-	i = -1;
-	while (arg[++i])
-		mtx[i + 1] = ft_strdup(arg[i]);
-	return (mtx);
-}
-
 char	**ft_env_mtx(t_general *g_data)
 {
 	t_env	*temp;
