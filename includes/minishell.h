@@ -260,6 +260,12 @@ char				*ft_charjoin_free(char *s1, char s2);
 int					ft_exist_valid_dollar(char *comannd);
 void				ft_if_is_quote(char char_cmd, t_general *g_data);
 int					ft_char_is_dollar(char cmd_char, t_general *g_data);
+//**********************************expansion_utils2.c**********************
+char				*ft_process_no_dollar(char *cmd, int *i,
+						char *string_restruc);
+void				ft_shift_tokens(t_general *g_data, int start);
+char				*ft_process_dollar(t_general *g_data, char *cmd,
+						int *i, char *string_restruc);
 
-void	ft_shift_tokens(t_general *g_data, int start);
+
 #endif
