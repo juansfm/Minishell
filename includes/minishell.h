@@ -214,8 +214,7 @@ void				ft_ctrl_d(t_general *g_data);
 //**************************utils_minishell.c**************************
 t_cmd				*ft_create_new_cmd(void);
 void				ft_generate_cmds_from_tokens(t_general *g_data);
-void				ft_quita_comillas(t_general *g_data);
-void				ft_print_commands(t_cmd *cmd);
+void				ft_eliminate_quote(t_general *g_data);
 
 //**************************utils_parsers_cmd.c**************************
 void				ft_process_args(t_cmd *cmd, char **mtx);

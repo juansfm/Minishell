@@ -11,7 +11,7 @@ t_cmd	*ft_create_new_cmd(void)
 	return (new_cmd);
 }
 
-void	ft_quita_comillas(t_general *g_data)
+void	ft_eliminate_quote(t_general *g_data)
 {
 	t_process_data	p;
 
@@ -29,27 +29,5 @@ void	ft_quita_comillas(t_general *g_data)
 		p.i++;
 		p.j = 0;
 		p.k = 0;
-	}
-}
-
-void	ft_print_commands(t_cmd *cmd)
-{
-	t_cmd	*current;
-	int		i;
-	char	**temp;
-
-	current = cmd;
-	i = 0;
-	while (current != NULL)
-	{
-		printf("Command group %d:\n", i);
-		temp = current->cmd;
-		while (*temp)
-		{
-			printf("(%s)\n", *temp);
-			temp++;
-		}
-		current = current->next;
-		i++;
 	}
 }

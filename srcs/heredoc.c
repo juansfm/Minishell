@@ -21,7 +21,7 @@ void	ft_redir(t_general *g_data, t_cmd *cmd)
 	{
 		ft_restore_quotes(g_data->cmd->cmd);
 		ft_start_expand(g_data, cmd);
-		ft_quita_comillas(g_data);
+		ft_eliminate_quote(g_data);
 	}
 	g_data->status = 0;
 }
