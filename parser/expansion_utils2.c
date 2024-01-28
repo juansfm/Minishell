@@ -41,11 +41,11 @@ char	*ft_extract_word(char *str, int dollar_pos)
 	end = start + 1;
 	if (str[end] && ft_isdigit(str[end]))
 		fin = 1;
-	if (str[dollar_pos + 1] == '?')
+	if (str[dollar_pos + 1] == '?' || str[dollar_pos + 1] == '_')
 		fin = 1;
 	while (str[end] && (fin == 0))
 	{
-		if (!ft_isalnum(str[end]))
+		if (!ft_isalnum(str[end]) && str[end] != '_')
 		{
 			end--;
 			break ;
@@ -55,4 +55,3 @@ char	*ft_extract_word(char *str, int dollar_pos)
 	word = ft_substr(str, start + 1, end - start);
 	return (word);
 }
-

@@ -64,6 +64,7 @@ char	*ft_process_word(t_general *g_data, char *extract_word,
 
 	if (ft_strcmp(extract_word, "?") == 0)
 	{
+		(*i)++;
 		word_exchange = ft_itoa(g_data->status);
 		string_restruc = ft_strjoin_free(string_restruc, word_exchange);
 		free(word_exchange);
@@ -76,6 +77,7 @@ char	*ft_process_word(t_general *g_data, char *extract_word,
 	}
 	else
 	{
+		(*i)++;
 		word_exchange = ft_get_word_exchange(g_data, extract_word);
 		string_restruc = ft_strjoin_free(string_restruc, word_exchange);
 		(*i) += ft_strlen(extract_word);
@@ -92,7 +94,7 @@ char	*ft_process_dollar(t_general *g_data, char *cmd,
 
 	dollar_pos = *i;
 	extract_word = ft_extract_word(cmd, dollar_pos);
-	(*i)++;
+	// (*i)++;
 	string_restruc = ft_process_word(g_data, extract_word, i, string_restruc);
 	free(extract_word);
 	return (string_restruc);
