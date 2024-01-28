@@ -6,7 +6,7 @@
 /*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 16:47:53 by jsaavedr          #+#    #+#             */
-/*   Updated: 2024/01/28 16:47:54 by jsaavedr         ###   ########.fr       */
+/*   Updated: 2024/01/28 17:40:44 by jsaavedr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ char	*ft_process_dollar(t_general *g_data, char *cmd,
 
 	dollar_pos = *i;
 	extract_word = ft_extract_word(cmd, dollar_pos);
-	// (*i)++;
 	string_restruc = ft_process_word(g_data, extract_word, i, string_restruc);
 	free(extract_word);
 	return (string_restruc);

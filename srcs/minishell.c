@@ -6,7 +6,7 @@
 /*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 16:49:10 by jsaavedr          #+#    #+#             */
-/*   Updated: 2024/01/28 16:49:11 by jsaavedr         ###   ########.fr       */
+/*   Updated: 2024/01/28 17:45:08 by jsaavedr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	ft_restore(t_general *g_data, char *line)
 	g_running = 1;
 }
 
-//atexit(ft_l);
+	// atexit(ft_l);
 void	ft_minish(char **envp)
 {
 	t_general	g_data;
@@ -74,7 +74,7 @@ void	ft_minish(char **envp)
 	{
 		g_data.quote_simple = 0;
 		g_data.quote_double = 0;
-		line = readline("\033[0;32mMinishell$ \033[0m");
+		line = readline("Minishell$ ");
 		if (!line)
 			exit(EXIT_FAILURE);
 		if (line[0] == '\0')
