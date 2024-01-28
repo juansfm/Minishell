@@ -13,6 +13,7 @@ int	ft_syntax_error(t_general *g_data, char *line)
 		redir = 1;
 	if (line[0] == '<')
 		redir = 2;
+	ft_if_is_quote(line[0], g_data);
 	while (line[++i])
 	{
 		if (line[i] == ' ')
@@ -71,7 +72,7 @@ int	ft_redir_out_valor(t_general *g_data, char *line, int *redir, int i)
 {
 	if (line[i] == '<')
 	{
-		if (i > 2 && line[i - 1] == '<' && line[i - 2] == '<')
+		if (i > 1 && line[i - 1] == '<' && line[i - 2] == '<')
 		{
 			ft_putendl_fd(REDIR_ERROR_1, 1);
 			g_data->status = 258;
@@ -89,7 +90,7 @@ int	ft_redir_in_valor(t_general *g_data, char *line, int *redir, int i)
 {
 	if (line[i] == '>')
 	{
-		if (i > 2 && line[i - 1] == '>' && line[i - 2] == '>')
+		if (i > 1 && line[i - 1] == '>' && line[i - 2] == '>')
 		{
 			ft_putendl_fd(REDIR_ERROR_3, 1);
 			g_data->status = 258;

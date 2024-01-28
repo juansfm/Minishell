@@ -89,7 +89,7 @@ typedef struct s_general
 
 typedef struct s_process_data
 {
-	t_general		*g_data;
+	t_cmd			*cmd;
 	int				i;
 	int				j;
 	int				k;
@@ -214,7 +214,7 @@ void				ft_ctrl_d(t_general *g_data);
 //**************************utils_minishell.c**************************
 t_cmd				*ft_create_new_cmd(void);
 void				ft_generate_cmds_from_tokens(t_general *g_data);
-void				ft_eliminate_quote(t_general *g_data);
+void				ft_eliminate_quote(t_cmd *cmd);
 
 //**************************utils_parsers_cmd.c**************************
 void				ft_process_args(t_cmd *cmd, char **mtx);
@@ -265,6 +265,5 @@ char				*ft_process_no_dollar(char *cmd, int *i,
 void				ft_shift_tokens(t_general *g_data, int start);
 char				*ft_process_dollar(t_general *g_data, char *cmd,
 						int *i, char *string_restruc);
-
 
 #endif

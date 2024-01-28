@@ -21,9 +21,11 @@ void	ft_redir(t_general *g_data, t_cmd *cmd)
 	{
 		ft_restore_quotes(g_data->cmd->cmd);
 		ft_start_expand(g_data, cmd);
-		ft_eliminate_quote(g_data);
+		ft_eliminate_quote(cmd);
 	}
 	g_data->status = 0;
+	if (g_running == -2)
+		g_data->status = 1;
 }
 
 static void	ft_heredoc_pipe(char *input)

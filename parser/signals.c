@@ -4,13 +4,13 @@ void	ft_handler(int sig)
 {
 	if (SIGINT == sig && g_running == 3)
 	{
-		g_running = 0;
+		g_running = -3;
 		rl_replace_line("", 0);
 		ft_putstr_fd("   \n", 1);
 	}
 	else if (SIGINT == sig && g_running == 2)
 	{
-		g_running = 0;
+		g_running = -2;
 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 	}
 	else if (SIGINT == sig)
