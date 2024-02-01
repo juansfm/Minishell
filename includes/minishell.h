@@ -6,10 +6,9 @@
 /*   By: agil-ord <agil-ord@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:00:18 by agil-ord          #+#    #+#             */
-/*   Updated: 2024/02/01 15:00:24 by agil-ord         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:20:14 by agil-ord         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -97,8 +96,8 @@ typedef struct s_general
 	int				quote_simple;
 	int				quote_double;
 }					t_general;
-/*******************************parser estructuras**************************/
-/*comillas*/
+
+/*******************************structs parser**************************/
 
 typedef struct s_process_data
 {
@@ -166,16 +165,19 @@ int					ft_cmd_len(t_general *g_data);
 //MULTIPLE_CMD
 void				ft_multiple_cmd(t_general *g_data, t_cmd *cmd);
 
+//**************************syntax.c********************************
 int					ft_syntax_error(t_general *g_data, char *line);
-int					ft_check_quotes(t_general *g_data, char *line);
+int					ft_redir_in_valor(t_general *g_data, char *line, int *redir,
+						int i);
 int					ft_redir_out_error(t_general *g_data, char *line,
 						int *redir, int i);
 int					ft_redir_in_error(t_general *g_data, char *line, int *redir,
 						int i);
 int					ft_redir_out_valor(t_general *g_data, char *line,
 						int *redir, int i);
-int					ft_redir_in_valor(t_general *g_data, char *line, int *redir,
-						int i);
+
+//*********************************syntax_2.c***************************
+int					ft_check_quotes(t_general *g_data, char *line);
 int					ft_syntax_boucle(t_general *g_data, char *line, int *redir,
 						int i);
 int					ft_final_redir(t_general *g_data, int redir);
@@ -184,22 +186,28 @@ int					ft_final_redir(t_general *g_data, int redir);
 void				ft_minish(char **envp);
 int					main(int argc, char **argv, char **envp);
 
-//***********************ft_expansion_utils.c***********************
+//**********************************expansion_utils2.c**********************
+char				*ft_process_no_dollar(char *cmd, int *i,
+						char *string_restruc);
+char				*ft_expand_all(t_general *g_data, char *cmd);
 char				*ft_extract_word(char *str, int dollar_pos);
-int					ft_encontrar_dolar(char *cadena, t_general *g_data);
+
+//***********************ft_expansion_utils.c***********************
+char				*ft_charjoin_free(char *s1, char s2);
+void				ft_if_is_quote(char char_cmd, t_general *g_data);
+int					ft_char_is_dollar(char cmd_char, t_general *g_data);
 char				*ft_cpy_part(char *str, int *pos, int num_chars);
-char				*ft_remodelar_cadena(char *split_tokens,
-						char *dollar_word, char *word_exchange,
-						int dollar_pos);
+int					ft_is_delimiter(char c);
 
 //**************************expansion.c********************************
+int					ft_exist_valid_dollar(char *comannd);
 void				ft_start_expand(t_general *g_data, t_cmd *cmd);
-char				*ft_expand_all(t_general *g_data, char *cmd);
 char				*ft_get_word_exchange(t_general *g_data,
 						char *dollar_word);
-char				*ft_process_dolar(t_general *g_data, char *string_restruc,
-						int dollar_pos);
-int					ft_is_delimiter(char c);
+char				*ft_process_word(t_general *g_data,
+						char *extract_word, int *i, char *string_restruc);
+char				*ft_process_dollar(t_general *g_data, char *cmd,
+						int *i, char *string_restruc);
 
 //**********************************lexer_utils.c**********************
 int					ft_count_pipes(char **input);
@@ -208,14 +216,14 @@ char				**ft_concatenate_until_pipe(char **input);
 
 //**********************lexer.c********************************
 void				ft_parse_tokens(t_general *g_data);
-void				ft_function_union_reds(t_general *g_data);
 void				ft_parser(t_general *g_data, char *line);
 int					ft_only_spaces(char *line);
+void				ft_shift_tokens(t_general *g_data, int start);
+void				ft_function_union_reds(t_general *g_data);
 
 //**********************list_cmd.c********************************
 t_cmd				*ft_cmd_last(t_general *g_data);
 void				ft_cmd_add_back(t_general *g_data, t_cmd *new);
-t_cmd				*ft_init_cmd(void);
 void				ft_cmd_lst(t_general *g_data, char **mtx);
 
 //*************************prompt.c********************************
@@ -224,9 +232,10 @@ void				ft_prompt(void);
 //***************************signals.c*******************************
 void				ft_handler(int sig);
 void				ft_ctrl_d(t_general *g_data);
+
+void				ft_generate_cmds_from_tokens(t_general *g_data);
 //**************************utils_minishell.c**************************
 t_cmd				*ft_create_new_cmd(void);
-void				ft_generate_cmds_from_tokens(t_general *g_data);
 void				ft_eliminate_quote(t_cmd *cmd);
 
 //**************************utils_parsers_cmd.c**************************
@@ -240,24 +249,27 @@ void				ft_free_cmd(t_general *g_data);
 //*************************utils_parser.c********************************
 int					ft_char_reserved(char c);
 int					ft_isspace(int c);
-void				ft_process_quote(t_general *g_data, int *pos);
 void				ft_replace_special_chars(t_general *g_data, int *pos,
 						char current_char, int *count_quotes);
+void				ft_process_quote(t_general *g_data, int *pos);
 void				ft_restore_quotes(char **split_tokens);
 
 //*************************utils_parser2.c********************************
 char				*ft_extract_token(char *cpy_line, int start, int end);
 char				**ft_tokenize(t_general *g_data);
 int					ft_count_valid_strings(char **string_of_strings);
+void				ft_cpy_string_void(char **string_of_strings,
+						char **resultado);
 char				**ft_clean_spaces(char **string_of_strings);
 
-//***************************comillas.c**********************************
+//***************************quotes.c**********************************
 void				ft_process_quote_character(t_process_data *p);
 void				ft_process_non_quote_character(t_process_data *p);
+void				ft_process_character(t_process_data *p);
 void				ft_process_token(t_process_data *p);
 void				ft_replace_token_in_cmd(t_process_data *p);
 
-//***************************nueva_funcion_new.c****************************
+//***************************redirects.c****************************
 void				ft_process_input_file(t_cmd *cmd, char **mtx,
 						t_cmd_data *data);
 void				ft_process_output_file(t_cmd *cmd, char **mtx,
@@ -267,16 +279,5 @@ void				ft_process_redirects(t_cmd *cmd, char **mtx,
 void				ft_fill_cmd_and_heredoc(t_cmd *cmd, char **mtx,
 						t_cmd_data *data);
 t_cmd				*ft_cmd_new(char *arg);
-
-char				*ft_charjoin_free(char *s1, char s2);
-int					ft_exist_valid_dollar(char *comannd);
-void				ft_if_is_quote(char char_cmd, t_general *g_data);
-int					ft_char_is_dollar(char cmd_char, t_general *g_data);
-//**********************************expansion_utils2.c**********************
-char				*ft_process_no_dollar(char *cmd, int *i,
-						char *string_restruc);
-void				ft_shift_tokens(t_general *g_data, int start);
-char				*ft_process_dollar(t_general *g_data, char *cmd,
-						int *i, char *string_restruc);
 
 #endif
