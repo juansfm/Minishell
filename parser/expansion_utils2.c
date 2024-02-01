@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agil-ord <agil-ord@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/28 16:47:49 by jsaavedr          #+#    #+#             */
-/*   Updated: 2024/01/28 16:47:50 by jsaavedr         ###   ########.fr       */
+/*   Created: 2024/02/01 15:00:46 by agil-ord          #+#    #+#             */
+/*   Updated: 2024/02/01 15:00:48 by agil-ord         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 

@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsaavedr <jsaavedr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agil-ord <agil-ord@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/28 16:47:39 by jsaavedr          #+#    #+#             */
-/*   Updated: 2024/01/28 16:47:40 by jsaavedr         ###   ########.fr       */
+/*   Created: 2024/02/01 15:00:18 by agil-ord          #+#    #+#             */
+/*   Updated: 2024/02/01 15:00:24 by agil-ord         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
