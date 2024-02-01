@@ -94,7 +94,6 @@ char	*ft_process_dollar(t_general *g_data, char *cmd,
 
 	dollar_pos = *i;
 	extract_word = ft_extract_word(cmd, dollar_pos);
-	// (*i)++;
 	string_restruc = ft_process_word(g_data, extract_word, i, string_restruc);
 	free(extract_word);
 	return (string_restruc);
