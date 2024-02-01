@@ -18,7 +18,7 @@ SRCS = srcs/minishell.c\
 		srcs/cmd_utils.c\
 		srcs/heredoc.c
 
-SRCS_PARSER = parser/comillas.c\
+SRCS_PARSER = parser/quotes.c\
 			parser/expansion_utils.c\
 			parser/expansion.c\
 			parser/lexer_utils.c\
